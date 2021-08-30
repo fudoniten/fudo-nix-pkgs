@@ -4,7 +4,7 @@ let
   callPackage = pkgs.callPackage;
 
 in {
-  nixpkgs.config.packageOverrides = pkgs: rec {
+  pkgs.config.packageOverrides = pkgs: rec {
 
     letsencrypt-ca = callPackage ./pkgs/letsencrypt-ca.nix { };
 
