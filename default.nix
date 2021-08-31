@@ -4,7 +4,7 @@ let
   callPackage = pkgs.callPackage;
 
 in {
-  pkgs.config.packageOverrides = pkgs: rec {
+  nixpkgs.config.packageOverrides = pkgs: rec {
 
     letsencrypt-ca = callPackage ./pkgs/letsencrypt-ca.nix { };
 
@@ -154,6 +154,6 @@ in {
       sha256 = "0v0q6iglr0lx13j1snzd8mjxids1af1p2h7bkvmsyk2bfp36naqx";
     }) { };
 
-    flatpak = pkgs.callPackage ./flatpak { };
+    flatpak = pkgs.callPackage ./pkgs/flatpak { };
   };
 }
