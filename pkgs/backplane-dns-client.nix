@@ -1,7 +1,6 @@
 { stdenv, fetchgit, pkgs, bundlerEnv }:
 
 let
-  url = "https://git.fudo.org/fudo-public/backplane-dns-client.git";
   version = "0.1";
   srcdir = pkgs.fetchgit {
     url = "https://git.fudo.org/fudo-public/backplane-client.git";

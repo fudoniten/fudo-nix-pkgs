@@ -126,7 +126,7 @@ in {
     localLispPackages = (callPackage ./pkgs/lisp { inherit localLispPackages; })
       // pkgs.lispPackages;
 
-    backplane-dns-server = callPackage ./backplane-dns-server.nix {
+    backplane-dns-server = callPackage ./pkgs/backplane-dns-server.nix {
       inherit localLispPackages;
     };
 
