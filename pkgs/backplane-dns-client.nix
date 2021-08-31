@@ -3,7 +3,11 @@
 let
   url = "https://git.fudo.org/fudo-public/backplane-dns-client.git";
   version = "0.1";
-  srcdir = ../static/backplane-dns-client;
+  srcdir = pkgs.fetchgit {
+    url = "https://git.fudo.org/fudo-public/backplane-client.git";
+    rev = "7b29ab82b124b52e24d56c67c3687a5958ac88dd";
+    sha256 = "0amnjaml1a1i6civc1m9h4pd1zdskdv1fc2m9zkld97fs02djmh5";
+  };
   gems = bundlerEnv {
     name = "backplane-dns-client-env";
     ruby = pkgs.ruby;
