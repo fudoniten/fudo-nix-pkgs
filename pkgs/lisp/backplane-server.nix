@@ -1,4 +1,4 @@
-{ pkgs, lib, localLispPackages, ... }:
+{ pkgs, localLispPackages, ... }:
 
 pkgs.lispPackages.buildLispPackage {
   baseName = "backplane-server";
