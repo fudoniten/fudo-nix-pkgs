@@ -6,7 +6,7 @@ let
 
 in stdenv.mkDerivation {
 
-  name = "letsencrypt-ca";
+  name = "letsencrypt-ca-pem";
 
   src = fetchurl {
     name = "isrgrootx1.pem.txt";
@@ -17,12 +17,12 @@ in stdenv.mkDerivation {
   phases = [ "installPhase" ];
 
   installPhase = ''
-    mkdir -pv $out/etc/ssl/letsencrypt
-    cp -v $src $out/etc/ssl/letsencrypt/ca.pem
+    mkdir -pv $out
+    cp -v $src $out/ca.pem
   '';
 
   meta = {
-    homepage = https://letsencrypt.com;
+    homepage = https://letsencrypt.com/certificates;
     description = "Certificate Authority (CA) certificate for LetsEncrypt";
   };
 }

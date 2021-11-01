@@ -1,4 +1,4 @@
-{ pkgs, lib, arrows, cl-xmpp, ... }:
+{ pkgs, lib, localLispPackages, ... }:
 
 pkgs.lispPackages.buildLispPackage {
   baseName = "backplane-server";
@@ -7,14 +7,22 @@ pkgs.lispPackages.buildLispPackage {
 
   buildSystems = [ "backplane-server" ];
 
-  deps = with pkgs.lispPackages; [ alexandria arrows cl-json cl-xmpp prove ];
-
   src = pkgs.fetchgit {
     url = "https://git.fudo.org/fudo-public/backplane-server.git";
     rev = "5b50dd8badf5b5460e9cc7e76e191d274712a3bd";
     sha256 = "18fysksmrbfk131fgazbw1cpaxz47015ashap9y4rswd904dzzss";
     fetchSubmodules = false;
   };
+
+  deps = with localLispPackages; [
+    alexandria
+    arrows
+    asdf-package-system
+    asdf-system-connections
+    cl-json
+    cl-xmpp
+    prove
+  ];
 
   asdFilesToKeep = [ "backplane-server.asd" ];
 }

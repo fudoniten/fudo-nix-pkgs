@@ -2,6 +2,8 @@
 
 with pkgs.lib;
 let
+  version = "20211031";
+
   launcher = pkgs.writeText "launch-backplane-dns.lisp" ''
     (require :asdf)
     (asdf:load-system :backplane-dns)
@@ -13,13 +15,19 @@ let
     ${pkgs.lispPackages.clwrapper}/bin/common-lisp.sh --load ${launcher}
   '';
 
+  sbcl-with-ssl = pkgs.sbcl.overrideAttrs (oldAttrs: rec {
+    buildInputs = oldAttrs.buildInputs ++ [
+      pkgs.openssl_1_1.dev
+    ];
+  });
+
 in pkgs.stdenv.mkDerivation {
   pname = "backplane-dns-server";
-  version = "0.1.0";
+  version = version;
 
   propagatedBuildInputs = with pkgs; [
     asdf
-    sbcl
+    sbcl-with-ssl
     lispPackages.clwrapper
     localLispPackages.backplane-dns
   ];

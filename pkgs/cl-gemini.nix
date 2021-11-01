@@ -2,8 +2,7 @@
 
 with pkgs.lib;
 let
-  url = "https://git.informis.land/informis/cl-gemini.git";
-  version = "0.1";
+  version = "20211031";
 
   server-launcher = pkgs.writeText "launch-cl-gemini.lisp" ''
     (defun getenv-or-fail (env-var &optional default)
