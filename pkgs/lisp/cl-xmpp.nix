@@ -1,4 +1,4 @@
-{ pkgs, cl-sasl, ... }:
+{ pkgs, localLispPackages, ... }:
 
 pkgs.lispPackages.buildLispPackage {
   baseName = "cl-xmpp";
@@ -11,7 +11,7 @@ pkgs.lispPackages.buildLispPackage {
     "cl-xmpp-tls"
   ];
 
-  deps = with pkgs.lispPackages; [
+  deps = with localLispPackages; [
     cl-base64
     cl_plus_ssl
     cl-sasl
