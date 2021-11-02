@@ -84,4 +84,10 @@
         sha256 = "11b80wwgqqmvd70bswa9yhyj1818l3ypwkgvk096dis4qw6677l0";
       };
     });
+
+    backplane-auth = fetchgit {
+      url = "https://git.fudo.org/fudo-public/backplane-auth.git";
+      rev = "d2df49be7efa06be23a0e81aeaa04aeb68ecb0cf";
+      sha256 = "057f1cvfldsfjh3p5k39mvfkw35didf2kp1aiflick8z49rgzgqf";
+    };
   })
