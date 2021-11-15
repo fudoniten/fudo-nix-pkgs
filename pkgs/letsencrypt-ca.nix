@@ -17,8 +17,7 @@ in stdenv.mkDerivation {
   phases = [ "installPhase" ];
 
   installPhase = ''
-    mkdir -pv $out
-    cp -v $src $out/ca.pem
+    cp -v $src $out
   '';
 
   meta = {
