@@ -1,7 +1,7 @@
 { stdenv, fetchurl }:
 
 let
-  url = "https://letsencrypt.org/certs/letsencryptauthorityx3.pem.txt";
+  url = "https://letsencrypt.org/certs/isrg-root-x1-cross-signed.pem";
   sha256 = "100lxxvqv4fj563bm03zzk5r36hq5jx9nnrajzs38g825c5k0cg2";
 
 in stdenv.mkDerivation {
