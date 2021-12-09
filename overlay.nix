@@ -75,8 +75,6 @@
       sha256 = "0v0q6iglr0lx13j1snzd8mjxids1af1p2h7bkvmsyk2bfp36naqx";
     }) { };
 
-    flatpak = callPackage ./pkgs/flatpak { };
-
     signal-desktop = prev.signal-desktop.overrideAttrs (oldAttrs: rec {
       version = "5.17.1";
       src = fetchurl {
