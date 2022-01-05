@@ -1,3 +1,5 @@
+{ unstableNixpkgs, ... }:
+
 (final: prev: with builtins;
   let
     callPackage = prev.callPackage;
@@ -88,4 +90,6 @@
       rev = "d2df49be7efa06be23a0e81aeaa04aeb68ecb0cf";
       sha256 = "057f1cvfldsfjh3p5k39mvfkw35didf2kp1aiflick8z49rgzgqf";
     };
+
+    unstableNyxt = unstableNixpkgs.nyxt;
   })
