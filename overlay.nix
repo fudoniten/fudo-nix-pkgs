@@ -92,7 +92,7 @@
 
     discourse-2_8_0_beta11 = prev.discourseAllPlugins.overrideAttrs (oldAttrs: rec {
       version = "2.8.0.beta11";
-      src = fetchgit {
+      src = prev.fetchFromGitHub {
         owner = "discourse";
         repo = "discourse";
         rev = "v${version}";
