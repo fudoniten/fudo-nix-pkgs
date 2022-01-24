@@ -90,7 +90,7 @@
       sha256 = "057f1cvfldsfjh3p5k39mvfkw35didf2kp1aiflick8z49rgzgqf";
     };
 
-    discourse-2_8_0_beta11 = prev.discourseAllPlugins.overrideAttrs (oldAttrs: rec {
+    discourse-2_8_0_beta11 = prev.discourse.overrideAttrs (oldAttrs: rec {
       version = "2.8.0.beta11";
       src = prev.fetchFromGitHub {
         owner = "discourse";
