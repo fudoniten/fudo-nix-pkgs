@@ -2,6 +2,7 @@
   let
     callPackage = prev.callPackage;
     fetchgit = prev.fetchgit;
+    fetchFromGitHub = prev.fetchFromGitHub;
     localLispPackages = final.localLispPackages;
 
   in {
@@ -71,8 +72,8 @@
 
     clj2nix = callPackage (fetchgit {
       url = "https://github.com/hlolli/clj2nix.git";
-      rev = "e6d09dd8c5cda68eb0534bd8501f2d5dcd7b2e95";
-      sha256 = "0v0q6iglr0lx13j1snzd8mjxids1af1p2h7bkvmsyk2bfp36naqx";
+      rev = "3d0a38c954c8e0926f57de1d80d357df05fc2f94";
+      sha256 = "0y77b988qdgsrp4w72v1f5rrh33awbps2qdgp2wr2nmmi44541w5";
     }) { };
 
     signal-desktop = prev.signal-desktop.overrideAttrs (oldAttrs: rec {
@@ -88,4 +89,14 @@
       rev = "d2df49be7efa06be23a0e81aeaa04aeb68ecb0cf";
       sha256 = "057f1cvfldsfjh3p5k39mvfkw35didf2kp1aiflick8z49rgzgqf";
     };
+
+    discourse-2_8_0_beta11 = prev.discourseAllPlugins.overrideAttrs (oldAttrs: {
+      version = "2.8.0.beta11";
+      src = fetchgit {
+        owner = "discourse";
+        repo = "discourse";
+        rev = "v${version}";
+        sha256 = "sha256-1g13xvjfinzdlpzbng8f4fk3jm6kycfiyhn9a9il7y3x2vi9a5n3";
+      };
+    });
   })
