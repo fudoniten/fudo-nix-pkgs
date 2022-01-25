@@ -90,13 +90,13 @@
       sha256 = "057f1cvfldsfjh3p5k39mvfkw35didf2kp1aiflick8z49rgzgqf";
     };
 
-    discourse-2_8_0_beta11 = prev.discourse.overrideAttrs (oldAttrs: rec {
-      version = "2.8.0.beta11";
+    discourse-fudo = prev.discourse.overrideAttrs (oldAttrs: rec {
+      version = "2.7.9";
       src = prev.fetchFromGitHub {
         owner = "discourse";
         repo = "discourse";
         rev = "v${version}";
-        sha256 = "sha256-1g13xvjfinzdlpzbng8f4fk3jm6kycfiyhn9a9il7y3x2vi9a5n3";
+        sha256 = "sha256-11fiwf0wzq93isfqcbxp6rpxajavqiayg9gka7nmzqn6as613qa8";
       };
     });
   })
