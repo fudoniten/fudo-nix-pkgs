@@ -91,7 +91,7 @@
     };
 
     discourse-fudo = prev.discourse.overrideAttrs (oldAttrs: rec {
-      version = "2.7.9";
+      version = "2.8.0-beta10";
       src = prev.fetchFromGitHub {
         owner = "discourse";
         repo = "discourse";

@@ -30,6 +30,7 @@ in pkgs.stdenv.mkDerivation {
     sbcl-with-ssl
     lispPackages.clwrapper
     localLispPackages.backplane-dns
+    openssl
   ];
 
   phases = [ "installPhase" ];
