@@ -86,8 +86,8 @@
 
     backplane-auth = fetchgit {
       url = "https://git.fudo.org/fudo-public/backplane-auth.git";
-      rev = "d2df49be7efa06be23a0e81aeaa04aeb68ecb0cf";
-      sha256 = "057f1cvfldsfjh3p5k39mvfkw35didf2kp1aiflick8z49rgzgqf";
+      rev = "31468f6bb7c24ebd513da935c5dba1d6f22780fc";
+      sha256 = "1x7bza2c621xhd14hxdn0ahbf3q5fi9smwz3bfpa0xfglz29wdrr";
     };
 
     discourse-fudo = prev.discourse.overrideAttrs (oldAttrs: rec {
