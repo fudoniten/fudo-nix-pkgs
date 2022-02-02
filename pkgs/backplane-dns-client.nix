@@ -4,8 +4,8 @@ let
   version = "0.1";
   srcdir = pkgs.fetchgit {
     url = "https://git.fudo.org/fudo-public/backplane-client.git";
-    rev = "7b29ab82b124b52e24d56c67c3687a5958ac88dd";
-    sha256 = "0amnjaml1a1i6civc1m9h4pd1zdskdv1fc2m9zkld97fs02djmh5";
+    rev = "c946a155b73e2adf2de3efbe8e9c97deb8682a5f";
+    sha256 = "1siii5f07j4k3ly3wfbxb8j5pd6n01chwyyra7sgihyi0yhd2lx2";
   };
   gems = bundlerEnv {
     name = "backplane-dns-client-env";
