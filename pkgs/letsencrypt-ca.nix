@@ -2,7 +2,7 @@
 
 let
   url = "https://letsencrypt.org/certs/isrg-root-x1-cross-signed.pem";
-  sha256 = "100lxxvqv4fj563bm03zzk5r36hq5jx9nnrajzs38g825c5k0cg2";
+  sha256 = "1y00zqcrczsrv4403785df2b7q2hz4cf5z1kwlc58pd1g4gifc3a";
 
 in stdenv.mkDerivation {
 
@@ -21,7 +21,7 @@ in stdenv.mkDerivation {
   '';
 
   meta = {
-    homepage = https://letsencrypt.com/certificates;
+    homepage = "https://letsencrypt.com/certificates";
     description = "Certificate Authority (CA) certificate for LetsEncrypt";
   };
 }
