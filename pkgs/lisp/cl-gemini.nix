@@ -1,10 +1,10 @@
 { pkgs, localLispPackages, ... }:
 
 let
-  url = "https://git.informis.land/informis/cl-gemini.git";
-  rev = "1d5075c23237deec536f62ed5dc06f3845eacf6b";
-  sha256 = "0j7gz3c83cgishsraqvm1dw42x5c1ydx26jrmkvykljyfhisyjpm";
-  
+  url = "https://git.fudo.org/informis/cl-gemini.git";
+  rev = "9dcb1674cd00bb5a5e4d0fcb3ef6c6a8e7dbb72c";
+  sha256 = "19sj576hk9xl7hqcydqsgqs3xl8r4jg658dwcvcw9gh8j901r65d";
+
 in pkgs.lispPackages.buildLispPackage {
   baseName = "cl-gemini";
   packageName = "cl-gemini";
@@ -18,7 +18,7 @@ in pkgs.lispPackages.buildLispPackage {
     sha256 = sha256;
     fetchSubmodules = false;
   };
-  
+
   deps = with localLispPackages; [
     alexandria
     arrows
@@ -37,7 +37,7 @@ in pkgs.lispPackages.buildLispPackage {
     # slynk-asdf
     slynk-macrostep
     slynk-stepper
-    uiop   
+    uiop
     usocket-server
     xml-emitter
   ];
