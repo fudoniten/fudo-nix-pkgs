@@ -1,4 +1,5 @@
-(final: prev: with builtins;
+(final: prev:
+  with builtins;
   let
     callPackage = prev.callPackage;
     fetchgit = prev.fetchgit;
@@ -30,15 +31,14 @@
       buildInputs = oldAttrs.buildInputs ++ [ prev.krb5 ];
     });
 
-    opencv-java = prev.opencv.overrideAttrs (oldAttrs: rec {
-      # buildInputs = oldAttrs.buildInputs ++ [ pkgs.ant ];
+    opencv3-java = prev.opencv3.overrideAttrs (oldAttrs: rec {
       pname = "opencv-java";
       nativeBuildInputs = oldAttrs.nativeBuildInputs ++ [ prev.jdk11 prev.ant ];
       cmakeFlags = oldAttrs.cmakeFlags ++ [ "-DWITH_JAVA=ON" ];
     });
 
     localLispPackages = (callPackage ./pkgs/lisp { inherit localLispPackages; })
-                        // prev.lispPackages;
+      // prev.lispPackages;
 
     hll2380dw-cups = callPackage ./pkgs/hll2380dw-cups.nix { };
 
@@ -79,7 +79,8 @@
     signal-desktop = prev.signal-desktop.overrideAttrs (oldAttrs: rec {
       version = "5.26.1";
       src = fetchurl {
-        url = "https://updates.signal.org/desktop/apt/pool/main/s/signal-desktop/signal-desktop_${version}_amd64.deb";
+        url =
+          "https://updates.signal.org/desktop/apt/pool/main/s/signal-desktop/signal-desktop_${version}_amd64.deb";
         sha256 = "0p9zjy32hfzksp3ib5nsnvymdblz6kjb1wd3qi6v0807l3bnv120";
       };
     });
