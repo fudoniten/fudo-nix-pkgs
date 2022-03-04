@@ -31,7 +31,7 @@
       buildInputs = oldAttrs.buildInputs ++ [ prev.krb5 ];
     });
 
-    opencv3-java = prev.opencv3.overrideAttrs (oldAttrs: rec {
+    opencv-java = prev.opencv3.overrideAttrs (oldAttrs: rec {
       pname = "opencv-java";
       nativeBuildInputs = oldAttrs.nativeBuildInputs ++ [ prev.jdk11 prev.ant ];
       cmakeFlags = oldAttrs.cmakeFlags ++ [ "-DWITH_JAVA=ON" ];
