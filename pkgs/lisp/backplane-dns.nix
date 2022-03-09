@@ -9,8 +9,8 @@ pkgs.lispPackages.buildLispPackage {
 
   src = pkgs.fetchgit {
     url = "https://git.fudo.org/fudo-public/backplane-dns.git";
-    rev = "14410e68a4debc600bd6bb8ce3bf1624daefa1c2";
-    sha256 = "12fiib2j3jgiairl2jjq502a0ivfl4hzsxnnkxbm4a79zd758i3b";
+    rev = "b77d6a294acf877cf78047796f9ab5c7b120070e";
+    sha256 = "0r3xmg9x6vdn3gs4nl5997pmk282qr11vyp9lfpbi834mg2gcj6w";
     fetchSubmodules = false;
   };
 
