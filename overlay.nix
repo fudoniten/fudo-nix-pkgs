@@ -70,11 +70,11 @@
       sha256 = "06qns3ayc84mamdgn0jw652rvx60wy9km1vxm2361mzmx2zk89iw";
     };
 
-    clj2nix = callPackage (fetchgit {
+    clj2nix = fetchgit {
       url = "https://github.com/hlolli/clj2nix.git";
       rev = "3d0a38c954c8e0926f57de1d80d357df05fc2f94";
       sha256 = "0y77b988qdgsrp4w72v1f5rrh33awbps2qdgp2wr2nmmi44541w5";
-    }) { };
+    };
 
     signal-desktop = prev.signal-desktop.overrideAttrs (oldAttrs: rec {
       version = "5.35.0";
