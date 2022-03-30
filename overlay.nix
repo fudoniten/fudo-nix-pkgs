@@ -70,7 +70,7 @@
       sha256 = "06qns3ayc84mamdgn0jw652rvx60wy9km1vxm2361mzmx2zk89iw";
     };
 
-    clj2nix = callPackage (fetchFromGithub {
+    clj2nix = callPackage (fetchFromGitHub {
       owner = "hlolli";
       repo = "clj2nix";
       rev = "3d0a38c954c8e0926f57de1d80d357df05fc2f94";
