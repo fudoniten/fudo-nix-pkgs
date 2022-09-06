@@ -6,7 +6,7 @@
     fetchFromGitHub = prev.fetchFromGitHub;
     localLispPackages = final.localLispPackages;
 
-  in {
+  in rec {
     letsencrypt-ca = callPackage ./pkgs/letsencrypt-ca.nix { };
 
     minecraft-current = final.minecraft-server_1_19_2;
@@ -31,7 +31,7 @@
         };
       });
 
-    witchcraft-plugin-current = prev.witchcraft-plugin-1_18;
+    witchcraft-plugin-current = final.witchcraft-plugin-1_18;
 
     witchcraft-plugin-1_18 = let
       pname = "witchcraft-plugin";
