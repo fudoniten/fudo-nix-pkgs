@@ -36,7 +36,7 @@
     witchcraft-plugin-1_18 = let
       pname = "witchcraft-plugin";
       version = "0.7.37-for-paper-1.18-shaded";
-    in pkgs.stdenv.mkDerivation {
+    in prev.stdenv.mkDerivation {
       inherit pname version;
       src = fetchurl {
         url =
