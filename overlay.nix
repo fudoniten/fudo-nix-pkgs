@@ -31,6 +31,18 @@
         };
       });
 
+    witchcraft-plugin-1_18 = pkgs.stdenv.mkDerivation {
+      pname = "witchcraft-plugin";
+      version = "0.7.37-for-paper-1.18-shaded";
+      src = fetchurl {
+        url =
+          "https://github.com/lambdaisland/witchcraft-plugin/releases/download/v0.7.35/witchcraft-plugin-0.7.37-for-paper-1.18-shaded.jar";
+        sha256 = "0n85yc5ycq9qhl2cs8s3fkj4j8jvndaf8dq1avjr0l0l8bd27kzr";
+      };
+      phases = [ "installPhase" ];
+      installPhase = "cp $src $out";
+    };
+
     postgresql_11_gssapi = prev.postgresql_11.overrideAttrs (oldAttrs: rec {
       configureFlags = oldAttrs.configureFlags ++ [ "--with-gssapi" ];
       buildInputs = oldAttrs.buildInputs ++ [ prev.krb5 ];
