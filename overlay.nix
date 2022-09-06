@@ -45,7 +45,7 @@
       };
       phases = [ "installPhase" ];
       installPhase = ''
-        mkdir $out/plugins
+        mkdir -p $out/plugins
         cp $src $out/plugins/${pname}-${version}.jar
       '';
     };
