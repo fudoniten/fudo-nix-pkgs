@@ -31,6 +31,8 @@
         };
       });
 
+    witchcraft-plugin-current = prev.witchcraft-plugin-1_18;
+
     witchcraft-plugin-1_18 = let
       pname = "witchcraft-plugin";
       version = "0.7.37-for-paper-1.18-shaded";
