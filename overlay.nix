@@ -88,11 +88,11 @@
     };
 
     signal-desktop = prev.signal-desktop.overrideAttrs (oldAttrs: rec {
-      version = "5.46.0";
+      version = "5.60.0";
       src = fetchurl {
         url =
           "https://updates.signal.org/desktop/apt/pool/main/s/signal-desktop/signal-desktop_${version}_amd64.deb";
-        sha256 = "0idwj2p7m3gxrxsn4cj2y3wjc7ll47pms35x60pain7w608nfbyg";
+        sha256 = "1b376q8yk6pkjn3xv7fsdb8fl1spqpypqmp8lpxzavr11anc39kw";
       };
     });
 
@@ -111,4 +111,5 @@
         sha256 = "sha256-11fiwf0wzq93isfqcbxp6rpxajavqiayg9gka7nmzqn6as613qa8";
       };
     });
+
   })
