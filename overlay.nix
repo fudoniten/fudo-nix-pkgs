@@ -9,7 +9,17 @@
   in rec {
     letsencrypt-ca = callPackage ./pkgs/letsencrypt-ca.nix { };
 
-    minecraft-current = final.minecraft-server_1_19_2;
+    minecraft-current = final.minecraft-server_1_19_3;
+
+    minecraft-server_1_19_3 = prev.minecraft-server.overrideAttrs
+      (oldAttrs: rec {
+        version = "1.19.3";
+        src = fetchurl {
+          url =
+            "https://piston-data.mojang.com/v1/objects/c9df48efed58511cdd0213c56b9013a7b5c9ac1f/server.jar";
+          sha256 = "06qykz3nq7qmfw4phs3wvq3nk28clg8s3qrs37856aai8b8kmgaf";
+        };
+      });
 
     minecraft-server_1_19_2 = prev.minecraft-server.overrideAttrs
       (oldAttrs: rec {
