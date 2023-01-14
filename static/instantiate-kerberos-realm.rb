@@ -15,6 +15,7 @@ OptionParser.new do |opts|
 
   opts.on('-b', '--base PATH', 'Path at which realm database data is located.') do |path|
     raise "base path does not exist: #{path}" unless File::directory?(path)
+
     options[:base] = path
   end
 
