@@ -1,3 +1,5 @@
+{ helpers, ... }:
+
 (final: prev:
   with builtins;
   let
@@ -122,4 +124,44 @@
       };
     });
 
+    heimdal = let filterDep = deps: dep: filter (d: d != dep) deps;
+    in prev.heimdal.overrideAttrs (oldAttrs: {
+      buildInputs = (filterDep oldAttrs.buildInputs pkgs.openssl)
+        ++ [ prev.openssl_1_1 ];
+    });
+
+    kdcMergePrincipals = helpers.lib.writeRubyApplication {
+      name = "kdc-merge-principals";
+      pkgs = prev;
+      runtimeInputs = [ prev.heimdal ];
+      text = readFile ./static/kdc-merge-principals.rb;
+    };
+
+    generateHostSshKeys = helpers.lib.writeRubyApplication {
+      name = "generate-host-ssh-keys";
+      pkgs = prev;
+      runtimeInputs = [ prev.openssh ];
+      text = readFile ./static/generate-host-ssh-keys.rb;
+    };
+
+    initializeKerberosRealm = helpers.lib.writeRubyApplication {
+      name = "initialize-kerberos-realm";
+      pkgs = prev;
+      runtimeInputs = [ prev.heimdal ];
+      text = readFile ./static/initialize-kerberos-realm.rb;
+    };
+
+    instantiateKerberosRealm = helpers.lib.writeRubyApplication {
+      name = "instantiate-kerberos-realm";
+      pkgs = prev;
+      runtimeInputs = [ prev.heimdal ];
+      text = readFile ./static/instantiate-kerberos-realm.rb;
+    };
+
+    addHostToRealm = helpers.lib.writeRubyApplication {
+      name = "add-host-to-realm";
+      pkgs = prev;
+      runtimeInputs = [ prev.heimdal prev.instantiateKerberosRealm ];
+      text = readFile ./static/add-host-to-realm.rb;
+    };
   })

@@ -1,7 +1,11 @@
 {
   description = "Fudo packages";
 
-  outputs = { self, ... }: {
-    overlay = import ./overlay.nix;
+  inputs = {
+    helpers.url = "git+https://git.fudo.org/fudo-public/nix-helpers.git";
+  };
+
+  outputs = { self, helpers, ... }: {
+    overlay = import ./overlay.nix { inherit helpers; };
   };
 }
