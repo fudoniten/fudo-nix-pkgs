@@ -161,7 +161,7 @@ Dir["#{principals_tmp}/*.key"].each { |princ_src|
   princ = File::basename(princ_src)
   princ_dst = "#{principals}/#{princ}"
   mvv(verbose, princ_src, princ_dst)
-  File::chmod('0400', princ_dst)
+  File::chmod(400, princ_dst)
 }
 
 puts "Removing working data ..." if verbose
