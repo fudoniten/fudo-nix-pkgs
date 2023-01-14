@@ -4,11 +4,16 @@ require 'open3'
 require 'optparse'
 
 options = {
+  all_keys: false,
   verbose: false
 }
 
 OptionParser.new do |opts|
   opts.banner = "usage: #{File::basename $PROGRAM_NAME} [options] <hostname>"
+
+  opts.on('-a', '--all', 'Extract all host keys into keytab. Overrides --services.') {
+    options[:all_keys] = true
+  }
 
   opts.on("-s", "--services SERVICE0,SERVICE1",
           "Host services to extract into a keytab. Comma-seperated.") { |services|
@@ -51,7 +56,7 @@ raise "Config file not accessible: #{config}" unless File::readable?(config)
 
 raise "Missing required argument: KEYTAB" unless options[:keytab]
 
-raise "Missing required argument(s): SERVICES" unless options[:services]
+raise "Missing required argument(s): SERVICES" unless options[:services] or options[:all_keys]
 
 def exec!(verbose, msg, cmd)
   puts msg if verbose
@@ -66,14 +71,26 @@ end
 
 puts "Extracting keytab ..." if verbose
 
-options[:services].each { |srv|
-  princ = "#{srv}/#{hostname}"
+if options[:all_keys]
+  princ = "*/#{hostname}"
   exec!(verbose, "  ... #{princ}",
         ["kadmin",
          "--local",
          "--config-file=#{config}",
          "--",
          "ext_keytab",
-         "--keytab=#{options[:keytab]}",
+         "--keytab=#{options[:keytab]}"
          princ].join(" "))
-}
+else
+  options[:services].each { |srv|
+    princ = "#{srv}/#{hostname}"
+    exec!(verbose, "  ... #{princ}",
+          ["kadmin",
+           "--local",
+           "--config-file=#{config}",
+           "--",
+           "ext_keytab",
+           "--keytab=#{options[:keytab]}",
+           princ].join(" "))
+  }
+end
