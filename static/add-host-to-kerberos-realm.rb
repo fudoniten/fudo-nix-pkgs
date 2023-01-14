@@ -99,10 +99,9 @@ principals = Dir::mktmpdir("host_principals") do |tmpdir|
         "kadmin --local --config-file=#{config} -- dump --decrypt #{dump_file}")
 
   principals = File::open(dump_file, "r") do |file|
-    file.readlines.inject({}) { |princs, line|
+    file.readlines.each_with_object({}) { |line, princs|
       princ = line.split(" ")[0]
-      princs[princ] = line
-      princs
+      princs[princ] = line.strip
     }
   end
 end
