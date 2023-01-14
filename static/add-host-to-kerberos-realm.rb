@@ -54,7 +54,7 @@ end
 verbose = options[:verbose]
 
 service_list = options[:services]
-puts "Generating keys for services: #{service_list.join(" ")}" if verbose
+puts "Generating keys for services: #{service_list.join(' ')}" if verbose
 
 config = get_opt(options, :conf, "KRB5_CONF")
 
