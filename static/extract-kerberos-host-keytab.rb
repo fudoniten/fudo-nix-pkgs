@@ -56,7 +56,7 @@ raise "Config file not accessible: #{config}" unless File::readable?(config)
 
 raise "Missing required argument: KEYTAB" unless options[:keytab]
 
-raise "Missing required argument(s): SERVICES" unless options[:services] or options[:all_keys]
+raise "Missing required argument(s): SERVICES" unless options[:services] || options[:all_keys]
 
 def exec!(verbose, msg, cmd)
   puts msg if verbose
