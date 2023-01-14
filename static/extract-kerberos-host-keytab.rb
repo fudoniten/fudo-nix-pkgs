@@ -29,7 +29,6 @@ OptionParser.new do |opts|
   }
 
   opts.on("-h", "--help", "Print this message.") {
-    puts "usage: #{File::basename $PROGRAM_NAME} [opts] <hostname>"
     puts opts
     exit(0)
   }
@@ -50,6 +49,10 @@ def get_opt(opts, key, env = nil)
 end
 
 verbose = options[:verbose]
+
+raise "Missing required argument: HOSTNAME" unless ARGV.length == 1
+
+hostname = ARGV[0]
 
 config = get_opt(options, :conf, "KRB5_CONF")
 raise "Config file not accessible: #{config}" unless File::readable?(config)
