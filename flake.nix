@@ -6,6 +6,9 @@
   };
 
   outputs = { self, helpers, ... }: {
-    overlay = import ./overlay.nix { inherit helpers; };
+    overlays = rec {
+      pkgs = import ./overlay.nix { inherit helpers; };
+      default = pkgs;
+    };
   };
 }
