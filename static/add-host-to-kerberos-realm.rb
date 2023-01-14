@@ -98,7 +98,7 @@ principals = Dir::mktmpdir("host_principals") do |tmpdir|
   exec!(verbose, "Extracting principals ...",
         "kadmin --local --config-file=#{config} -- dump --decrypt #{dump_file}")
 
-  principals = File::open(dump_file, "r") do |file|
+  File::open(dump_file, "r") do |file|
     file.readlines.each_with_object({}) { |line, princs|
       princ = line.split(" ")[0]
       princs[princ] = line.strip
@@ -107,6 +107,7 @@ principals = Dir::mktmpdir("host_principals") do |tmpdir|
 end
 
 puts("Writing principal keys to #{principal_path}") if verbose
+puts("  principals: [#{principals.keys.join(' ')}]")
 
 service_list.each do |srv|
   princ = "#{srv}/#{hostname}"
