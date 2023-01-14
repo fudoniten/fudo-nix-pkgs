@@ -79,7 +79,7 @@ if options[:all_keys]
          "--config-file=#{config}",
          "--",
          "ext_keytab",
-         "--keytab=#{options[:keytab]}"
+         "--keytab=#{options[:keytab]}",
          princ].join(" "))
 else
   options[:services].each { |srv|
