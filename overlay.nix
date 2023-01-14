@@ -158,10 +158,10 @@
       text = readFile ./static/instantiate-kerberos-realm.rb;
     };
 
-    addHostToRealm = helpers.lib.writeRubyApplication {
-      name = "add-host-to-realm";
+    addHostToKerberosRealm = helpers.lib.writeRubyApplication {
+      name = "add-host-to-kerberos-realm";
       pkgs = prev;
       runtimeInputs = [ prev.heimdal instantiateKerberosRealm ];
-      text = readFile ./static/add-host-to-realm.rb;
+      text = readFile ./static/add-host-to-kerberos-realm.rb;
     };
   })

@@ -14,7 +14,8 @@ OptionParser.new do |opts|
   opts.banner = "usage: #{File::basename $PROGRAM_NAME} [options] <REALM_NAME>"
 
   opts.on('-b', '--base PATH', 'Path at which realm database data is located.') do |path|
-    options[:db_path] = path
+    raise "base path does not exist: #{path}" unless File::directory?(path)
+    options[:base] = path
   end
 
   opts.on('-e', '--encryption-types TYPES', 'Comma-separated list of default encryptions for the realm.') do |etypes|
