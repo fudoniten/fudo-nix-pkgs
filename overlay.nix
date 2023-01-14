@@ -161,7 +161,7 @@
     addHostToRealm = helpers.lib.writeRubyApplication {
       name = "add-host-to-realm";
       pkgs = prev;
-      runtimeInputs = [ prev.heimdal prev.instantiateKerberosRealm ];
+      runtimeInputs = [ prev.heimdal instantiateKerberosRealm ];
       text = readFile ./static/add-host-to-realm.rb;
     };
   })
