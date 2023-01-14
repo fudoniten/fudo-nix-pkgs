@@ -164,4 +164,11 @@
       runtimeInputs = [ prev.heimdal instantiateKerberosRealm ];
       text = readFile ./static/add-host-to-kerberos-realm.rb;
     };
+
+    extractKerberosHostKeytab = helpers.lib.writeRubyApplication {
+      name = "extract-kerberos-host-keytab";
+      pkgs = prev;
+      runtimeInputs = [ prev.heimdal instantiateKerberosRealm ];
+      text = readFile ./static/extract-kerberos-host-keytab.rb;
+    };
   })
