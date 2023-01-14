@@ -34,7 +34,7 @@ realm = ARGV[0]
 
 verbose = options[:verbose]
 
-realm_data = "#{Dir::pwd}/#{options[:base]}/#{realm}"
+realm_data = "#{options[:base]}/#{realm}"
 
 raise "Realm data directory #{realm_data} does not exist!" unless File::directory?(realm_data)
 
