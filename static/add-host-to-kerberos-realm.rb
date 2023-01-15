@@ -100,7 +100,7 @@ principals = Dir::mktmpdir("host_principals") do |tmpdir|
 
   File::open(dump_file, "r") do |file|
     file.readlines.each_with_object({}) { |line, princs|
-      princ = line.split(" ")[0]
+      princ = line.split(" ")[0].split("@")[0]
       princs[princ] = line.strip
     }
   end
@@ -109,7 +109,7 @@ end
 puts("Writing principal keys to #{principal_path}") if verbose
 
 service_list.each do |srv|
-  princ = "#{srv}/#{hostname}@#{realm}"
+  princ = "#{srv}/#{hostname}"
   print "  ... #{princ} ... " if verbose
   filename = "#{principal_path}/#{srv}_#{hostname}.key"
   if File::exist?(filename)
