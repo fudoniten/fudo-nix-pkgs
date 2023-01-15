@@ -106,12 +106,10 @@ principals = Dir::mktmpdir("host_principals") do |tmpdir|
   end
 end
 
-principals.each_pair { |k, v| puts "value for #{k} is: #{v}" }
-
 puts("Writing principal keys to #{principal_path}") if verbose
 
 service_list.each do |srv|
-  princ = "#{srv}/#{hostname}"
+  princ = "#{srv}/#{hostname}@#{realm}"
   print "  ... #{princ} ... " if verbose
   filename = "#{principal_path}/#{srv}_#{hostname}.key"
   if File::exist?(filename)
