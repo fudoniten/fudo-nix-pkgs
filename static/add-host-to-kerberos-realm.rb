@@ -102,6 +102,7 @@ principals = Dir::mktmpdir("host_principals") do |tmpdir|
     file.readlines.each_with_object({}) { |line, princs|
       princ = line.split(" ")[0]
       princs[princ] = line.strip
+      puts("key for #{princ} is #{line.strip}")
     }
   end
 end
