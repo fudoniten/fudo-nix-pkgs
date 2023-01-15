@@ -102,13 +102,13 @@ principals = Dir::mktmpdir("host_principals") do |tmpdir|
     file.readlines.each_with_object({}) { |line, princs|
       princ = line.split(" ")[0]
       princs[princ] = line.strip
-      puts("key for #{princ} is #{line.strip}")
     }
   end
 end
 
+principals.each_pair { |k, v| puts "value for #{k} is: #{v}" }
+
 puts("Writing principal keys to #{principal_path}") if verbose
-puts("  principals: [#{principals.keys.join(' ')}]")
 
 service_list.each do |srv|
   princ = "#{srv}/#{hostname}"
@@ -118,6 +118,8 @@ service_list.each do |srv|
     puts "skipping existing principal #{princ}." if verbose
     next
   end
-  File::write(filename, principals[princ])
+  File::open(filename, "w") do |f|
+    f.puts(principals[princ])
+  end
   puts "done." if verbose
 end
