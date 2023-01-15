@@ -126,7 +126,7 @@
 
     heimdal = let filterDep = deps: dep: filter (d: d != dep) deps;
     in prev.heimdal.overrideAttrs (oldAttrs: {
-      buildInputs = (filterDep oldAttrs.buildInputs pkgs.openssl)
+      buildInputs = (filterDep oldAttrs.buildInputs prev.openssl)
         ++ [ prev.openssl_1_1 ];
     });
 
