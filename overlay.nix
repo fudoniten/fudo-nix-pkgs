@@ -172,7 +172,7 @@
       text = readFile ./static/extract-kerberos-host-keytab.rb;
     };
 
-    extractKerberosKeytab = helpers.lib.writeRubyAppliaction {
+    extractKerberosKeytab = helpers.lib.writeRubyApplication {
       name = "extract-kerberos-keytab";
       pkgs = prev;
       runtimeInputs = [ prev.heimdal ];
