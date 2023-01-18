@@ -124,11 +124,11 @@
       };
     });
 
-    heimdal = let filterDep = deps: dep: filter (d: "${d}" != "${dep}") deps;
-    in prev.heimdal.overrideAttrs (oldAttrs: {
-      buildInputs = (filterDep oldAttrs.buildInputs prev.openssl)
-        ++ [ prev.openssl_1_1 ];
-    });
+    # heimdal = let filterDep = deps: dep: filter (d: "${d}" != "${dep}") deps;
+    # in prev.heimdal.overrideAttrs (oldAttrs: {
+    #   buildInputs = (filterDep oldAttrs.buildInputs prev.openssl)
+    #     ++ [ prev.openssl_1_1 ];
+    # });
 
     kdcMergePrincipals = helpers.lib.writeRubyApplication {
       name = "kdc-merge-principals";
@@ -161,14 +161,21 @@
     addHostToKerberosRealm = helpers.lib.writeRubyApplication {
       name = "add-host-to-kerberos-realm";
       pkgs = prev;
-      runtimeInputs = [ prev.heimdal instantiateKerberosRealm ];
+      runtimeInputs = [ prev.heimdal ];
       text = readFile ./static/add-host-to-kerberos-realm.rb;
     };
 
     extractKerberosHostKeytab = helpers.lib.writeRubyApplication {
       name = "extract-kerberos-host-keytab";
       pkgs = prev;
-      runtimeInputs = [ prev.heimdal instantiateKerberosRealm ];
+      runtimeInputs = [ prev.heimdal ];
       text = readFile ./static/extract-kerberos-host-keytab.rb;
+    };
+
+    extractKerberosKeytab = helpers.lib.writeRubyAppliaction {
+      name = "extract-kerberos-keytab";
+      pkgs = prev;
+      runtimeInputs = [ prev.heimdal ];
+      text = readFile ./static/extract-kerberos-keytab.rb;
     };
   })
