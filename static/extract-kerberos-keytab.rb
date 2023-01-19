@@ -41,7 +41,7 @@ end
 
 verbose = options[:verbose]
 
-raise "Missing required argument: PRINCIPAL0" unless ARGV.length > 0
+raise "Missing required argument: PRINCIPAL0" unless ARGV.length.positive?
 
 principals = ARGV
 
