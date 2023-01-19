@@ -124,11 +124,11 @@
       };
     });
 
-    # heimdal = let filterDep = deps: dep: filter (d: "${d}" != "${dep}") deps;
-    # in prev.heimdal.overrideAttrs (oldAttrs: {
-    #   buildInputs = (filterDep oldAttrs.buildInputs prev.openssl)
-    #     ++ [ prev.openssl_1_1 ];
-    # });
+    heimdal = let filterDep = deps: dep: filter (d: "${d}" != "${dep}") deps;
+    in prev.heimdal.overrideAttrs (oldAttrs: {
+      buildInputs = (filterDep oldAttrs.buildInputs prev.openssl)
+        ++ [ prev.openssl_1_1 ];
+    });
 
     kdcMergePrincipals = helpers.lib.writeRubyApplication {
       name = "kdc-merge-principals";
