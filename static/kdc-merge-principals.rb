@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Given an existing KDC database DB and a file containing principals PRINCIPALS,
 # create a new database containing the principals in PRINCIPALS, along with any
 # additional principals from DB which do not exist in PRINCIPALS.
@@ -22,11 +24,13 @@ OptionParser.new do |opts|
 
   opts.on('-p', '--principals PRINCIPALS', 'Path to file containing incoming principals.') do |file|
     raise "File inaccessible: #{file}" unless File::readable?(file)
+
     options[:incoming_principals] = file
   end
 
   opts.on('-k', '--key KEY', 'Path to realm key file.') do |file|
     raise "File inaccessible: #{file}" unless File::readable?(file)
+
     options[:key] = file
   end
 
@@ -37,9 +41,12 @@ end.parse!
 
 
 raise "missing required parameter: KEY" unless options[:key]
+
 raise "missing required parameter: REALM" unless options[:realm]
+
 raise "missing required parameter: PRINCIPALS" unless options[:incoming_principals]
-raise "missing required parameter: DATABASE" unless (options[:existing_db] || options[:create])
+
+raise "missing required parameter: DATABASE" unless options[:existing_db] || options[:create]
 
 if options[:create]
   tmpdb = Tempfile.new('empty_kdc')
@@ -82,16 +89,15 @@ end
 
 def read_principals(file)
   File::open(file, 'r') do |f|
-    f.readlines.inject({}) do |coll, line|
+    f.readlines.each_with_object(princs) do |line, coll|
       princ = line.split(" ")[0]
-      coll[pric] = line.strip
-      coll
+      coll[princ] = line.strip
     end
   end
 end
 
 # Extract keys from the existing database
-existing_pricipals = Dir::mktmpdir('existing-kdc') do |tmpdir|
+existing_principals = Dir::mktmpdir('existing-kdc') do |tmpdir|
   conf = generate_kdc(options[:realm],
                       options[:existing_db],
                       options[:key],
