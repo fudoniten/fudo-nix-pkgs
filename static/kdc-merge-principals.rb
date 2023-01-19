@@ -39,7 +39,6 @@ OptionParser.new do |opts|
   end
 end.parse!
 
-
 raise "missing required parameter: KEY" unless options[:key]
 
 raise "missing required parameter: REALM" unless options[:realm]
@@ -53,28 +52,30 @@ if options[:create]
   options[:existing_db] = tmpdb
 end
 
+# rubocop:disable Metrics/MethodLength
 def generate_kdc(realm, db, key, tmp)
   conf_file = "#{tmp}/kdc.conf"
   data = <<~KDC_CONF
-  [kdc]
-    database {
-      realm = #{options[:realm]}
-      dbname = sqlite:#{options[:existing_db]}
-      mkey_file = #{options[:key]}
-      log_file = /dev/null
-    }
+    [kdc]
+      database {
+        realm = #{realm}
+        dbname = sqlite:#{db}
+        mkey_file = #{key}
+        log_file = /dev/null
+      }
 
-  [libdefaults]
-    default_realm = #{options[:realm]}
-    allow_weak_crypto = false
+    [libdefaults]
+      default_realm = #{realm}
+      allow_weak_crypto = false
 
-  [logging]
-    kdc = FILE:#{tmp}/kdc.log
-    default = FILE:#{tmp}/default.log
-KDC_CONF
+    [logging]
+      kdc = FILE:#{tmp}/kdc.log
+      default = FILE:#{tmp}/default.log
+  KDC_CONF
   File::write(conf_file, data)
   conf_file
 end
+# rubocop:enable Metrics/MethodLength
 
 def exec!(verbose, msg, cmd)
   puts msg if verbose
