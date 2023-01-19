@@ -130,7 +130,7 @@
     #     ++ [ prev.openssl_1_1 ];
     # });
 
-    heimdal = prev.heimdal.override { openssl = pkgs.openssl_1_1; };
+    heimdal = prev.heimdal.override { openssl = prev.openssl_1_1; };
 
     kdcMergePrincipals = helpers.lib.writeRubyApplication {
       name = "kdc-merge-principals";
