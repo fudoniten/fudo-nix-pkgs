@@ -7,6 +7,7 @@
 # This allows the server to maintain an authoritative list of keys for most
 # entities (mostly, hosts) while allowing for the creation and update of users.
 
+require 'open3'
 require 'optparse'
 require 'tempfile'
 require 'tmpdir'
