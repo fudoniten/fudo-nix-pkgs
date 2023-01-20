@@ -92,7 +92,7 @@ def exec!(verbose, msg, cmd)
   out, status = Open3::capture2e(cmd)
   puts((status.success? ? 'success.' : 'failed!')) if verbose
 
-  raise "failed execution of '#{cmd}': #{out}" unless status success?
+  raise "failed execution of '#{cmd}': #{out}" unless status.success?
 
   status.success?
 end
