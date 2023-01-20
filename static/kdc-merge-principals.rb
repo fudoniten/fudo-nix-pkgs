@@ -11,7 +11,9 @@ require 'optparse'
 require 'tempfile'
 require 'tmpdir'
 
-options = {}
+options = {
+  verbose: false
+}
 
 OptionParser.new do |opts|
   opts.on('-c', '--create', 'Create database file.') do
@@ -37,6 +39,10 @@ OptionParser.new do |opts|
   opts.on('-r', '--realm REALM', 'Name of the KDC realm.') do |realm|
     options[:realm] = realm
   end
+
+  opts.on('-v', '--verbose', "Provide verbose output.") do
+    options[:verbose] = true
+  end
 end.parse!
 
 raise "missing required parameter: KEY" unless options[:key]
@@ -46,6 +52,8 @@ raise "missing required parameter: REALM" unless options[:realm]
 raise "missing required parameter: PRINCIPALS" unless options[:incoming_principals]
 
 raise "missing required parameter: DATABASE" unless options[:existing_db] || options[:create]
+
+verbose = options[:verbose]
 
 if options[:create]
   tmpdb = Tempfile.new('empty_kdc')
