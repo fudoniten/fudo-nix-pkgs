@@ -99,7 +99,7 @@ end
 
 def read_principals(file)
   File::open(file, 'r') do |f|
-    f.readlines.each_with_object(princs) do |line, coll|
+    f.readlines.each_with_object({}) do |line, coll|
       princ = line.split(" ")[0]
       coll[princ] = line.strip
     end
