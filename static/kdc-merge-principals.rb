@@ -128,7 +128,7 @@ missing_principals.each { |k|
   database_contents[k] = existing_principals[k]
 }
 
-def write_to_dump(dumpfile, dumpdata)
+def write_to_dump(verbose, dumpfile, dumpdata)
   puts 'Preparing database ...' if verbose
   File::open(dumpfile, 'w') do |file|
     dumpdata.each_pair do |princ, data|
@@ -138,7 +138,7 @@ def write_to_dump(dumpfile, dumpdata)
   end
 end
 
-def move_db(src, dst)
+def move_db(verbose, src, dst)
   print "Changing ownership of #{src} ... " if verbose
   stat = File::stat(src)
   File::chown(stat.uid, stat.gid, dst)
@@ -154,8 +154,8 @@ Dir::mktmpdir("kdc-database") do |tmpdir|
   dump = "#{tmpdir}/realm.dump"
   db = "#{tmpdir}/realm.db"
   conf = generate_kdc(options[:realm], db, options[:key], tmpdir)
-  write_to_dump(dump, database_contents)
+  write_to_dump(verbose, dump, database_contents)
   exec!(verbose, "Building database ...",
         "kadmin --local --config-file=#{conf} -- load #{dump}")
-  move_db(db, options[:existing_db])
+  move_db(verbose, db, options[:existing_db])
 end
