@@ -52,14 +52,17 @@ raise "missing required parameter: REALM" unless options[:realm]
 
 raise "missing required parameter: PRINCIPALS" unless options[:incoming_principals]
 
-raise "missing required parameter: DATABASE" unless options[:existing_db] || options[:create]
+raise "missing required parameter: DATABASE" unless options[:existing_db]
 
 verbose = options[:verbose]
 
-if options[:create]
-  tmpdb = Tempfile.new('empty_kdc')
-  options[:existing_db] = tmpdb
+def ensure_file(filename)
+  raise "file does not exist: #{filename}" unless File::exist?(filename)
 end
+
+ensure_file(options[:existing_db])
+ensure_file(options[:key])
+ensure_file(options[:incoming_principals])
 
 # rubocop:disable Metrics/MethodLength
 def generate_kdc(realm, db, key, tmp)
