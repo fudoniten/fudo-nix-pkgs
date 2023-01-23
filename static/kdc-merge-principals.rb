@@ -70,7 +70,7 @@ def generate_kdc(realm, db, key, tmp)
         realm = #{realm}
         dbname = sqlite:#{db}
         mkey_file = #{key}
-        log_file = /dev/null
+        log_file = FILE:#{tmp}/log
       }
 
     [libdefaults]
@@ -78,9 +78,7 @@ def generate_kdc(realm, db, key, tmp)
       allow_weak_crypto = false
 
     [logging]
-      kdc = SYSLOG
-      admin_server = SYSLOG
-      default = SYSLOG
+      default = CONSOLE
   KDC_CONF
   File::write(conf_file, data)
   conf_file
