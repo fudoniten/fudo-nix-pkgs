@@ -111,6 +111,7 @@ existing_principals = Dir::mktmpdir('existing-kdc') do |tmpdir|
                       options[:existing_db],
                       options[:key],
                       tmpdir)
+  File::open(conf) { |f| f.readlines.each { |line| puts "  > #{line}" } }
   dump = "#{tmpdir}/dumpfile"
   exec!(verbose, "Dumping existing database ...",
         "kadmin --local --config-file=#{conf} -- dump --decrypt #{dump}")
