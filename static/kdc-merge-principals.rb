@@ -66,11 +66,11 @@ def generate_kdc(realm, db, key, tmp)
   conf_file = "#{tmp}/kdc.conf"
   data = <<~KDC_CONF
     [kdc]
-      database {
+      database = {
         realm = #{realm}
         dbname = sqlite:#{db}
         mkey_file = #{key}
-        log_file = FILE:#{tmp}/log
+        log_file = /dev/null
       }
 
     [libdefaults]
