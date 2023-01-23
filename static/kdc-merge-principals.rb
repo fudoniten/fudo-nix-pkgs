@@ -114,7 +114,6 @@ existing_principals = Dir::mktmpdir('existing-kdc') do |tmpdir|
                       options[:existing_db],
                       options[:key],
                       tmpdir)
-  File::open(conf) { |f| f.readlines.each { |line| puts "  > #{line}" } }
   dump = "#{tmpdir}/dumpfile"
   exec!(verbose, "Dumping existing database ...",
         "kadmin --local --config-file=#{conf} -- dump --decrypt #{dump}")
@@ -160,5 +159,6 @@ Dir::mktmpdir("kdc-database") do |tmpdir|
   write_to_dump(verbose, dump, database_contents)
   exec!(verbose, "Building database ...",
         "kadmin --local --config-file=#{conf} -- load #{dump}")
+  FileUtils::mv(dump, "/tmp/realm.dump")
   move_db(verbose, db, options[:existing_db])
 end
