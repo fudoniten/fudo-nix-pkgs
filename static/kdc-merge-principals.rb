@@ -78,8 +78,7 @@ def generate_kdc(realm, db, key, tmp)
       allow_weak_crypto = false
 
     [logging]
-      kdc = FILE:#{tmp}/kdc.log
-      default = FILE:#{tmp}/default.log
+      default = SYSLOG
   KDC_CONF
   File::write(conf_file, data)
   conf_file
@@ -155,6 +154,7 @@ Dir::mktmpdir("kdc-database") do |tmpdir|
   db = "#{tmpdir}/realm.db"
   conf = generate_kdc(options[:realm], db, options[:key], tmpdir)
   write_to_dump(verbose, dump, database_contents)
+  File::open(conf) { |f| f.readlines.each { |line| puts line } }
   exec!(verbose, "Building database ...",
         "kadmin --local --config-file=#{conf} -- load #{dump}")
   move_db(verbose, db, options[:existing_db])
