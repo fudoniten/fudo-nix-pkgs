@@ -135,6 +135,8 @@ missing_principals.each { |k|
   database_contents[k] = existing_principals[k]
 }
 
+database_contents.each_pair { |k,v| puts " ... #{k} key is #{v.length} bytes" } if verbose
+
 def write_to_dump(verbose, dumpfile, dumpdata)
   puts 'Preparing database ...' if verbose
   File::open(dumpfile, 'w') do |file|
