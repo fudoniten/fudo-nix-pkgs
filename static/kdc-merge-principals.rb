@@ -155,7 +155,7 @@ end
 
 def move_db(verbose, src, dst)
   print "Changing ownership of #{src} ... " if verbose
-  FileUtils::chmod(0o600, dst)
+  FileUtils::chmod(0o600, src)
   puts "done." if verbose
   print "Moving database #{src} -> #{dst} ... " if verbose
   FileUtils::mv(src, dst)
