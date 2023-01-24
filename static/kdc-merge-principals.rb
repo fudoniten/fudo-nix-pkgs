@@ -133,13 +133,13 @@ missing_principals = incoming_principals.keys - existing_principals.keys
 
 database_contents = incoming_principals
 
-database_contents.each_pair { |k, v| " ... #{k} :: #{v}" }
+database_contents.each_pair { |k, v| puts " ... #{k} (#{v.length} bytes)" }
 
 missing_principals.each { |k|
   database_contents[k] = existing_principals[k]
 }
 
-database_contents.each_pair { |k, v| " ... #{k} :: #{v}" }
+database_contents.each_pair { |k, v| puts " ... #{k} (#{v.length} bytes)" }
 
 def write_to_dump(verbose, dumpfile, dumpdata)
   puts 'Preparing database ...' if verbose
