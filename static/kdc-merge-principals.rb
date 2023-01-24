@@ -112,10 +112,7 @@ def read_database_principals(verbose, realm, db, key)
   if File::exists? db
     # Extract keys from the existing database
     Dir::mktmpdir('existing-kdc') do |tmpdir|
-      conf = generate_kdc(options[:realm],
-                          options[:existing_db],
-                          options[:key],
-                          tmpdir)
+      conf = generate_kdc(realm, db, key, tmpdir)
       dump = "#{tmpdir}/dumpfile"
       exec!(verbose, "Dumping existing database ...",
             "kadmin --local --config-file=#{conf} -- dump --decrypt #{dump}")
