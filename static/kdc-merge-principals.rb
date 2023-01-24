@@ -108,19 +108,28 @@ def read_principals(file)
   end
 end
 
-existing_principals = if File::exist? options[:existing_db]
-  # Extract keys from the existing database
-  Dir::mktmpdir('existing-kdc') do |tmpdir|
-    conf = generate_kdc(options[:realm],
-                        options[:existing_db],
-                        options[:key],
-                        tmpdir)
-    dump = "#{tmpdir}/dumpfile"
-    exec!(verbose, "Dumping existing database ...",
-          "kadmin --local --config-file=#{conf} -- dump --decrypt #{dump}")
-    read_principals(dump)
+def read_database_principals(verbose, realm, db, key)
+  if File::exists? db
+    # Extract keys from the existing database
+    Dir::mktmpdir('existing-kdc') do |tmpdir|
+      conf = generate_kdc(options[:realm],
+                          options[:existing_db],
+                          options[:key],
+                          tmpdir)
+      dump = "#{tmpdir}/dumpfile"
+      exec!(verbose, "Dumping existing database ...",
+            "kadmin --local --config-file=#{conf} -- dump --decrypt #{dump}")
+      read_principals(dump)
+    end
+  else
+    []
   end
-else []
+end
+
+existing_principals = read_database_principals(verbose,
+                                               options[:realm],
+                                               options[:existing_db],
+                                               options[:key])
 
 incoming_principals = read_principals(options[:incoming_principals])
 
