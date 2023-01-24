@@ -162,6 +162,7 @@ Dir::mktmpdir("kdc-database") do |tmpdir|
   db = "#{tmpdir}/realm.db"
   conf = generate_kdc(options[:realm], db, options[:key], tmpdir)
   write_to_dump(verbose, dump, database_contents)
+  FileUtils::cp(dump, "/tmp/realm.dump")
   exec!(verbose, "Building database ...",
         "kadmin --local --config-file=#{conf} -- load #{dump}")
   move_db(verbose, db, options[:existing_db])
