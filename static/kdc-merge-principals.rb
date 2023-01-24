@@ -60,7 +60,6 @@ def ensure_file(filename)
   raise "file does not exist: #{filename}" unless File::exist?(filename)
 end
 
-ensure_file(options[:existing_db])
 ensure_file(options[:key])
 ensure_file(options[:incoming_principals])
 
