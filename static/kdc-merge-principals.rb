@@ -99,9 +99,11 @@ def exec!(verbose, msg, cmd)
 end
 
 def read_principals(verbose, file)
+  puts "reading from #{file}:" if verbose
   File::open(file, 'r') do |f|
     f.readlines.each_with_object({}) do |line, coll|
       princ = line.split(" ")[0]
+      puts "  ... #{princ}" if verbose
       coll[princ] = line.strip
     end
   end
