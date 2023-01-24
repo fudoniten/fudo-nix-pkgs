@@ -102,7 +102,6 @@ def read_principals(verbose, file)
   File::open(file, 'r') do |f|
     f.readlines.each_with_object({}) do |line, coll|
       princ = line.split(" ")[0]
-      puts " ... #{princ} data: #{line.strip}" if verbose
       coll[princ] = line.strip
     end
   end
@@ -132,11 +131,13 @@ missing_principals = incoming_principals.keys - existing_principals.keys
 
 database_contents = incoming_principals
 
+database_contents.each_pair { |k,v| " ... #{k} :: #{v}" }
+
 missing_principals.each { |k|
   database_contents[k] = existing_principals[k]
 }
 
-database_contents.each_pair { |k, v| puts " ... #{k} key is #{v.length} bytes" } if verbose
+database_contents.each_pair { |k,v| " ... #{k} :: #{v}" }
 
 def write_to_dump(verbose, dumpfile, dumpdata)
   puts 'Preparing database ...' if verbose
