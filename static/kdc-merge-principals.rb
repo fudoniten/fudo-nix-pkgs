@@ -70,7 +70,7 @@ def generate_kdc(realm, db, key, tmp)
     [kdc]
       database = {
         realm = #{realm}
-        dbname = hdb:#{db}
+        dbname = db3:#{db}
         mkey_file = #{key}
         log_file = /dev/null
       }
