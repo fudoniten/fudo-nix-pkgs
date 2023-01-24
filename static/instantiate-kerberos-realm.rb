@@ -55,7 +55,7 @@ kdc_data = <<~KDCCONF
   [kdc]
     database = {
       realm = #{realm}
-      dbname = hbd:#{db_path}
+      dbname = hdb:#{db_path}
       mkey_file = #{realm_key}
       log_file = /dev/null
     }
