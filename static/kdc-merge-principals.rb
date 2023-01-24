@@ -129,7 +129,9 @@ existing_principals = read_database_principals(verbose,
 
 incoming_principals = read_principals(verbose, options[:incoming_principals])
 
-missing_principals = incoming_principals.keys - existing_principals.keys
+missing_principals = existing_principals.keys - incoming_principals.keys
+
+puts "restoring principals: #{missing_principals.join(',')}" if verbose
 
 database_contents = incoming_principals
 
