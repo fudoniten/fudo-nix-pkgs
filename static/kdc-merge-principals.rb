@@ -109,7 +109,7 @@ def read_principals(file)
 end
 
 def read_database_principals(verbose, realm, db, key)
-  [] unless File::exist? db
+  return {} unless File::exist? db
   Dir::mktmpdir('existing-kdc') do |tmpdir|
     conf = generate_kdc(realm, db, key, tmpdir)
     dump = "#{tmpdir}/dumpfile"
