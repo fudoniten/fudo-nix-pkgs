@@ -98,10 +98,11 @@ def exec!(verbose, msg, cmd)
   status.success?
 end
 
-def read_principals(file)
+def read_principals(verbose, file)
   File::open(file, 'r') do |f|
     f.readlines.each_with_object({}) do |line, coll|
       princ = line.split(" ")[0]
+      puts " ... #{princ} data: #{line.strip}" if verbose
       coll[princ] = line.strip
     end
   end
@@ -116,7 +117,7 @@ def read_database_principals(verbose, realm, db, key)
     dump = "#{tmpdir}/dumpfile"
     exec!(verbose, "Dumping existing database ...",
           "kadmin --local --config-file=#{conf} -- dump --decrypt #{dump}")
-    read_principals(dump)
+    read_principals(verbose, dump)
   end
 end
 
@@ -125,7 +126,7 @@ existing_principals = read_database_principals(verbose,
                                                options[:existing_db],
                                                options[:key])
 
-incoming_principals = read_principals(options[:incoming_principals])
+incoming_principals = read_principals(verbose, options[:incoming_principals])
 
 missing_principals = incoming_principals.keys - existing_principals.keys
 
