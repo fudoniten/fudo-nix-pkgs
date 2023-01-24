@@ -70,7 +70,7 @@ def generate_kdc(realm, db, key, tmp)
     [kdc]
       database = {
         realm = #{realm}
-        dbname = sqlite:#{db}
+        dbname = hdb:#{db}
         mkey_file = #{key}
         log_file = /dev/null
       }
@@ -135,13 +135,9 @@ puts "restoring principals: #{missing_principals.join(',')}" if verbose
 
 database_contents = incoming_principals
 
-database_contents.each_pair { |k, v| puts " ... #{k} (#{v.length} bytes)" }
-
 missing_principals.each { |k|
   database_contents[k] = existing_principals[k]
 }
-
-database_contents.each_pair { |k, v| puts " ... #{k} (#{v.length} bytes)" }
 
 def write_to_dump(verbose, dumpfile, dumpdata)
   puts 'Preparing database ...' if verbose
@@ -168,7 +164,6 @@ Dir::mktmpdir("kdc-database") do |tmpdir|
   db = "#{tmpdir}/realm.db"
   conf = generate_kdc(options[:realm], db, options[:key], tmpdir)
   write_to_dump(verbose, dump, database_contents)
-  FileUtils::cp(dump, "/tmp/realm.dump")
   exec!(verbose, "Building database ...",
         "kadmin --local --config-file=#{conf} -- load #{dump}")
   move_db(verbose, db, options[:existing_db])
