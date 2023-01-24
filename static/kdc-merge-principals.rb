@@ -154,6 +154,9 @@ def write_to_dump(verbose, dumpfile, dumpdata)
 end
 
 def move_db(verbose, src, dst)
+  print "Changing ownership of #{src} ... " if verbose
+  File::chmod(o0700, dst)
+  puts "done." if verbose
   print "Moving database #{src} -> #{dst} ... " if verbose
   FileUtils::mv(src, dst)
   puts "done." if verbose
