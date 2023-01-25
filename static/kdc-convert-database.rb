@@ -51,6 +51,8 @@ raise "missing required parameter: FORMAT" unless options[:format]
 
 raise "missing required parameter: REALM" unless options[:realm]
 
+puts "writing to #{ENV['RUNTIME_DIRECTORY']}"
+
 verbose = options[:verbose]
 
 def exec!(verbose, msg, cmd)
