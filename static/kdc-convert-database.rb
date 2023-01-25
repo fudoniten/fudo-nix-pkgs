@@ -30,6 +30,11 @@ OptionParser.new do |opts|
   opts.on('-r', '--realm REALM', 'Kerberos realm of database.') do |realm|
     opts[:realm] = realm
   end
+
+  opts.on('-h', '--help', 'Display this message.') do
+    puts opts
+    exit(0)
+  end
 end.parse!
 
 raise "missing required parameter: CONFIG" unless options[:conf]
