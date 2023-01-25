@@ -12,14 +12,17 @@ def expand_env_var(str)
   str.gsub(/$\w+/) { |var| ENV[var[1...-1]] }
 end
 
+def ensure_file(file)
+  fullname = expand_env_var file
+  raise "file does not exist: #{fullname}" unless File::exist?(fullname)
+  fullname
+end
+
 OptionParser.new do |opts|
   opts.banner = "usage: #{File::basename $PROGRAM_NAME} [options]"
 
   opts.on('-c', '--config-file CONFIG', 'KDC config file.') do |conf|
-    conf = expand_env_var conf
-    raise "config file does not exist: #{conf}" unless File::exist?(conf)
-
-    options[:conf] = conf
+    options[:conf] = ensure_file conf
   end
 
   opts.on('-o', '--output OUTPUT_DATABASE', 'Output database in converted format.') do |output|
@@ -27,10 +30,7 @@ OptionParser.new do |opts|
   end
 
   opts.on('-k', '--key KEY_FILE', 'Realm key for decrypting/encrypting the database.') do |key|
-    key = expand_env_var key
-    raise "key file does not exist: #{key}" unless File::exist?(key)
-
-    options[:key] = key
+    options[:key] = ensure_file key
   end
 
   opts.on('-F', '--format FORMAT', 'Database format for output database.') do |format|
