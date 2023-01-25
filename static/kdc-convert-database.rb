@@ -111,10 +111,13 @@ end
 Dir::mktmpdir("kdc-connert") do |tmpdir|
   dumpfile = "#{tmpdir}/realm.dump"
   dumpdb(verbose, options[:conf], dumpfile)
+  tmpdb = "#{tmpdir}/realm.output"
   out_conf = generate_kdc(options[:format],
                           options[:realm],
-                          options[:output],
+                          tmpdb,
                           options[:key],
                           "#{tmpdir}/kdc.conf")
   loaddb(verbose, out_conf, dumpfile)
+  FileUtils::chmod(0o640, tmpdb)
+  FileUtils::mv(tmpdb, options[:output])
 end
