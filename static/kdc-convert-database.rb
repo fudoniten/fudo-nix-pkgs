@@ -118,6 +118,6 @@ Dir::mktmpdir("kdc-connert") do |tmpdir|
                           options[:key],
                           "#{tmpdir}/kdc.conf")
   loaddb(verbose, out_conf, dumpfile)
-  FileUtils::chmod(0o640, tmpdb)
-  FileUtils::mv(tmpdb, options[:output])
+  FileUtils::chmod(0o640, "#{tmpdb}.db")
+  FileUtils::mv("#{tmpdb}.db", options[:output])
 end
