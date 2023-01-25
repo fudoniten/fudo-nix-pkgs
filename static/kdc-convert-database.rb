@@ -15,6 +15,7 @@ end
 def ensure_file(file)
   fullname = expand_env_var file
   raise "file does not exist: #{fullname}" unless File::exist?(fullname)
+
   fullname
 end
 
