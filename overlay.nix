@@ -180,4 +180,11 @@
       runtimeInputs = [ heimdal ];
       text = readFile ./static/extract-kerberos-keytab.rb;
     };
+
+    kdcConvertDatabase = helpers.lib.writeRubyApplication {
+      name = "kdc-convert-database";
+      pkgs = prev;
+      runtimeInputs = [ heimdal ];
+      text = readFile ./static/kdc-convert-database.rb;
+    };
   })
