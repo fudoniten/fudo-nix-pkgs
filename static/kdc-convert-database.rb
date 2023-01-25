@@ -101,7 +101,7 @@ def loaddb(verbose, conf, dumpfile)
          "--config-file=#{conf}",
          "--",
          "load",
-         dumpfile])
+         dumpfile].join(' '))
 end
 
 Dir::mktmpdir("kdc-connert") do |tmpdir|
