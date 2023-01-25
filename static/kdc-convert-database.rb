@@ -31,6 +31,10 @@ OptionParser.new do |opts|
     options[:realm] = realm
   end
 
+  opts.on('-v', '--verbose', 'Verbose output.') do
+    options[:verbose] = true
+  end
+
   opts.on('-h', '--help', 'Display this message.') do
     puts opts
     exit(0)
