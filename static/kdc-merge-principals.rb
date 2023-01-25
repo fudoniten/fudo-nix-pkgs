@@ -70,7 +70,7 @@ def generate_kdc(realm, db, key, tmp)
     [kdc]
       database = {
         realm = #{realm}
-        dbname = db3:#{db}
+        dbname = sqlite:#{db}
         mkey_file = #{key}
         log_file = /dev/null
       }
