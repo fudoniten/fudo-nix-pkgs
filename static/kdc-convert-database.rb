@@ -93,7 +93,7 @@ def loaddb(verbose, conf, dumpfile)
   exec!(verbose, "loading database ...",
         ["kadmin",
          "--local",
-         "--config-file=${conf}",
+         "--config-file=#{conf}",
          "--",
          "load",
          dumpfile])
@@ -102,11 +102,10 @@ end
 Dir::mktmpdir("kdc-connert") do |tmpdir|
   dumpfile = "#{tmpdir}/realm.dump"
   dumpdb(verbose, options[:conf], dumpfile)
-  out_conf = generate_kdc(
-    options[:format],
-    options[:realm],
-    options[:output],
-    options[:key],
-    "#{tmpdir}/kdc.conf")
+  out_conf = generate_kdc(options[:format],
+                          options[:realm],
+                          options[:output],
+                          options[:key],
+                          "#{tmpdir}/kdc.conf")
   loaddb(verbose, out_conf, dumpfile)
 end
