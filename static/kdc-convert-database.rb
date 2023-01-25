@@ -9,7 +9,7 @@ options = {
 }
 
 def expand_env_var(str)
-  str.gsub(/\$\w+/) { |var| ENV[var[1..-1]] }
+  str.gsub(/\$\w+/) { |var| ENV[var[1..]] }
 end
 
 def ensure_file(file)
