@@ -20,15 +20,15 @@ OptionParser.new do |opts|
   end
 
   opts.on('-k', '--key KEY_FILE', 'Realm key for decrypting/encrypting the database.') do |key|
-    opts[:key] = key
+    options[:key] = key
   end
 
   opts.on('-F', '--format FORMAT', 'Database format for output database.') do |format|
-    opts[:format] = format
+    options[:format] = format
   end
 
   opts.on('-r', '--realm REALM', 'Kerberos realm of database.') do |realm|
-    opts[:realm] = realm
+    options[:realm] = realm
   end
 
   opts.on('-h', '--help', 'Display this message.') do
