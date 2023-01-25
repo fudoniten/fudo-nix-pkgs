@@ -16,25 +16,29 @@ options = {
   verbose: false
 }
 
+def expand_env_var(str)
+  str.gsub(/$\w+/) { |var| ENV[var[1...-1]] }
+end
+
 OptionParser.new do |opts|
   opts.on('-c', '--create', 'Create database file.') do
     options[:create] = true
   end
 
   opts.on('-d', '--database DATABASE', 'Path to the existing KDC database file.') do |file|
-    options[:existing_db] = file
+    options[:existing_db] = expand_env_var file
   end
 
   opts.on('-p', '--principals PRINCIPALS', 'Path to file containing incoming principals.') do |file|
     raise "File inaccessible: #{file}" unless File::readable?(file)
 
-    options[:incoming_principals] = file
+    options[:incoming_principals] = expand_env_var file
   end
 
   opts.on('-k', '--key KEY', 'Path to realm key file.') do |file|
     raise "File inaccessible: #{file}" unless File::readable?(file)
 
-    options[:key] = file
+    options[:key] = expand_env_var file
   end
 
   opts.on('-r', '--realm REALM', 'Name of the KDC realm.') do |realm|
@@ -56,13 +60,6 @@ raise "missing required parameter: DATABASE" unless options[:existing_db]
 
 verbose = options[:verbose]
 
-def ensure_file(filename)
-  raise "file does not exist: #{filename}" unless File::exist?(filename)
-end
-
-ensure_file(options[:key])
-ensure_file(options[:incoming_principals])
-
 # rubocop:disable Metrics/MethodLength
 def generate_kdc(realm, db, key, tmp)
   conf_file = "#{tmp}/kdc.conf"
@@ -70,7 +67,7 @@ def generate_kdc(realm, db, key, tmp)
     [kdc]
       database = {
         realm = #{realm}
-        dbname = db3:#{db}
+        dbname = sqlite:#{db}
         mkey_file = #{key}
         log_file = /dev/null
       }
