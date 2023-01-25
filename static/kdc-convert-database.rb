@@ -9,7 +9,7 @@ options = {
 }
 
 OptionParser.new do |opts|
-  opts.banner = "usage: ${File::basename $PROGRAM_NAME} [options]"
+  opts.banner = "usage: #{File::basename $PROGRAM_NAME} [options]"
 
   opts.on('-c', '--config-file CONFIG', 'KDC config file.') do |conf|
     options[:conf] = conf
