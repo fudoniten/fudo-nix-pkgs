@@ -187,4 +187,11 @@
       runtimeInputs = [ heimdal ];
       text = readFile ./static/kdc-convert-database.rb;
     };
+
+    kdcAddPrincipal = helpers.lib.writeRubyApplication {
+      name = "kdc-add-principal";
+      pkgs = prev;
+      runtimeInputs = [ heimdal ];
+      text = readFile ./static/kdc-add-principal.rb;
+    };
   })
