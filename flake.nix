@@ -7,14 +7,10 @@
       "git+https://git.fudo.org/fudo-public/backplane-client.git?ref=dev";
   };
 
-  outputs = { self, backplane-client, helpers, ... }: {
+  outputs = { self, backplane-client, helpers, ... }@inputs: {
     overlays = rec {
-      pkgs = final: prev:
-        import ./overlay.nix { inherit helpers; } // {
-          inherit (backplane-client.packages."${prev.system}")
-            backplaneDnsClient;
-        };
-      default = pkgs;
+      packages = import ./overlay.nix inputs;
+      default = packages;
     };
   };
 }

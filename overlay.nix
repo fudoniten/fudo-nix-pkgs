@@ -1,14 +1,17 @@
-{ helpers, ... }:
+{ backplane-client, helpers, ... }:
 
 (final: prev:
   with builtins;
   let
+    system = prev.system;
     callPackage = prev.callPackage;
     fetchgit = prev.fetchgit;
     fetchFromGitHub = prev.fetchFromGitHub;
     localLispPackages = final.localLispPackages;
 
   in rec {
+    inherit (backplane-client.packages."${system}") backplaneDnsClient;
+
     letsencrypt-ca = callPackage ./pkgs/letsencrypt-ca.nix { };
 
     minecraft-current = final.minecraft-server_1_19_3;
