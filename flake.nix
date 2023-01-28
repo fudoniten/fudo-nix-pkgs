@@ -12,7 +12,7 @@
       pkgs = final: prev:
         import ./overlay.nix { inherit helpers; } // {
           inherit (backplane-client.packages."${prev.system}")
-            fudoBackplaneClient;
+            backplaneDnsClient;
         };
       default = pkgs;
     };
