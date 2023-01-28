@@ -66,7 +66,7 @@
 
     hll2380dw-lpr = callPackage ./pkgs/hll2380dw-lp.nix { };
 
-    backplane-dns-client = callPackage ./pkgs/backplane-dns-client.nix { };
+    # backplane-dns-client = callPackage ./pkgs/backplane-dns-client.nix { };
 
     cl-gemini = callPackage ./pkgs/cl-gemini.nix { inherit localLispPackages; };
 
