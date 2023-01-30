@@ -7,11 +7,11 @@
         "utils": "utils_3"
       },
       "locked": {
-        "lastModified": 1675015786,
-        "narHash": "sha256-TQQinXrnNeGBy1IqZkHKi/CEKtBL3PMVU+j535awO/M=",
+        "lastModified": 1675109456,
+        "narHash": "sha256-Sn90VmKhdMITwqY8LtIrqO4miPUnVX7XY5X1e9r8Lz0=",
         "ref": "dev",
-        "rev": "fc83373d6bb9d5624928347dcbf07d7b4fa5e68f",
-        "revCount": 9,
+        "rev": "1fe9c1a4e6d12677768f2d09b97567814d944f10",
+        "revCount": 10,
         "type": "git",
         "url": "https://git.fudo.org/fudo-public/backplane-client.git"
       },
