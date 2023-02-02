@@ -197,4 +197,18 @@
       runtimeInputs = [ heimdal ];
       text = readFile ./static/kdc-add-principal.rb;
     };
+
+    nsdRotateKeys = helpers.lib.writeRubyApplication {
+      name = "nsd-rotate-keys";
+      pkgs = prev;
+      runtimeInputs = [ ldns.examples ];
+      text = readFile ./static/nsd-rotate-keys.rb;
+    };
+
+    nsdSignZone = helpers.lib.writeRubyApplication {
+      name = "nsd-sign-zone";
+      pkgs = prev;
+      runtimeInputs = [ ldns.examples ];
+      text = readFile ./static/nsd-sign-zone.rb;
+    };
   })
