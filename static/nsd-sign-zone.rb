@@ -12,6 +12,7 @@ options = {
   verbose: false
 }
 
+# rubocop:disable Metrics/BlockLength
 OptionParser.new do |opts|
   opts.banner = "usage: #{File::basename $PROGRAM_NAME} [opts] <ZONE_FILE>"
 
@@ -49,16 +50,17 @@ OptionParser.new do |opts|
 
   opts.on('-v', '--verbose', 'Provide verbose output.') { options[:verbose] = true }
 end.parse!
+# rubocop:enable Metrics/BlockLength
 
-raise "missing required parameter: ZONE_FILE" unless ARGV.length == 1
+raise 'missing required parameter: ZONE_FILE' unless ARGV.length == 1
 
 zonefile = ARGV[0]
 
-raise "missing required parameter: KSK" unless options[:ksk]
+raise 'missing required parameter: KSK' unless options[:ksk]
 
-raise "missing required parameter: ZSK_DIR" unless options[:zsk_dir]
+raise 'missing required parameter: ZSK_DIR' unless options[:zsk_dir]
 
-raise "missing required parameter: DOMAIN" unless options[:domain]
+raise 'missing required parameter: DOMAIN' unless options[:domain]
 
 raise "KSK file does not exist: #{options[:ksk]}" unless File::exist?(options[:ksk])
 
@@ -68,24 +70,21 @@ verbose = options[:verbose]
 
 all_zsks = NsdKey::read_keys(options[:zsk_dir], verbose)
 
-valid_zsks = all_zsks.select { |k| k.valid? }
+valid_zsks = all_zsks.select(&:valid?)
 
-raise "no valid zone-signing keys found!" if valid_zsks.empty?
+raise 'no valid zone-signing keys found!' if valid_zsks.empty?
 
 def ensure_file(name, file)
-
   raise "missing #{name} file: #{file}" unless File::exist?(file)
-
-  raise "#{name} file not readable: #{file}"unless File::readable?(file)
-
+  raise "#{name} file not readable: #{file}" unless File::readable?(file)
 end
 
-valid_zsks.each { |k|
-  ensure_file("zsk public key", k.public_key)
-  ensure_file("zsk private key", k.private_key)
-}
+valid_zsks.each do |k|
+  ensure_file('zsk public key', k.public_key)
+  ensure_file('zsk private key', k.private_key)
+end
 
-ensure_file("ksk", options[:ksk])
+ensure_file('ksk', options[:ksk])
 
 def exec!(verbose, msg, cmd)
   puts msg if verbose
@@ -99,22 +98,23 @@ def exec!(verbose, msg, cmd)
 end
 
 def opt_str(cond, str)
-  cond ? str : ""
+  cond ? str : ''
 end
 
-signing_keys = ([ ksk ] + valid_zsks.map { |k| k.private_key }).map { |kf| kf.gsub(/\.private$/, '') }
+signing_keys = ([ksk] + valid_zsks.map(&:private_key)).map { |kf| kf.gsub(/\.private$/, '') }
 
 puts "signing keys: #{signing.keys.join(', ')}" if verbose
 
 exec!(verbose, "signing zonefile #{zonefile} ...",
-      ["ldns-signzone",
-       opt_str(options.key?(:output_file), "-f #{options[:output_file]}"),
-       "-o #{options[:domain]}",
-       "-i #{options[:inception]}",
-       "-e #{options[:expiry]}",
-       "-u",
-       "-A",
-       signing_keys.join(' ')
+      [
+        'ldns-signzone',
+        opt_str(options.key?(:output_file), "-f #{options[:output_file]}"),
+        "-o #{options[:domain]}",
+        "-i #{options[:inception]}",
+        "-e #{options[:expiry]}",
+        '-u',
+        '-A',
+        signing_keys.join(' ')
       ].join(' '))
 
 puts "zone #{domain} signed!" if verbose

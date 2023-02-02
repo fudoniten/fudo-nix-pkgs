@@ -1,41 +1,61 @@
+# frozen_string_literal: true
 
 require 'tmpdir'
 require 'date'
 require 'json'
 
+def keys_to_date(hsh, keys)
+  keys.each_with_object(hsh) do |k, h|
+    h[k] = Date::parse(h[k])
+  end
+end
+
+# rubocop:disable Metrics/ClassLength
+
+# Represents a ZSK for NSD
 class NsdKey
   attr_reader :public_key, :private_key
 
   def initialize(public_key:, private_key:, valid_date:, expiry_date:, deprecation_date:)
-    @public = public_key,
-    @private = private_key,
-    @valid = valid_date,
+    @name = File::basename(public_key, '.*')
+    @public = public_key
+    @private = private_key
+    @valid = valid_date
     @expiry = expiry_date
     @deprecation = deprecation_date
   end
 
-  def self.gen_key(dir, algo, domain)
+  def self.gen_key(dir, algo, domain, verbose = false)
     Dir::mktmpdir do |d|
       Dir::chdir(d) do
-        exec!(verbose, 'generate zone-signing key (zsk) ... ',
-              "ldns-keygen -a #{algo} #{domain}")
-
+        exec!(verbose, 'generate zone-signing key (zsk) ... ', "ldns-keygen -a #{algo} #{domain}")
         pubkey = File::basename Dir["#{d}/*.key"].first
         privkey = File::basename Dir["#{d}/*.private"].first
         FileUtils::mv("#{d}/#{pubkey}", "#{dir}/#{pubkey}")
-        FileUtils::mv("#{d}/#{privkey}", "#{dir}/#{pubkey}")
+        FileUtils::mv("#{d}/#{privkey}", "#{dir}/#{privkey}")
         { public: "#{dir}/#{pubkey}", private: "#{dir}/#{privkey}" }
       end
     end
   end
 
-  def self.gen(directory:, algorithm:, domain:, validity_period:, overlap_period:)
-    keys = self.gen_key(directory, algorithm, domain)
-    self.new(public_key: keys[:public],
-             private_key: keys[:private],
-             valid_date: Date::today,
-             expiry_date: Date::today + validity_period,
-             deprecation_date: Date::today + (validity_period - overlap_period))
+  def self.key_params(validity_period:, overlap_period:, algorithm:)
+    {
+      validity_period: validity_period,
+      overlap_period: overlap_period,
+      algorithm: algorithm
+    }
+  end
+
+  def self.gen(directory:, domain:, key_params:, verbose: false)
+    key = gen_key(directory, key_params[:algorithm], domain, verbose)
+    validity, overlap = key_params.fetch_values(%i[valitidy_period overlap_period])
+    expiry = Date::today + validity
+    deprecation = Date::today + (validity - overlap)
+    new(public_key: key[:public],
+        private_key: key[:private],
+        valid_date: Date::today,
+        expiry_date: expiry,
+        deprecation_date: deprecation)
   end
 
   def to_hash
@@ -48,36 +68,56 @@ class NsdKey
     }
   end
 
-  def from_hash(hash)
-    self.new(hash)
+  def self.from_hash(hash)
+    new(**hash)
   end
 
-  def self.read_keys(metadata, verbose = false)
-    puts "reading key metadata from #{metadata}" if verbose
-    all_keys = []
-    if File::exist?(metadata)
-      File::open(options[:metadata], 'r') do |file|
-        all_keys = JSON::parse(file.read).map { |k| self.from_hash(k) }
-      end
+  def read_metadata_file(mdfile, verbose = false)
+    puts "reading key metadata from #{mdfile}" if verbose
+    File::open(mdfile, 'r') do |file|
+      raw_data = JSON::parse(file.read, { symbolize_names: true })
+      data = raw_data.map { |k| keys_to_date(k, %i[valid_date expiry_date deprecation_date]) }
+      data.map(&:from_hash)
     end
+  end
+
+  def self.read_metadata(metadata, verbose = false)
+    File::exist?(metadata) ? read_metadata_file(metadata) : []
     puts " ... #{all_keys.length} keys found" if verbose
     all_keys
   end
 
-  def self.write_keys(keys, metadata, verbose = false)
+  def self.gen_metadata(keys, verbose = false)
+    puts ' ... generating metadata' if verbose
+    key_data = keys.map(&:to_hash)
+    JSON::pretty_generate(key_data)
+  end
+
+  def self.write_metadata_file(keys, mdfile, verbose = false)
+    md = gen_metadata(keys, verbose)
+    puts " ... writing metadata to file #{mdfile}" if verbose
+    File::open(mdfile, 'w') do |file|
+      file.write(md)
+    end
+  end
+
+  def self.write_metadata(keys, metadata, verbose = false)
     puts "saving metadata for #{keys.length} keys to #{metadata}" if verbose
     Dir::mktmpdir do |tmpdir|
-      mdf = "#{tmpdir}/metadata.json"
-      puts " ... generating metadata" if verbose
-      key_data = keys.map { |k| k.to_hash }
-      json_data = JSON::generate(key_data)
-      puts " ... saving to temporary file #{mdf}" if verbose
-      File::open(mdf, 'w') do |file|
-        file.write(json_data)
-      end
+      mdfile = "#{tmpdir}/metadata.json"
+      write_metadata_file(keys, mdfile, verbose)
       puts " ... moving to #{metadata}" if verbose
-      FileUtils::mv(mdf, metadata)
+      FileUtils::mv(mdfile, metadata)
     end
+  end
+
+  def delete(verbose = false)
+    puts "deleting expired key: #{@name}" if verbose
+    puts " ... private key: #{@private}" if verbose
+    FileUtils::rm(@private)
+    puts " ... public key: #{@public}" if verbose
+    FileUtils::rm(@public)
+    puts ' ...done.'
   end
 
   def valid?
@@ -86,10 +126,12 @@ class NsdKey
   end
 
   def deprecated?
-    @deprecated < Date::today
+    @deprecation < Date::today
   end
 
   def expired?
     @expiry < Date::today
   end
 end
+
+# rubocop:enable Metrics/ClassLength

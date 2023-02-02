@@ -6,11 +6,11 @@ require 'optparse'
 require_relative('nsd_key')
 
 options = {
-  algorithm: "ECDSAP256SHA256",
+  algorithm: 'ECDSAP256SHA256',
   period: 90,
   overlap: 10,
-  metadata: "metadata.json",
-  verbose: true
+  metadata: 'metadata.json',
+  verbose: false
 }
 
 OptionParser.new do |opts|
@@ -21,7 +21,7 @@ OptionParser.new do |opts|
   end
 
   opts.on('-k', '--key-directory=KEY_DIRECTORY', 'Directory used for storing keys and metadata.') do |dir|
-    options[:directory] = dir
+    options[:directory] = File::expand_path dir
   end
 
   opts.on('-p', '--validity-period=PERIOD', 'Period for which ZSK should be valid (in days).') do |period|
@@ -29,7 +29,7 @@ OptionParser.new do |opts|
   end
 
   opts.on('-o', '--period-overlap=OVERLAP', 'Period for which ZSK should overlap (in days).') do |overlap|
-    options[:overlap] = period
+    options[:overlap] = overlap.to_i
   end
 
   opts.on('-m', '--metadata=METADATA_FILE', 'Location of key metadata JSON file.') do |metadata|
@@ -44,11 +44,11 @@ OptionParser.new do |opts|
   opts.on('-v', '--verbose', 'Provide verbose output.') { options[:verbose] = true }
 end.parse!
 
-raise "missing required parameter: DOMAIN" unless ARGV.length == 1
+raise 'missing required parameter: DOMAIN' unless ARGV.length == 1
 
 domain = ARGV[0]
 
-raise "missing required parameter: KEY_DIRECTORY" unless options[:directory]
+raise 'missing required parameter: KEY_DIRECTORY' unless options[:directory]
 
 raise "key directory does not exist: #{options[:directory]}" unless File::directory?(options[:directory])
 
@@ -65,31 +65,35 @@ def exec!(verbose, msg, cmd)
   status.success?
 end
 
-all_keys = NsdKey::read_keys(options[:metadata], verbose)
+all_keys = NsdKey::read_metadata(options[:metadata], verbose)
 
-undeprecated_keys = all_keys.select { |k| !k.deprecated? }
+undeprecated_keys = all_keys.reject(&:deprecated?)
 
 if undeprecated_keys.empty?
-  puts "no undeprecated keys found, generating ... " if verbose
-  key = NsdKey::gen(directory: options[:directory],
-                algorithm: options[:algorithm],
-                domain: domain,
-                validity_period: options[:period],
-                overlap_period: options[:overlap])
+  puts 'no undeprecated keys found, generating ... ' if verbose
+  params = NsdKey::key_params(
+    validity_period: options[:period],
+    overlap_period: options[:overlap],
+    algorithm: options[:algorithm]
+  )
+  key = NsdKey::gen(
+    directory: options[:directory],
+    domain: domain,
+    key_params: params,
+    verbose: verbose
+  )
   all_keys << key
+elsif verbose
+  puts "#{undeprecated_keys.length} valid keys found"
 end
 
-expired_keys = all_keys.select { |k| k.expired? }
+unexpired_keys = all_keys.reject(&:expired?)
+NsdKey::write_metadata(unexpired_keys, options[:metadata], verbose)
+
+expired_keys = all_keys.select(&:expired?)
 
 expired_keys.each do |k|
-  puts "deleting expired key: #{k.public_key}" if verbose
-  puts " ... private key ... " if verbose
-  FileUtils::rm(k.private_key)
-  puts " ... public key ... " if verbose
-  FileUtils::rm(k.public_key)
+  k.delete(verbose)
 end
 
-unexpired_keys = all_keys.select { |k| !k.expired? }
-NsdKey::write_keys(unexpired_keys, options[:metadata], verbose)
-
-puts "key rotation complete!" if verbose
+puts 'key rotation complete!' if verbose
