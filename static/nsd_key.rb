@@ -14,12 +14,12 @@ end
 
 # Represents a ZSK for NSD
 class NsdKey
-  attr_reader :public_key, :private_key
+  attr_reader :name, :public_key, :private_key
 
   def initialize(public_key:, private_key:, valid_date:, expiry_date:, deprecation_date:)
     @name = File::basename(public_key, '.*')
-    @public = public_key
-    @private = private_key
+    @public_key = public_key
+    @private_key = private_key
     @valid = valid_date
     @expiry = expiry_date
     @deprecation = deprecation_date
@@ -48,7 +48,7 @@ class NsdKey
 
   def self.gen(directory:, domain:, key_params:, verbose: false)
     key = gen_key(directory, key_params[:algorithm], domain, verbose)
-    validity, overlap = key_params.fetch_values(%i[valitidy_period overlap_period])
+    validity, overlap = key_params.fetch_values(:validity_period, :overlap_period)
     expiry = Date::today + validity
     deprecation = Date::today + (validity - overlap)
     new(public_key: key[:public],
@@ -60,8 +60,8 @@ class NsdKey
 
   def to_hash
     {
-      public_key: @public,
-      private_key: @private,
+      public_key: @public_key,
+      private_key: @private_key,
       valid_date: @valid,
       expiry_date: @expiry,
       deprecation_date: @deprecation
@@ -72,17 +72,17 @@ class NsdKey
     new(**hash)
   end
 
-  def read_metadata_file(mdfile, verbose = false)
+  def self.read_metadata_file(mdfile, verbose = false)
     puts "reading key metadata from #{mdfile}" if verbose
     File::open(mdfile, 'r') do |file|
       raw_data = JSON::parse(file.read, { symbolize_names: true })
       data = raw_data.map { |k| keys_to_date(k, %i[valid_date expiry_date deprecation_date]) }
-      data.map(&:from_hash)
+      data.map { |k| from_hash(k) }
     end
   end
 
   def self.read_metadata(metadata, verbose = false)
-    File::exist?(metadata) ? read_metadata_file(metadata) : []
+    all_keys = File::exist?(metadata) ? read_metadata_file(metadata) : []
     puts " ... #{all_keys.length} keys found" if verbose
     all_keys
   end
@@ -113,16 +113,16 @@ class NsdKey
 
   def delete(verbose = false)
     puts "deleting expired key: #{@name}" if verbose
-    puts " ... private key: #{@private}" if verbose
-    FileUtils::rm(@private)
-    puts " ... public key: #{@public}" if verbose
-    FileUtils::rm(@public)
+    puts " ... private key: #{@private_key}" if verbose
+    FileUtils::rm(@private_key)
+    puts " ... public key: #{@public_key}" if verbose
+    FileUtils::rm(@public_key)
     puts ' ...done.'
   end
 
   def valid?
     today = Date::today
-    @valid >= today && @expiry < today
+    @valid <= today && @expiry > today
   end
 
   def deprecated?

@@ -20,13 +20,13 @@ OptionParser.new do |opts|
     options[:domain] = domain
   end
 
-  opts.on('-k', '--key-signing-key=KSK', 'Location of key-signing key (KSK) file.') do |ksk|
-    options[:ksk] = ksk
+  opts.on('-k', '--ksk-file=KSK', 'Location of key-signing key (KSK) file.') do |ksk|
+    options[:ksk] = File::expand_path ksk
   end
 
-  opts.on('-z', '--zone-signing-key-dir=ZSK_DIR',
-          'Location of path containing zone-signing key (ZSK) files and metadata.') do |zsk_dir|
-    options[:zsk_dir] = zsk_dir
+  opts.on('-z', '--zsk-metadata=ZSK_METADATA',
+          'Location of path containing zone-signing key (ZSK) metadata file.') do |zsk_metadata|
+    options[:zsk_metadata] = zsk_metadata
   end
 
   opts.on('-o', '--output=OUTPUT_FILE', 'File in which to output zigned zone.') do |output_file|
@@ -54,37 +54,35 @@ end.parse!
 
 raise 'missing required parameter: ZONE_FILE' unless ARGV.length == 1
 
-zonefile = ARGV[0]
-
-raise 'missing required parameter: KSK' unless options[:ksk]
-
-raise 'missing required parameter: ZSK_DIR' unless options[:zsk_dir]
-
-raise 'missing required parameter: DOMAIN' unless options[:domain]
-
-raise "KSK file does not exist: #{options[:ksk]}" unless File::exist?(options[:ksk])
-
-raise "ZSK directory does not exist: #{options[:zsk_dir]}" unless File::directory?(options[:zsk_dir])
-
-verbose = options[:verbose]
-
-all_zsks = NsdKey::read_keys(options[:zsk_dir], verbose)
-
-valid_zsks = all_zsks.select(&:valid?)
-
-raise 'no valid zone-signing keys found!' if valid_zsks.empty?
+zonefile = File::expand_path(ARGV[0])
 
 def ensure_file(name, file)
   raise "missing #{name} file: #{file}" unless File::exist?(file)
   raise "#{name} file not readable: #{file}" unless File::readable?(file)
 end
 
+raise 'missing required parameter: KSK' unless options[:ksk]
+
+raise 'missing required parameter: ZSK_METADATA' unless options[:zsk_metadata]
+
+raise 'missing required parameter: DOMAIN' unless options[:domain]
+
+ensure_file('ksk private key', options[:ksk])
+ensure_file('zsk metadata file', options[:zsk_metadata])
+ensure_file('zonefile', zonefile)
+
+verbose = options[:verbose]
+
+all_zsks = NsdKey::read_metadata(options[:zsk_metadata], verbose)
+
+valid_zsks = all_zsks.select(&:valid?)
+
+raise 'no valid zone-signing keys found!' if valid_zsks.empty?
+
 valid_zsks.each do |k|
   ensure_file('zsk public key', k.public_key)
   ensure_file('zsk private key', k.private_key)
 end
-
-ensure_file('ksk', options[:ksk])
 
 def exec!(verbose, msg, cmd)
   puts msg if verbose
@@ -101,9 +99,9 @@ def opt_str(cond, str)
   cond ? str : ''
 end
 
-signing_keys = ([ksk] + valid_zsks.map(&:private_key)).map { |kf| kf.gsub(/\.private$/, '') }
+signing_keys = ([options[:ksk]] + valid_zsks.map(&:private_key)).map { |kf| kf.gsub(/\.private$/, '') }
 
-puts "signing keys: #{signing.keys.join(', ')}" if verbose
+puts "signing #{options[:domain]} zonefile #{zonefile} with keys: #{signing_keys.join(', ')}" if verbose
 
 exec!(verbose, "signing zonefile #{zonefile} ...",
       [
@@ -114,7 +112,8 @@ exec!(verbose, "signing zonefile #{zonefile} ...",
         "-e #{options[:expiry]}",
         '-u',
         '-A',
+        zonefile,
         signing_keys.join(' ')
       ].join(' '))
 
-puts "zone #{domain} signed!" if verbose
+puts "zone #{options[:domain]} zonefile #{zonefile} signed!" if verbose
