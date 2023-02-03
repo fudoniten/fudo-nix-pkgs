@@ -202,7 +202,7 @@
       name = "nsd-rotate-keys";
       pkgs = prev;
       runtimeInputs = with prev; [ ldns.examples ];
-      libInptus = [ ./static ];
+      libInputs = [ ./static ];
       text = readFile ./static/nsd-rotate-keys.rb;
     };
 
