@@ -201,14 +201,14 @@
     nsdRotateKeys = helpers.lib.writeRubyApplication {
       name = "nsd-rotate-keys";
       pkgs = prev;
-      runtimeInputs = with pkgs; [ ldns.examples ];
+      runtimeInputs = with prev; [ ldns.examples ];
       text = readFile ./static/nsd-rotate-keys.rb;
     };
 
     nsdSignZone = helpers.lib.writeRubyApplication {
       name = "nsd-sign-zone";
       pkgs = prev;
-      runtimeInputs = with pkgs; [ ldns.examples ];
+      runtimeInputs = with prev; [ ldns.examples ];
       text = readFile ./static/nsd-sign-zone.rb;
     };
   })
