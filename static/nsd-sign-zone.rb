@@ -4,7 +4,7 @@ require 'open3'
 require 'optparse'
 require 'date'
 
-require_relative 'nsd_key'
+require 'nsd_key'
 
 options = {
   inception: Date::today.strftime('%Y%m%d'),

@@ -3,7 +3,7 @@
 require 'open3'
 require 'optparse'
 
-require_relative('nsd_key')
+require 'nsd_key'
 
 options = {
   algorithm: 'ECDSAP256SHA256',
