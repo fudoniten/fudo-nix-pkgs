@@ -202,7 +202,7 @@
       name = "nsd-rotate-keys";
       pkgs = prev;
       runtimeInputs = with prev; [ ldns.examples ];
-      loadPath = [ ./static ];
+      libInptus = [ ./static ];
       text = readFile ./static/nsd-rotate-keys.rb;
     };
 
@@ -210,7 +210,7 @@
       name = "nsd-sign-zone";
       pkgs = prev;
       runtimeInputs = with prev; [ ldns.examples ];
-      loadPath = [ ./static ];
+      libInputs = [ ./static ];
       text = readFile ./static/nsd-sign-zone.rb;
     };
   })
