@@ -25,10 +25,6 @@ OptionParser.new do |opts|
     options[:principals] = principals
   end
 
-  opts.on('-r', '--realm REALM', 'Realm to which principal will be added.') do |realm|
-    options[:realm] = true
-  end
-
   opts.on("-h", "--help", "Print this message.") do
     puts opts
     exit(0)
@@ -60,7 +56,6 @@ verbose = options[:verbose]
 
 principal_path = get_opt(options, :principals, "KRB5_PRINCIPAL_DIR")
 config = get_opt(options, :conf, "KRB5_CONF")
-realm = get_opt(options, :realm, "KRB5_REALM")
 
 output_filename = "#{pricipal_path}/#{principal}.key"
 
@@ -87,7 +82,7 @@ principal_keys = Dir::mktmpdir("add_principals") do |tmpdir|
          "--random-key",
          "--use-defaults",
          principal].join(" "))
-  dump_file = "${tmpdir}/dumpfile"
+  dump_file = "#{tmpdir}/dumpfile"
   exec!(verbose, "Extracting keys ...",
         "kadmin --local --config-file=#{config} -- dump --decrypt #{dump_file}")
   File::open(dump_file, "r") do |file|
