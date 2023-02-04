@@ -1,14 +1,17 @@
-{ helpers, ... }:
+{ backplane-client, helpers, ... }:
 
 (final: prev:
   with builtins;
   let
+    system = prev.system;
     callPackage = prev.callPackage;
     fetchgit = prev.fetchgit;
     fetchFromGitHub = prev.fetchFromGitHub;
     localLispPackages = final.localLispPackages;
 
   in rec {
+    inherit (backplane-client.packages."${system}") backplaneDnsClient;
+
     letsencrypt-ca = callPackage ./pkgs/letsencrypt-ca.nix { };
 
     minecraft-current = final.minecraft-server_1_19_3;
@@ -66,7 +69,7 @@
 
     hll2380dw-lpr = callPackage ./pkgs/hll2380dw-lp.nix { };
 
-    backplane-dns-client = callPackage ./pkgs/backplane-dns-client.nix { };
+    # backplane-dns-client = callPackage ./pkgs/backplane-dns-client.nix { };
 
     cl-gemini = callPackage ./pkgs/cl-gemini.nix { inherit localLispPackages; };
 
@@ -193,5 +196,21 @@
       pkgs = prev;
       runtimeInputs = [ heimdal ];
       text = readFile ./static/kdc-add-principal.rb;
+    };
+
+    nsdRotateKeys = helpers.lib.writeRubyApplication {
+      name = "nsd-rotate-keys";
+      pkgs = prev;
+      runtimeInputs = with prev; [ ldns.examples ];
+      libInputs = [ ./static ];
+      text = readFile ./static/nsd-rotate-keys.rb;
+    };
+
+    nsdSignZone = helpers.lib.writeRubyApplication {
+      name = "nsd-sign-zone";
+      pkgs = prev;
+      runtimeInputs = with prev; [ ldns.examples ];
+      libInputs = [ ./static ];
+      text = readFile ./static/nsd-sign-zone.rb;
     };
   })

@@ -57,7 +57,8 @@ verbose = options[:verbose]
 principal_path = get_opt(options, :principals, "KRB5_PRINCIPAL_DIR")
 config = get_opt(options, :conf, "KRB5_CONF")
 
-output_filename = "#{pricipal_path}/#{principal}.key"
+principal_filename = principal.sub("/", "_")
+output_filename = "#{principal_path}/#{principal_filename}.key"
 
 raise "principal key exists: #{output_filename}" if File::exist?(output_filename)
 
@@ -93,7 +94,7 @@ principal_keys = Dir::mktmpdir("add_principals") do |tmpdir|
   end
 end
 
-print("Writing principal keys to #{principal_path} ... ") if verbose
+print("Writing principal key to #{output_filename} ... ") if verbose
 
 File::open(output_filename, 'w') do |f|
   principal_keys.each { |line|

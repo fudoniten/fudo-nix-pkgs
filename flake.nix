@@ -3,12 +3,14 @@
 
   inputs = {
     helpers.url = "git+https://git.fudo.org/fudo-public/nix-helpers.git";
+    backplane-client.url =
+      "git+https://git.fudo.org/fudo-public/backplane-client.git?ref=dev";
   };
 
-  outputs = { self, helpers, ... }: {
+  outputs = { self, backplane-client, helpers, ... }@inputs: {
     overlays = rec {
-      pkgs = import ./overlay.nix { inherit helpers; };
-      default = pkgs;
+      packages = import ./overlay.nix inputs;
+      default = packages;
     };
   };
 }
