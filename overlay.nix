@@ -62,6 +62,11 @@
       cmakeFlags = oldAttrs.cmakeFlags ++ [ "-DWITH_JAVA=ON" ];
     });
 
+    lispPackages = prev.lispPackages // localLispPackages // {
+      cl_plus_ssl = prev.lispPackages.cl_plus_ssl.overrideAttrs
+        (oldAttrs: { propagatedBuildInputs = with pkgs; [ openssl_1_1 ]; });
+    };
+
     localLispPackages = (callPackage ./pkgs/lisp { inherit localLispPackages; })
       // prev.lispPackages;
 

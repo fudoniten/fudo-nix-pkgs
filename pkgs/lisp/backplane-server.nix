@@ -21,6 +21,7 @@ pkgs.lispPackages.buildLispPackage {
     asdf-system-connections
     cl-json
     cl-xmpp
+    cl_plus_ssl
     prove
   ];
 
