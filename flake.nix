@@ -12,5 +12,8 @@
       packages = import ./overlay.nix inputs;
       default = packages;
     };
+    nixosModules.default = { ... }: {
+      config.nixpkgs.overlays = [ self.overlays.default ];
+    };
   };
 }
