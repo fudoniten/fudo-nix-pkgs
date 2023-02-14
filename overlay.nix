@@ -1,9 +1,13 @@
-{ backplane-client, helpers, ... }:
+{ unstableNixpkgs, backplane-client, helpers, ... }:
 
 (final: prev:
   with builtins;
   let
     system = prev.system;
+    unstable = import unstableNixpkgs {
+      inherit system;
+      config.allowUnfree = true;
+    };
     callPackage = prev.callPackage;
     fetchgit = prev.fetchgit;
     fetchFromGitHub = prev.fetchFromGitHub;
@@ -63,8 +67,7 @@
     });
 
     lispPackages = prev.lispPackages // localLispPackages // {
-      cl_plus_ssl = prev.lispPackages.cl_plus_ssl.overrideAttrs
-        (oldAttrs: { propagatedBuildInputs = with pkgs; [ openssl_1_1 ]; });
+      cl_plus_ssl = unstable.lispPackages.cl_plus_ssl;
     };
 
     localLispPackages = (callPackage ./pkgs/lisp { inherit localLispPackages; })
@@ -131,12 +134,6 @@
         sha256 = "sha256-11fiwf0wzq93isfqcbxp6rpxajavqiayg9gka7nmzqn6as613qa8";
       };
     });
-
-    # heimdal = let filterDep = deps: dep: filter (d: "${d}" != "${dep}") deps;
-    # in prev.heimdal.overrideAttrs (oldAttrs: {
-    #   buildInputs = (filterDep oldAttrs.buildInputs prev.openssl)
-    #     ++ [ prev.openssl_1_1 ];
-    # });
 
     heimdal = prev.heimdal.override { openssl = prev.openssl_1_1; };
 
