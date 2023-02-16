@@ -25,7 +25,8 @@ OptionParser.new do |opts|
     options[:principals] = principals
   end
 
-  opts.on("-w", "--password PASSWORD", "Password to set for the principal. If not specified, a random key will be set.") do |password|
+  opts.on("-w", "--password PASSWORD",
+          "Password to set for the principal. If not specified, a random key will be set.") do |password|
     options[:password] = password
   end
 
