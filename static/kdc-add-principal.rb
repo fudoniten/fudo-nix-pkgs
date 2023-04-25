@@ -25,6 +25,11 @@ OptionParser.new do |opts|
     options[:principals] = principals
   end
 
+  opts.on("-w", "--password PASSWORD",
+          "Password to set for the principal. If not specified, a random key will be set.") do |password|
+    options[:password] = password
+  end
+
   opts.on("-h", "--help", "Print this message.") do
     puts opts
     exit(0)
@@ -74,13 +79,18 @@ def exec!(verbose, msg, cmd)
 end
 
 principal_keys = Dir::mktmpdir("add_principals") do |tmpdir|
+  pw_clause = if options[:password]
+                "--password=\"#{options[:password]}\""
+              else
+                "--random-key"
+              end
   exec!(verbose, " ... #{principal}",
         ["kadmin",
          "--local",
          "--config-file=#{config}",
          "--",
          "add",
-         "--random-key",
+         pw_clause,
          "--use-defaults",
          principal].join(" "))
   dump_file = "#{tmpdir}/dumpfile"

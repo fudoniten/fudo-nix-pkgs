@@ -12,7 +12,7 @@
       default = packages;
     };
     nixosModules.default = { ... }: {
-      config.nixpkgs.overlays = self.overlays.default;
+      config.nixpkgs.overlays = [ self.overlays.default ];
     };
   };
 }
