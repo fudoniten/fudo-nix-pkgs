@@ -3,7 +3,7 @@
 
   inputs = {
     helpers.url = "git+https://git.fudo.org/fudo-public/nix-helpers.git";
-    unstableNixpkgs = "nixpkgs/nixos-unstable";
+    unstableNixpkgs.url = "nixpkgs/nixos-unstable";
   };
 
   outputs = { self, helpers, unstableNixpkgs, ... }@inputs: {
