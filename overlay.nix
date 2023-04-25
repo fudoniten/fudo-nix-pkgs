@@ -1,4 +1,4 @@
-{ unstableNixpkgs, backplane-client, helpers, ... }:
+{ unstableNixpkgs, helpers, ... }:
 
 (final: prev:
   with builtins;
@@ -14,7 +14,6 @@
     localLispPackages = final.localLispPackages;
 
   in rec {
-    inherit (backplane-client.packages."${system}") backplaneDnsClient;
 
     letsencrypt-ca = callPackage ./pkgs/letsencrypt-ca.nix { };
 
@@ -87,17 +86,11 @@
 
     hll2380dw-lpr = callPackage ./pkgs/hll2380dw-lp.nix { };
 
-    # backplane-dns-client = callPackage ./pkgs/backplane-dns-client.nix { };
-
     cl-gemini = callPackage ./pkgs/cl-gemini.nix { inherit localLispPackages; };
 
     fudo-service = callPackage ./pkgs/fudo-service.nix { };
 
     google-photos-uploader = callPackage ./pkgs/google-photo-uploader.nix { };
-
-    backplane-dns-server = callPackage ./pkgs/backplane-dns-server.nix {
-      inherit localLispPackages;
-    };
 
     vanilla-forum = callPackage ./vanilla-forum.nix { };
 
@@ -128,12 +121,6 @@
         sha256 = "0z9p4d4gc3024ixw7p808qhddxbb9akccn9ay6rvf7d3dkzi0hpg";
       };
     });
-
-    backplane-auth = fetchgit {
-      url = "https://git.fudo.org/fudo-public/backplane-auth.git";
-      rev = "31468f6bb7c24ebd513da935c5dba1d6f22780fc";
-      sha256 = "1x7bza2c621xhd14hxdn0ahbf3q5fi9smwz3bfpa0xfglz29wdrr";
-    };
 
     discourse-fudo = prev.discourse.overrideAttrs (oldAttrs: rec {
       version = "2.8.0-beta10";
