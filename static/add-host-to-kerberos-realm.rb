@@ -97,7 +97,7 @@ def exists?(verbose, config, princ)
 end
 
 def add_key(verbose, config, princ)
-  exec!(verbose, "  ... adding key for #{srv}/#{hostname}",
+  exec!(verbose, "  ... adding key for #{pric}",
         ["kadmin --local",
          "--config-file=#{config}",
          "--",
