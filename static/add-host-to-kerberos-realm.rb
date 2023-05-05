@@ -84,17 +84,16 @@ def exec_code!(verbose, msg, cmd)
   puts msg if verbose
   print "  $ #{cmd} ... " if verbose
   _, status = Open3::capture2e(cmd)
-  status.exitcode
+  status.success?
 end
 
 def exists?(verbose, config, princ)
-  exitcode = exec_code!(verbose, "  ... check existence of #{princ}",
-                        ["kadmin --local",
-                         "--config-file=#{config}",
-                         "--",
-                         "get",
-                         princ].join(" "))
-  exitcode == 1
+  exec_code!(verbose, "  ... check existence of #{princ}",
+             ["kadmin --local",
+              "--config-file=#{config}",
+              "--",
+              "get",
+              princ].join(" "))
 end
 
 def add_key(verbose, config, princ)
