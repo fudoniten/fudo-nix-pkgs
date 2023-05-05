@@ -88,13 +88,13 @@ def exec_code!(verbose, msg, cmd)
 end
 
 def exists?(verbose, config, princ)
-  code = exec_code!(verbose, "  ... check existence of #{princ}",
-                    ["kadmin --local",
-                     "--config-file=#{config}",
-                     "--",
-                     "get",
-                     princ].join(" "))
-  code == 1
+  exitcode = exec_code!(verbose, "  ... check existence of #{princ}",
+                        ["kadmin --local",
+                         "--config-file=#{config}",
+                         "--",
+                         "get",
+                         princ].join(" "))
+  1 == exticode
 end
 
 def add_key(verbose, config, princ)
