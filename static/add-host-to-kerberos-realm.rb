@@ -83,14 +83,24 @@ end
 principals = Dir::mktmpdir("host_principals") do |tmpdir|
   puts "Adding keys for host #{hostname} ..." if verbose
   service_list.each { |srv|
-    exec!(verbose, "  ... #{srv}/#{hostname}",
-          ["kadmin --local",
-           "--config-file=#{config}",
-           "--",
-           "add",
-           "--random-key",
-           "--use-defaults",
-           "#{srv}/#{hostname}"].join(" "))
+    princ = "#{srv}/#{hostname}"
+    if exec!(verbose, "  ... check existence of #{princ}",
+             ["kadmin --local",
+              "--config-file=#{config}",
+              "--",
+              "get",
+              "#{princ}"].join(" "))
+      puts "  ... exists, skipping"
+    else
+      exec!(verbose, "  ... adding key for #{srv}/#{hostname}",
+            ["kadmin --local",
+             "--config-file=#{config}",
+             "--",
+             "add",
+             "--random-key",
+             "--use-defaults",
+             "#{srv}/#{hostname}"].join(" "))
+    end
   }
 
   dump_file = "#{tmpdir}/dumpfile"
