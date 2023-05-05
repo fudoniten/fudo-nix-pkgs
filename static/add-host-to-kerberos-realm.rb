@@ -94,7 +94,7 @@ def exists?(verbose, config, princ)
                          "--",
                          "get",
                          princ].join(" "))
-  1 == exitcode
+  exitcode == 1
 end
 
 def add_key(verbose, config, princ)
