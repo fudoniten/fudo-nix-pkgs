@@ -86,7 +86,7 @@ def has_key?(verbose, config, princ)
          "--config-file=#{config}",
          "--",
          "get",
-         "#{princ}"].join(" "))
+         princ].join(" "))
 end
 
 def add_key(verbose, config, princ)
@@ -97,7 +97,7 @@ def add_key(verbose, config, princ)
          "add",
          "--random-key",
          "--use-defaults",
-         "#{princ}"].join(" "))
+         princ].join(" "))
 end
 
 principals = Dir::mktmpdir("host_principals") do |tmpdir|
