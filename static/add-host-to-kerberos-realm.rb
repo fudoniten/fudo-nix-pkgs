@@ -83,7 +83,7 @@ end
 def exec_code!(verbose, msg, cmd)
   puts msg if verbose
   print "  $ #{cmd} ... " if verbose
-  _, status = Open3::capture2e.(cmd)
+  _, status = Open3::capture2e(cmd)
   status.exitcode
 end
 
@@ -94,7 +94,7 @@ def exists?(verbose, config, princ)
                          "--",
                          "get",
                          princ].join(" "))
-  1 == exticode
+  1 == exitcode
 end
 
 def add_key(verbose, config, princ)
