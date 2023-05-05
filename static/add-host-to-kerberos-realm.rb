@@ -80,26 +80,34 @@ def exec!(verbose, msg, cmd)
   status.success?
 end
 
+def has_key?(verbose, config, princ)
+  exec!(verbose, "  ... check existence of #{princ}",
+        ["kadmin --local",
+         "--config-file=#{config}",
+         "--",
+         "get",
+         "#{princ}"].join(" "))
+end
+
+def add_key(verbose, config, princ)
+  exec!(verbose, "  ... adding key for #{srv}/#{hostname}",
+        ["kadmin --local",
+         "--config-file=#{config}",
+         "--",
+         "add",
+         "--random-key",
+         "--use-defaults",
+         "#{princ}"].join(" "))
+end
+
 principals = Dir::mktmpdir("host_principals") do |tmpdir|
   puts "Adding keys for host #{hostname} ..." if verbose
   service_list.each { |srv|
     princ = "#{srv}/#{hostname}"
-    if exec!(verbose, "  ... check existence of #{princ}",
-             ["kadmin --local",
-              "--config-file=#{config}",
-              "--",
-              "get",
-              "#{princ}"].join(" "))
+    if has_key?(verbose, config, princ)
       puts "  ... exists, skipping"
     else
-      exec!(verbose, "  ... adding key for #{srv}/#{hostname}",
-            ["kadmin --local",
-             "--config-file=#{config}",
-             "--",
-             "add",
-             "--random-key",
-             "--use-defaults",
-             "#{srv}/#{hostname}"].join(" "))
+      add_key(verbose, config, princ)
     end
   }
 
