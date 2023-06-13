@@ -16,6 +16,6 @@ stdenv.mkDerivation rec {
 
   installPhase = ''
     mkdir -p $out/bin
-    mv lz4json $out/bin
+    mv lz4jsoncat $out/bin
   '';
 }
