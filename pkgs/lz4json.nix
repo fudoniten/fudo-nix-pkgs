@@ -8,7 +8,7 @@ stdenv.mkDerivation rec {
     owner = "andikleen";
     repo = "lz4json";
     rev = "${version}";
-    sha256 = "";
+    sha256 = "A8pYjJ+1e3BmqnSPHV1WL37Wru7VyFXzNRJJk79Htvc=";
   };
 
   buildInputs = [ lz4.dev ];
