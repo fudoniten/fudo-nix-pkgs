@@ -122,6 +122,8 @@
       };
     });
 
+    lz4json = callPackage ./pkgs/lz4json.nix { };
+
     discourse-fudo = prev.discourse.overrideAttrs (oldAttrs: rec {
       version = "2.8.0-beta10";
       src = prev.fetchFromGitHub {
