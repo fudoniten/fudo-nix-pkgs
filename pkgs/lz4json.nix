@@ -13,4 +13,9 @@ stdenv.mkDerivation rec {
 
   nativeBuildInputs = [ pkg-config ];
   buildInputs = [ lz4.dev ];
+
+  installPhase = ''
+    mkdir -p $out/bin
+    mv lz4json $out/bin
+  '';
 }
