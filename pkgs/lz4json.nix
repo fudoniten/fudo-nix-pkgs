@@ -1,4 +1,4 @@
-{ lz4, fetchFromGitHub, stdenv, ... }:
+{ pkg-config, lz4, fetchFromGitHub, stdenv, ... }:
 
 stdenv.mkDerivation rec {
   pname = "lz4json";
@@ -11,5 +11,6 @@ stdenv.mkDerivation rec {
     sha256 = "A8pYjJ+1e3BmqnSPHV1WL37Wru7VyFXzNRJJk79Htvc=";
   };
 
+  nativeBuildInputs = [ pkg-config ];
   buildInputs = [ lz4.dev ];
 }
