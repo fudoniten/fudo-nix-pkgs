@@ -40,11 +40,8 @@ let
   '';
 
   sbcl-with-ssl = pkgs.sbcl.overrideAttrs (oldAttrs: rec {
-    buildInputs = oldAttrs.buildInputs ++ [
-      pkgs.openssl_1_1.dev
-    ];
+    buildInputs = oldAttrs.buildInputs ++ [ pkgs.openssl_1_1.dev ];
   });
-    
 
 in pkgs.stdenv.mkDerivation {
   name = "cl-gemini-${version}";
@@ -53,9 +50,10 @@ in pkgs.stdenv.mkDerivation {
     asdf
     sbcl-with-ssl
     localLispPackages.cl-gemini
+    openssl.lib
   ];
 
-  phases = ["installPhase"];
+  phases = [ "installPhase" ];
 
   installPhase = ''
     mkdir -p $out/bin
