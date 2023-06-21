@@ -50,7 +50,7 @@ in pkgs.stdenv.mkDerivation {
     asdf
     sbcl-with-ssl
     localLispPackages.cl-gemini
-    openssl.lib
+    openssl
   ];
 
   phases = [ "installPhase" ];
