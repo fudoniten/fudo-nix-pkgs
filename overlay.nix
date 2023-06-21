@@ -100,12 +100,6 @@
       sha256 = "061k0f0jgm5k81djslb172xk0wkis0m878izgisyj2qgg3wf1awh";
     };
 
-    textfiles = fetchgit {
-      url = "https://git.informis.land/informis/textfiles.git";
-      rev = "278a90f7ce219e36e5de0a80b540e469a9bce912";
-      sha256 = "06qns3ayc84mamdgn0jw652rvx60wy9km1vxm2361mzmx2zk89iw";
-    };
-
     clj2nix = fetchFromGitHub {
       owner = "hlolli";
       repo = "clj2nix";
