@@ -69,6 +69,11 @@
       buildInputs = oldAttrs.buildInputs ++ [ prev.krb5 ];
     });
 
+    postgresql_15_gssapi = prev.postgresql_15.overrideAttrs (oldAttrs: rec {
+      configureFlags = oldAttrs.configureFlags ++ [ "--with-gssapi" ];
+      buildInputs = oldAttrs.buildInputs ++ [ prev.krb5 ];
+    });
+
     opencv-java = prev.opencv3.overrideAttrs (oldAttrs: rec {
       pname = "opencv-java";
       nativeBuildInputs = oldAttrs.nativeBuildInputs ++ [ prev.jdk11 prev.ant ];
