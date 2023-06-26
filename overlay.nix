@@ -139,7 +139,7 @@
     kdcMergePrincipals = helpers.lib.writeRubyApplication {
       name = "kdc-merge-principals";
       pkgs = prev;
-      runtimeInputs = [ heimdal ];
+      runtimeInputs = [ prev.heimdal ];
       text = readFile ./static/kdc-merge-principals.rb;
     };
 
@@ -153,49 +153,49 @@
     initializeKerberosRealm = helpers.lib.writeRubyApplication {
       name = "initialize-kerberos-realm";
       pkgs = prev;
-      runtimeInputs = [ heimdal ];
+      runtimeInputs = [ prev.heimdal ];
       text = readFile ./static/initialize-kerberos-realm.rb;
     };
 
     instantiateKerberosRealm = helpers.lib.writeRubyApplication {
       name = "instantiate-kerberos-realm";
       pkgs = prev;
-      runtimeInputs = [ heimdal ];
+      runtimeInputs = [ prev.heimdal ];
       text = readFile ./static/instantiate-kerberos-realm.rb;
     };
 
     addHostToKerberosRealm = helpers.lib.writeRubyApplication {
       name = "add-host-to-kerberos-realm";
       pkgs = prev;
-      runtimeInputs = [ heimdal ];
+      runtimeInputs = [ prev.heimdal ];
       text = readFile ./static/add-host-to-kerberos-realm.rb;
     };
 
     extractKerberosHostKeytab = helpers.lib.writeRubyApplication {
       name = "extract-kerberos-host-keytab";
       pkgs = prev;
-      runtimeInputs = [ heimdal ];
+      runtimeInputs = [ prev.heimdal ];
       text = readFile ./static/extract-kerberos-host-keytab.rb;
     };
 
     extractKerberosKeytab = helpers.lib.writeRubyApplication {
       name = "extract-kerberos-keytab";
       pkgs = prev;
-      runtimeInputs = [ heimdal ];
+      runtimeInputs = [ prev.heimdal ];
       text = readFile ./static/extract-kerberos-keytab.rb;
     };
 
     kdcConvertDatabase = helpers.lib.writeRubyApplication {
       name = "kdc-convert-database";
       pkgs = prev;
-      runtimeInputs = [ heimdal ];
+      runtimeInputs = [ prev.heimdal ];
       text = readFile ./static/kdc-convert-database.rb;
     };
 
     kdcAddPrincipal = helpers.lib.writeRubyApplication {
       name = "kdc-add-principal";
       pkgs = prev;
-      runtimeInputs = [ heimdal ];
+      runtimeInputs = [ prev.heimdal ];
       text = readFile ./static/kdc-add-principal.rb;
     };
 
