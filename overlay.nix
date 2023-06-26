@@ -15,6 +15,8 @@
 
   in rec {
 
+    inherit unstable;
+
     letsencrypt-ca = callPackage ./pkgs/letsencrypt-ca.nix { };
 
     minecraft-current = final.minecraft-server_1_19_4;
