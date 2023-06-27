@@ -136,12 +136,12 @@
     });
 
     # Heimdal fails when not building against openssl 1.1...
-    # heimdal = prev.heimdal.override { openssl = prev.openssl_1_1; };
+    heimdal = heimdal.override { openssl = prev.openssl_1_1; };
 
     kdcMergePrincipals = helpers.lib.writeRubyApplication {
       name = "kdc-merge-principals";
       pkgs = prev;
-      runtimeInputs = [ prev.heimdal ];
+      runtimeInputs = [ heimdal ];
       text = readFile ./static/kdc-merge-principals.rb;
     };
 
@@ -155,49 +155,49 @@
     initializeKerberosRealm = helpers.lib.writeRubyApplication {
       name = "initialize-kerberos-realm";
       pkgs = prev;
-      runtimeInputs = [ prev.heimdal ];
+      runtimeInputs = [ heimdal ];
       text = readFile ./static/initialize-kerberos-realm.rb;
     };
 
     instantiateKerberosRealm = helpers.lib.writeRubyApplication {
       name = "instantiate-kerberos-realm";
       pkgs = prev;
-      runtimeInputs = [ prev.heimdal ];
+      runtimeInputs = [ heimdal ];
       text = readFile ./static/instantiate-kerberos-realm.rb;
     };
 
     addHostToKerberosRealm = helpers.lib.writeRubyApplication {
       name = "add-host-to-kerberos-realm";
       pkgs = prev;
-      runtimeInputs = [ prev.heimdal ];
+      runtimeInputs = [ heimdal ];
       text = readFile ./static/add-host-to-kerberos-realm.rb;
     };
 
     extractKerberosHostKeytab = helpers.lib.writeRubyApplication {
       name = "extract-kerberos-host-keytab";
       pkgs = prev;
-      runtimeInputs = [ prev.heimdal ];
+      runtimeInputs = [ heimdal ];
       text = readFile ./static/extract-kerberos-host-keytab.rb;
     };
 
     extractKerberosKeytab = helpers.lib.writeRubyApplication {
       name = "extract-kerberos-keytab";
       pkgs = prev;
-      runtimeInputs = [ prev.heimdal ];
+      runtimeInputs = [ heimdal ];
       text = readFile ./static/extract-kerberos-keytab.rb;
     };
 
     kdcConvertDatabase = helpers.lib.writeRubyApplication {
       name = "kdc-convert-database";
       pkgs = prev;
-      runtimeInputs = [ prev.heimdal ];
+      runtimeInputs = [ heimdal ];
       text = readFile ./static/kdc-convert-database.rb;
     };
 
     kdcAddPrincipal = helpers.lib.writeRubyApplication {
       name = "kdc-add-principal";
       pkgs = prev;
-      runtimeInputs = [ prev.heimdal ];
+      runtimeInputs = [ heimdal ];
       text = readFile ./static/kdc-add-principal.rb;
     };
 
