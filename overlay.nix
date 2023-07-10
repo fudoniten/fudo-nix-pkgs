@@ -19,6 +19,15 @@
 
     letsencrypt-ca = callPackage ./pkgs/letsencrypt-ca.nix { };
 
+    papermc = prev.papermc.overrideAttrs (oldAttrs: {
+      version = "1.20.1.69";
+      src = fetchurl {
+        url =
+          "https://papermc.io/api/v2/projects/paper/versions/${mcVersion}/builds/${buildNum}/downloads/paper-${mcVersion}-${buildNum}.jar";
+        sha256 = "10rxj7mkw04wp21k0nhsxa2bzhvcwnqj1hz4vq98fg4kbnb7dx3j";
+      };
+    });
+
     minecraft-current = final.minecraft-server_1_20_1;
 
     minecraft-server_1_20_1 = prev.minecraft-server.overrideAttrs
