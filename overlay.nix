@@ -19,7 +19,7 @@
 
     letsencrypt-ca = callPackage ./pkgs/letsencrypt-ca.nix { };
 
-    minecraft-current = final.minecraft-server_1_19_4;
+    minecraft-current = final.minecraft-server_1_20_1;
 
     minecraft-server_1_20_1 = prev.minecraft-server.overrideAttrs
       (oldAttrs: rec {
