@@ -19,14 +19,12 @@
 
     letsencrypt-ca = callPackage ./pkgs/letsencrypt-ca.nix { };
 
-    papermc-current = prev.papermc.overrideAttrs (oldAttrs: rec {
+    papermc-current = final.papermc-1_20_1;
+
+    papermc-1_20_1 = callPackage ./pkgs/papermc-current.nix {
       version = "1.20.1.69";
-      jar = fetchurl {
-        url =
-          "https://papermc.io/api/v2/projects/paper/versions/1.20.1/builds/69/downloads/paper-1.20.1-69.jar";
-        sha256 = "10rxj7mkw04wp21k0nhsxa2bzhvcwnqj1hz4vq98fg4kbnb7dx3j";
-      };
-    });
+      sha256 = "10rxj7mkw04wp21k0nhsxa2bzhvcwnqj1hz4vq98fg4kbnb7dx3j";
+    };
 
     minecraft-current = final.minecraft-server_1_20_1;
 
