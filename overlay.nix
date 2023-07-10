@@ -19,7 +19,7 @@
 
     letsencrypt-ca = callPackage ./pkgs/letsencrypt-ca.nix { };
 
-    papermc = prev.papermc.overrideAttrs (oldAttrs: {
+    papermc-current = prev.papermc.overrideAttrs (oldAttrs: {
       version = "1.20.1.69";
       src = fetchurl {
         url =
