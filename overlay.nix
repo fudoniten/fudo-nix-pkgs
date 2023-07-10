@@ -21,7 +21,7 @@
 
     papermc-current = prev.papermc.overrideAttrs (oldAttrs: {
       version = "1.20.1.69";
-      src = fetchurl {
+      jar = fetchurl {
         url =
           "https://papermc.io/api/v2/projects/paper/versions/1.20.1/builds/69/downloads/paper-1.20.1-69.jar";
         sha256 = "10rxj7mkw04wp21k0nhsxa2bzhvcwnqj1hz4vq98fg4kbnb7dx3j";
