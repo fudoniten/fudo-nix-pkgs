@@ -21,6 +21,16 @@
 
     minecraft-current = final.minecraft-server_1_19_4;
 
+    minecraft-server_1_20_1 = prev.minecraft-server.overrideAttrs
+      (oldAttrs: rec {
+        version = "1.20.1";
+        src = fetchurl {
+          url =
+            "https://piston-data.mojang.com/v1/objects/84194a2f286ef7c14ed7ce0090dba59902951553/server.jar";
+          sha256 = "1q3r3c95vkai477r3gsmf2p0pmyl4zfn0qwl8y0y60m1qnfkmxrs";
+        };
+      });
+
     minecraft-server_1_19_4 = prev.minecraft-server.overrideAttrs
       (oldAttrs: rec {
         version = "1.19.4";
