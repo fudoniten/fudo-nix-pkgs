@@ -26,7 +26,17 @@
       sha256 = "10rxj7mkw04wp21k0nhsxa2bzhvcwnqj1hz4vq98fg4kbnb7dx3j";
     };
 
-    minecraft-current = final.minecraft-server_1_20_1;
+    minecraft-current = final.minecraft-server_1_20_2;
+
+    minecraft-server_1_20_2 = prev.minecraft-server.overrideAttrs
+      (oldAttrs: rec {
+        version = "1.20.2";
+        src = fetchurl {
+          url =
+            "https://piston-data.mojang.com/v1/objects/5b868151bd02b41319f54c8d4061b8cae84e665c/server.jar";
+          sha256 = "1s7ag1p8v0vyzc6a8mjkd3rcf065hjb4avqa3zj4dbb9hn1y9bhx";
+        };
+      });
 
     minecraft-server_1_20_1 = prev.minecraft-server.overrideAttrs
       (oldAttrs: rec {
