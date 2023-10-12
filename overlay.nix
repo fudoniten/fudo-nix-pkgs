@@ -93,6 +93,11 @@
         };
       });
 
+    dovecot = prev.dovecot.overrideAttrs (oldAttrs: {
+      configureFlags = oldAttrs.configureFlags ++ [ "--with-solr" ];
+      buildInputs = oldAttrs.buildInputs ++ [ pkgs.expat ];
+    });
+
     postgresql_11_gssapi = prev.postgresql_11.overrideAttrs (oldAttrs: rec {
       configureFlags = oldAttrs.configureFlags ++ [ "--with-gssapi" ];
       buildInputs = oldAttrs.buildInputs ++ [ prev.krb5 ];
