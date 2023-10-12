@@ -95,7 +95,7 @@
 
     dovecot = prev.dovecot.overrideAttrs (oldAttrs: {
       configureFlags = oldAttrs.configureFlags ++ [ "--with-solr" ];
-      buildInputs = oldAttrs.buildInputs ++ [ pkgs.expat ];
+      buildInputs = oldAttrs.buildInputs ++ [ prev.expat ];
     });
 
     postgresql_11_gssapi = prev.postgresql_11.overrideAttrs (oldAttrs: rec {
