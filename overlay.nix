@@ -21,6 +21,11 @@
 
     papermc-current = final.papermc-1_20_2;
 
+    papermc-1_20_4 = callPackage ./pkgs/papermc-current.nix {
+      version = "1.20.4.329";
+      sha256 = "aonuidnaoudnaoudiouid";
+    };
+
     papermc-1_20_2 = callPackage ./pkgs/papermc-current.nix {
       version = "1.20.2.223";
       sha256 = "1470dvsr6g6k2qixgk1cl2yx1x44gzsd9hci7vx675sx2gi0gqha";
@@ -31,7 +36,17 @@
       sha256 = "10rxj7mkw04wp21k0nhsxa2bzhvcwnqj1hz4vq98fg4kbnb7dx3j";
     };
 
-    minecraft-current = final.minecraft-server_1_20_2;
+    minecraft-current = final.minecraft-server_1_20_4;
+
+    minecraft-server_1_20_4 = prev.minecraft-server.overrideAttrs
+      (oldAttrs: rec {
+        version = "1.20.4";
+        src = fetchurl {
+          url =
+            "https://piston-data.mojang.com/v1/objects/8dd1a28015f51b1803213892b50b7b4fc76e594d/server.jar";
+          sha256 = "0qykf9a3nacklqsyb30kg9m79nw462la6rf92gsdssdakprscgy0";
+        };
+      });
 
     minecraft-server_1_20_2 = prev.minecraft-server.overrideAttrs
       (oldAttrs: rec {
