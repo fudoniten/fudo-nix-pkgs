@@ -23,7 +23,7 @@
 
     papermc-1_20_4 = callPackage ./pkgs/papermc-current.nix {
       version = "1.20.4.329";
-      sha256 = "1470dvsr6g6k2qixgk1cl2yx1x44gzsd9hci7vx675sx2gi0gqhb";
+      sha256 = "x1wQVRmq4V5XzflF+X1jcQ9cPEwh1sC/9O3WAqutGhI=";
     };
 
     papermc-1_20_2 = callPackage ./pkgs/papermc-current.nix {
