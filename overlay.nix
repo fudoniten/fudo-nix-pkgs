@@ -19,7 +19,7 @@
 
     letsencrypt-ca = callPackage ./pkgs/letsencrypt-ca.nix { };
 
-    papermc-current = final.papermc-1_20_2;
+    papermc-current = final.papermc-1_20_4;
 
     papermc-1_20_4 = callPackage ./pkgs/papermc-current.nix {
       version = "1.20.4.329";
