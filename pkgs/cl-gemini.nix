@@ -35,34 +35,22 @@ let
     (loop (sleep 10))
   '';
 
-  server-wrapper = pkgs.writeShellApplication {
-    name = "cl-gemini-launcher";
-
-    runtimeInputs = with pkgs; [ openssl ];
-
-    text = concatStringsSep " " [
-      "${pkgs.lispPackages.clwrapper}/bin/common-lisp.sh"
-      "--load ${server-launcher}"
-    ];
-  };
-
   sbcl-with-ssl = pkgs.sbcl.overrideAttrs (oldAttrs: rec {
     propagatedBuildInputs = oldAttrs.buildInputs ++ [ pkgs.openssl.dev ];
   });
 
-in pkgs.stdenv.mkDerivation {
-  name = "cl-gemini-${version}";
+in pkgs.writeShellApplication {
+  name = "cl-gemini-launcher";
 
-  propagatedBuildInputs = with pkgs; [
+  runtimeInputs = with pkgs; [
     asdf
     sbcl-with-ssl
+    openssl
     localLispPackages.cl-gemini
   ];
 
-  phases = [ "installPhase" ];
-
-  installPhase = ''
-    mkdir -p $out/bin
-    cp "${server-wrapper}" "$out/bin/launch-server.sh"
-  '';
+  text = concatStringsSep " " [
+    "${pkgs.lispPackages.clwrapper}/bin/common-lisp.sh"
+    "--load ${server-launcher}"
+  ];
 }
