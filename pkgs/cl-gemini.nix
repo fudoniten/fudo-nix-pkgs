@@ -36,7 +36,7 @@ let
   '';
 
   server-wrapper = pkgs.writeShellApplication {
-    name = "cl-gemini-launch-server.sh";
+    name = "cl-gemini-launcher";
 
     runtimeInputs = with pkgs; [ openssl ];
 
