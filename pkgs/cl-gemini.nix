@@ -40,7 +40,7 @@ let
   '';
 
   sbcl-with-ssl = pkgs.sbcl.overrideAttrs (oldAttrs: rec {
-    buildInputs = oldAttrs.buildInputs ++ [ pkgs.openssl.dev ];
+    propagatedBuildInputs = oldAttrs.buildInputs ++ [ pkgs.openssl.dev ];
   });
 
 in pkgs.stdenv.mkDerivation {
