@@ -19,14 +19,6 @@
 
     letsencrypt-ca = callPackage ./pkgs/letsencrypt-ca.nix { };
 
-    factorio-current = final.factorio-1_1_100;
-
-    factorio-1_1_100 = prev.factorio-headless-experimental.overrideAttrs
-      (oldAttrs: rec {
-        version = "1.1.100";
-        sha256 = "x1wQVRmq4V5XzflF+X1jcQ9cPEwh1sC/9O3WAq3tGhI=";
-      });
-
     papermc-current = final.papermc-1_20_4;
 
     papermc-1_20_4 = callPackage ./pkgs/papermc-current.nix {
