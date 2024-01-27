@@ -8,10 +8,10 @@ pkgs.buildGoModule rec {
     owner = "int128";
     repo = "gpup";
     rev = "${version}";
-    sha256 = "0zdkd5iwkp270p0810dijg25djkzrsdyqiqaqv6rzzgzj5d5pwhm";
+    sha256 = "sha256-FfJbWpH//Z/NxgpH7JvOf8pWxJOxgYDABUfcyWNps30=";
   };
 
-  modSha256 = "15ndc6jq51f9mz1v089416x2lxrifp3wglbxpff8b055jj07hbkw";
+  vendorHash = "15ndc6jq51f9mz1v089416x2lxrifp3wglbxpff8b055jj07hbkw";
 
   subPackages = [ "." ];
 
@@ -20,5 +20,5 @@ pkgs.buildGoModule rec {
     homepage = "https://github.com/int128/gpup";
     license = licenses.asl20;
     platforms = platforms.linux ++ platforms.darwin;
-  };  
+  };
 }
