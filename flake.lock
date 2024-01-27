@@ -145,11 +145,11 @@
         "utils": "utils"
       },
       "locked": {
-        "lastModified": 1706383511,
-        "narHash": "sha256-BvEm7puLqC5Ncls8k8FLgBvptjOKTPUekbkXrKa6GC4=",
+        "lastModified": 1706383993,
+        "narHash": "sha256-9tW9gK/1TLQQhOZQUtcrvmeuYkHo+WMLH0EG1q1W8Nk=",
         "ref": "refs/heads/master",
-        "rev": "18ff037bc614ec3ec3c23d495543b9d9797505b3",
-        "revCount": 6,
+        "rev": "6b3dea996c6409b157a821c3f30df087d098edfd",
+        "revCount": 7,
         "type": "git",
         "url": "https://git.fudo.org/fudo-public/google-photo-uploader.git"
       },
