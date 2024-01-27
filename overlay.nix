@@ -269,5 +269,6 @@
 
     youtube-dl = unstable.youtube-dl;
 
-    google-photo-uploader = google-photo-uploader.packages."${system}".default;
+    google-photo-uploader =
+      google-photo-uploader.packages."${system}".google-photo-uploader;
   })
