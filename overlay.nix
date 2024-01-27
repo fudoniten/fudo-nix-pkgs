@@ -1,4 +1,4 @@
-{ unstableNixpkgs, helpers, ... }:
+{ unstableNixpkgs, helpers, google-photo-uploader, ... }:
 
 (final: prev:
   with builtins;
@@ -268,4 +268,8 @@
       libInputs = [ ./static ];
       text = readFile ./static/nsd-sign-zone.rb;
     };
+
+    youtube-dl = unstable.youtube-dl;
+
+    google-photo-uploader = google-photo-uploader.packages."${system}".default;
   })
