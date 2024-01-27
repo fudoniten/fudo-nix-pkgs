@@ -1,4 +1,4 @@
-{ unstableNixpkgs, helpers, google-photo-uploader, ... }:
+{ unstableNixpkgs, helpers, google-photo-uploader-flake, ... }:
 
 (final: prev:
   with builtins;
@@ -270,5 +270,5 @@
     youtube-dl = unstable.youtube-dl;
 
     google-photo-uploader =
-      google-photo-uploader.packages."${system}".google-photo-uploader;
+      google-photo-uploader-flake.packages."${system}".google-photo-uploader;
   })
