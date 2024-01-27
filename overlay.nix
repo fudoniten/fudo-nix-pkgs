@@ -149,8 +149,6 @@
 
     fudo-service = callPackage ./pkgs/fudo-service.nix { };
 
-    google-photos-uploader = callPackage ./pkgs/google-photos-uploader.nix { };
-
     vanilla-forum = callPackage ./vanilla-forum.nix { };
 
     openttd-data = fetchgit {
