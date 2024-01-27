@@ -138,18 +138,18 @@
         "type": "github"
       }
     },
-    "google-photo-uploader": {
+    "google-photo-uploader-flake": {
       "inputs": {
         "gomod2nix": "gomod2nix",
         "nixpkgs": "nixpkgs_2",
         "utils": "utils"
       },
       "locked": {
-        "lastModified": 1706381525,
-        "narHash": "sha256-8Wh4dc6PVdRH10DHhM67WW/01YHHgic6X5p3vcXWTlQ=",
+        "lastModified": 1706382936,
+        "narHash": "sha256-ZDdNqEN9P3asEYH7oVW/FdE0H+WVKMcCJWIIhKyQnqs=",
         "ref": "refs/heads/master",
-        "rev": "d698c0c761be4cf2a3b1e265dbd48dc411c2a7ef",
-        "revCount": 3,
+        "rev": "91233f71aa5c8d1707b822c4f788e59299d5e2af",
+        "revCount": 4,
         "type": "git",
         "url": "https://git.fudo.org/fudo-public/google-photo-uploader.git"
       },
@@ -242,7 +242,7 @@
     },
     "root": {
       "inputs": {
-        "google-photo-uploader": "google-photo-uploader",
+        "google-photo-uploader-flake": "google-photo-uploader-flake",
         "helpers": "helpers",
         "unstableNixpkgs": "unstableNixpkgs"
       }
