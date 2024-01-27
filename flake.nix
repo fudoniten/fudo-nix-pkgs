@@ -2,7 +2,7 @@
   description = "Fudo packages";
 
   inputs = {
-    google-photo-uploader =
+    google-photo-uploader.url =
       "git+https://git.fudo.org/fudo-public/google-photo-uploader.git";
     helpers.url = "git+https://git.fudo.org/fudo-public/nix-helpers.git";
     unstableNixpkgs.url = "nixpkgs/nixos-unstable";
