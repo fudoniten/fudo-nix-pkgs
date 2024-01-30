@@ -99,7 +99,7 @@ def opt_str(cond, str)
   cond ? str : ''
 end
 
-signing_keys = ([options[:ksk]] + valid_zsks.map(&:private_key)).map { |kf| kf.gsub(/\.private$/, '') }
+signing_keys = (valid_zsks.map(&:private_key) + [options[:ksk]]).map { |kf| kf.gsub(/\.private$/, '') }
 
 puts "signing #{options[:domain]} zonefile #{zonefile} with keys: #{signing_keys.join(', ')}" if verbose
 
@@ -112,6 +112,9 @@ exec!(verbose, "signing zonefile #{zonefile} ...",
         "-e #{options[:expiry]}",
         '-u',
         '-A',
+        '-n',
+        '-p',
+        '-s $(head -n 1000 /dev/random | sha1sum | cut -b 1-16)',
         zonefile,
         signing_keys.join(' ')
       ].join(' '))
