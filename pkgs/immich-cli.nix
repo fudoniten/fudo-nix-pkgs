@@ -1,9 +1,9 @@
-{ lib, buildNpmPackage, fetchFromGitHub, ... }:
+{ lib, buildNpmPackage, fetchFromGitHub, jq, ... }:
 
 let
   version = "1.94.1";
 
-  immichRepo = fetchFromGitHub {
+  immichSrc = fetchFromGitHub {
     owner = "immich-app";
     repo = "immich";
     rev = "v${version}";
@@ -14,15 +14,12 @@ in buildNpmPackage rec {
   pname = "immich-cli";
   inherit version;
 
-  src = immichRepo;
+  src = "${immichSrc}/cli";
 
   npmDepsHash = "sha256-a9ehls05ov98FUg8mw0MlAV05ori3CEwGLiODndGmoQ=";
 
-  npmWorkspace = "@immich/cli";
-
   postPatch = ''
-    cp ${immichRepo}/cli/package-lock.json .
-    cp ${immichRepo}/cli/package.json .
+    ${jq}/bin/jq '.dependencies."@immich/sdk"' = "${immichSrc}/open-api/typescript-sdk" > package.json
   '';
 
   meta = {
