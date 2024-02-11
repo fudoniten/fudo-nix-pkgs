@@ -18,7 +18,8 @@ in buildNpmPackage rec {
 
   src = "${immichSrc}/cli";
 
-  npmDepsHash = "sha256-a9ehls05ov98FUg8mw0MlAV05ori3CEwGLiODndGmoQ=";
+  npmDepsHash =
+    lib.fakeHash; # "sha256-a9ehls05ov98FUg8mw0MlAV05ori3CEwGLiODndGmoQ=";
 
   postPatch = ''
     PKGDATA=$(${jq}/bin/jq '.packages."../open-api/typescript-sdk"' ./package-lock.json)
