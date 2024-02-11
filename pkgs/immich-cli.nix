@@ -19,7 +19,7 @@ in buildNpmPackage rec {
   npmDepsHash = "sha256-a9ehls05ov98FUg8mw0MlAV05ori3CEwGLiODndGmoQ=";
 
   postPatch = ''
-    ${jq}/bin/jq '.dependencies."@immich/sdk"' = "${immichSrc}/open-api/typescript-sdk" > package.json
+    ${jq}/bin/jq '.dependencies."@immich/sdk"' = "${immichSrc}/open-api/typescript-sdk" ${immichSrc}/cli/package.json > package.json
   '';
 
   meta = {
