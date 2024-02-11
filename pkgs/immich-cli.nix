@@ -20,7 +20,10 @@ in buildNpmPackage rec {
 
   npmWorkspace = "@immich/cli";
 
-  postPatch = "cp ${immichRepo}/cli/package-lock.json $src";
+  postPatch = ''
+    cp ${immichRepo}/cli/package-lock.json .
+    cp ${immichRepo}/cli/package.json .
+  '';
 
   meta = {
     changelog = "https://github.com/immich-app/immich/releases/tag/${src.rev}";
