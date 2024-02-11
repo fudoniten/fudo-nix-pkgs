@@ -1,11 +1,11 @@
-{ lib, buildNpmPackage, fetchFromGithub, ... }:
+{ lib, buildNpmPackage, fetchFromGitHub, ... }:
 
 buildNpmPackage rec {
   pname = "immich-cli";
   version = "1.94.1";
 
   src = let
-    immichRepo = fetchFromGithub {
+    immichRepo = fetchFromGitHub {
       owner = "immich-app";
       repo = "immich";
       rev = "v${version}";
