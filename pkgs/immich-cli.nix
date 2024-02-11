@@ -18,7 +18,7 @@ in buildNpmPackage rec {
 
   src = "${immichSrc}";
 
-  sourceRoot = "./cli";
+  sourceRoot = "source/cli";
 
   npmDepsHash = "sha256-a9ehls05ov98FUg8mw0MlAV05ori3CEwGLiODndGmoQ=";
 
