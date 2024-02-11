@@ -272,5 +272,5 @@
     google-photo-uploader =
       google-photo-uploader-flake.packages."${system}".google-photo-uploader;
 
-    immich-cli = callPackage ./pkgs/immich-cli.nix { };
+    immich-cli = unstable.immich-cli;
   })
