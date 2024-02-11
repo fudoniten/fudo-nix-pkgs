@@ -4,16 +4,16 @@ buildNpmPackage rec {
   pname = "immich-cli";
   version = "1.94.1";
 
-  src = let
-    immichRepo = fetchFromGitHub {
-      owner = "immich-app";
-      repo = "immich";
-      rev = "v${version}";
-      hash = "sha256-U1QftTpUOvel2Szt4yXZd04RpyyaAqanBIrQ727p54A=";
-    };
-  in "${immichRepo}/cli";
+  src = fetchFromGitHub {
+    owner = "immich-app";
+    repo = "immich";
+    rev = "v${version}";
+    hash = "sha256-U1QftTpUOvel2Szt4yXZd04RpyyaAqanBIrQ727p54A=";
+  };
 
   npmDepsHash = "sha256-a9ehls05ov98FUg8mw0MlAV05ori3CEwGLiODndGmoQ=";
+
+  npmWorkspace = "@immich/cli";
 
   meta = {
     changelog = "https://github.com/immich-app/immich/releases/tag/${src.rev}";
