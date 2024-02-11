@@ -22,12 +22,12 @@ in buildNpmPackage rec {
 
   postPatch = ''
     PKGDATA=$(${jq}/bin/jq '.packages."../open-api/typescript-sdk"' ./package-lock.json)
-    cat ${immichSrc}/package-lock.json |
+    cat ${immichSrc}/cli/package-lock.json |
       ${jq}/bin/jq '.packages."".dependencies."@immich/sdk" = "file:${sdkDir}"' |
       ${jq}/bin/jq '.packages."node_modules/@immich/sdk.resolved" = "file:${sdkDir}"' |
       ${jq}/bin/jq '.dependencies."@immich/sdk".version = "file:${sdkDir}"' |
       ${jq}/bin/jq --arg PKGDATA="$PKGDATA" '.packages."${sdkDir}" = $PKGDATA"' > ./package-lock.json
-    ${jq}/bin/jq '.dependencies."@immich/sdk" = "${immichSrc}/open-api/typescript-sdk"' ${immichSrc}/package.json > ./package.json
+    ${jq}/bin/jq '.dependencies."@immich/sdk" = "${immichSrc}/open-api/typescript-sdk"' ${immichSrc}/cli/package.json > ./package.json
   '';
 
   meta = {
