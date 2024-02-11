@@ -26,7 +26,7 @@ in buildNpmPackage rec {
       ${jq}/bin/jq '.packages."".dependencies."@immich/sdk" = "file:${sdkDir}"' |
       ${jq}/bin/jq '.packages."node_modules/@immich/sdk.resolved" = "file:${sdkDir}"' |
       ${jq}/bin/jq '.dependencies."@immich/sdk".version = "file:${sdkDir}"' |
-      ${jq}/bin/jq ".packages.'${sdkDir}' = $PKGDATA" > ./package-lock.json
+      ${jq}/bin/jq --arg PKGDATA="$PKGDATA" '.packages."${sdkDir}" = $PKGDATA"' > ./package-lock.json
     ${jq}/bin/jq '.dependencies."@immich/sdk" = "${immichSrc}/open-api/typescript-sdk"' ${immichSrc}/package.json > ./package.json
   '';
 
