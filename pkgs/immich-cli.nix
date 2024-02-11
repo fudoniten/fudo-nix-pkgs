@@ -3,7 +3,7 @@
 let
   version = "1.94.1";
 
-  src = fetchFromGitHub {
+  immichRepo = fetchFromGitHub {
     owner = "immich-app";
     repo = "immich";
     rev = "v${version}";
@@ -14,13 +14,13 @@ in buildNpmPackage rec {
   pname = "immich-cli";
   inherit version;
 
-  inherit src;
+  src = immichRepo;
 
   npmDepsHash = "sha256-a9ehls05ov98FUg8mw0MlAV05ori3CEwGLiODndGmoQ=";
 
   npmWorkspace = "@immich/cli";
 
-  postPatch = "cp ${src}/cli/package-lock.json .";
+  postPatch = "cp ${immichRepo}/cli/package-lock.json $src";
 
   meta = {
     changelog = "https://github.com/immich-app/immich/releases/tag/${src.rev}";
