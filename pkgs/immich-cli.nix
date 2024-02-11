@@ -14,13 +14,15 @@ in buildNpmPackage rec {
   pname = "immich-cli";
   inherit version;
 
-  src = "${immichSrc}/cli";
+  src = "${immichSrc}";
+
+  npmWorkspace = "./cli";
 
   npmDepsHash = "sha256-a9ehls05ov98FUg8mw0MlAV05ori3CEwGLiODndGmoQ=";
 
-  postPatch = ''
-    ${jq}/bin/jq '.dependencies."@immich/sdk" = "${immichSrc}/open-api/typescript-sdk"' ${immichSrc}/cli/package.json > package.json
-  '';
+  # postPatch = ''
+  #   ${jq}/bin/jq '.dependencies."@immich/sdk" = "${immichSrc}/open-api/typescript-sdk"' ${immichSrc}/cli/package.json > package.json
+  # '';
 
   meta = {
     changelog = "https://github.com/immich-app/immich/releases/tag/${src.rev}";
