@@ -3,8 +3,8 @@
 
   inputs = {
     google-photo-uploader-flake.url =
-      "git+https://git.fudo.org/fudo-public/google-photo-uploader.git";
-    helpers.url = "git+https://git.fudo.org/fudo-public/nix-helpers.git";
+      "git+https://fudo.dev/public/google-photo-uploader.git";
+    helpers.url = "git+https://fudo.dev/public/nix-helpers.git";
     unstableNixpkgs.url = "nixpkgs/nixos-unstable";
   };
 
