@@ -152,7 +152,7 @@
     vanilla-forum = callPackage ./vanilla-forum.nix { };
 
     openttd-data = fetchgit {
-      url = "https://git.fudo.org/fudo-public/openttd-data.git";
+      url = "https://fudo.dev/public/openttd-data.git";
       rev = "5b7dd0ca9014e642e1f2d0aa3154b5da869911d3";
       sha256 = "061k0f0jgm5k81djslb172xk0wkis0m878izgisyj2qgg3wf1awh";
     };
@@ -165,11 +165,11 @@
     };
 
     signal-desktop = prev.signal-desktop.overrideAttrs (oldAttrs: rec {
-      version = "6.48.1";
+      version = "6.7.4.0";
       src = fetchurl {
         url =
           "https://updates.signal.org/desktop/apt/pool/s/signal-desktop/signal-desktop_${version}_amd64.deb";
-        sha256 = "0rqpkfnk82nmvav8jvhspdhdf1hcynqyszbpwhr70z59d60mslnw";
+        sha256 = "069k7kcg8h16q0mm1bqdf7x66qji653apgwhnb52kdqsfzr1ibzm";
       };
     });
 

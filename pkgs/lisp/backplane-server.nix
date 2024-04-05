@@ -8,7 +8,7 @@ pkgs.lispPackages.buildLispPackage {
   buildSystems = [ "backplane-server" ];
 
   src = pkgs.fetchgit {
-    url = "https://git.fudo.org/fudo-public/backplane-server.git";
+    url = "https://fudo.dev/public/backplane-server.git";
     rev = "5b50dd8badf5b5460e9cc7e76e191d274712a3bd";
     sha256 = "18fysksmrbfk131fgazbw1cpaxz47015ashap9y4rswd904dzzss";
     fetchSubmodules = false;

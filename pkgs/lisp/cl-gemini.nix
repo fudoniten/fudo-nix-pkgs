@@ -1,7 +1,7 @@
 { pkgs, localLispPackages, ... }:
 
 let
-  url = "https://git.fudo.org/informis/cl-gemini.git";
+  url = "https://fudo.dev/informis/cl-gemini.git";
   rev = "9dcb1674cd00bb5a5e4d0fcb3ef6c6a8e7dbb72c";
   sha256 = "19sj576hk9xl7hqcydqsgqs3xl8r4jg658dwcvcw9gh8j901r65d";
 
