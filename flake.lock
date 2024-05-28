@@ -10,11 +10,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1711197542,
-        "narHash": "sha256-RMM+G49X56W8gE2sg08TUsuR30KcU0LNLttsSRgxTCM=",
+        "lastModified": 1714381494,
+        "narHash": "sha256-zz6GAnDODuB1apPoRE2qLC6J37feHixep3Cdd3fRQsE=",
         "owner": "jlesquembre",
         "repo": "clj-nix",
-        "rev": "20109727c6623b486d37fbd957d64c2a8232ccde",
+        "rev": "545e7f55c9cb014123b2b3261385f1561d308402",
         "type": "github"
       },
       "original": {
@@ -205,11 +205,11 @@
         "utils": "utils_3"
       },
       "locked": {
-        "lastModified": 1712261209,
-        "narHash": "sha256-Jgbe0+ExLJMM9JS07EqO5J1YtqzvXuJXdgA+Pk23HUg=",
+        "lastModified": 1716924579,
+        "narHash": "sha256-y1SiT5E3msOcsJ9E22nR1LPCd/mBkm6YBqX/amM81OY=",
         "ref": "refs/heads/master",
-        "rev": "388036ef098361205602575eeb3651110844e9cc",
-        "revCount": 108,
+        "rev": "1d3d27aa4c22a32b6dc6a698f286f88b59f1a197",
+        "revCount": 109,
         "type": "git",
         "url": "https://fudo.dev/public/nix-helpers.git"
       },
@@ -326,11 +326,11 @@
     },
     "nixpkgs_4": {
       "locked": {
-        "lastModified": 1712168706,
-        "narHash": "sha256-XP24tOobf6GGElMd0ux90FEBalUtw6NkBSVh/RlA6ik=",
+        "lastModified": 1716633019,
+        "narHash": "sha256-xim1b5/HZYbWaZKyI7cn9TJCM6ewNVZnesRr00mXeS4=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "1487bdea619e4a7a53a4590c475deabb5a9d1bfb",
+        "rev": "9d29cd266cebf80234c98dd0b87256b6be0af44e",
         "type": "github"
       },
       "original": {
