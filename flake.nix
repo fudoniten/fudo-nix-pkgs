@@ -5,16 +5,24 @@
     google-photo-uploader-flake.url =
       "git+https://fudo.dev/public/google-photo-uploader.git";
     helpers.url = "git+https://fudo.dev/public/nix-helpers.git";
+    nixpkgs.url = "nixpkgs/nixos-23.11";
     unstableNixpkgs.url = "nixpkgs/nixos-unstable";
+    utils.url = "github:numtide/flake-utils";
   };
 
-  outputs = { self, ... }@inputs: {
-    overlays = rec {
-      packages = import ./overlay.nix inputs;
-      default = packages;
-    };
-    nixosModules.default = { ... }: {
-      config.nixpkgs.overlays = [ self.overlays.default ];
-    };
-  };
+  outputs = { self, nixpkgs, helpers, utils, ... }@inputs:
+    (utils.lib.eachDefaultSystem (system:
+      let pkgs = import nixpkgs { inherit system; };
+      in { packages = import ./pkgs.nix inputs pkgs; })) // {
+        overlays = rec {
+          packages = (final: prev:
+            self.packages."${prev.system}" // {
+
+            });
+          default = packages;
+        };
+        nixosModules.default = { ... }: {
+          config.nixpkgs.overlays = [ self.overlays.default ];
+        };
+      };
 }
