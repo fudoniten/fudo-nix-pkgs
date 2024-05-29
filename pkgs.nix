@@ -59,7 +59,7 @@ in rec {
 
   cl-gemini = callPackage ./pkgs/cl-gemini.nix { inherit localLispPackages; };
 
-  lispPackages = lispPackages // localLispPackages;
+  lispPackages = localLispPackages;
 
   openttd-data = fetchgit {
     url = "https://fudo.dev/public/openttd-data.git";
