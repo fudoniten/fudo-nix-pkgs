@@ -2,8 +2,7 @@ inputs:
 { callPackage, fetchgit, fetchurl, fetchFromGitHub, lispPackages, ... }@pkgs:
 
 let
-  localLispPackages = (callPackage ./pkgs/lisp { inherit localLispPackages; })
-    // lispPackages;
+  localLispPackages = (callPackage ./pkgs/lisp.nix { }) // lispPackages;
   helpers = inputs.helpers;
   readFile = builtins.readFile;
 
@@ -59,6 +58,8 @@ in rec {
   hll2380dw-lpr = callPackage ./pkgs/hll2380dw-lp.nix { };
 
   cl-gemini = callPackage ./pkgs/cl-gemini.nix { inherit localLispPackages; };
+
+  lispPackages = lispPackages // localLispPackages;
 
   openttd-data = fetchgit {
     url = "https://fudo.dev/public/openttd-data.git";
