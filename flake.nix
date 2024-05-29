@@ -10,14 +10,15 @@
     utils.url = "github:numtide/flake-utils";
   };
 
-  outputs = { self, nixpkgs, helpers, utils, ... }@inputs:
+  outputs = { self, nixpkgs, unstableNixpkgs, helpers, utils, ... }@inputs:
     (utils.lib.eachDefaultSystem (system:
       let pkgs = import nixpkgs { inherit system; };
       in { packages = import ./pkgs.nix inputs pkgs; })) // {
         overlays = rec {
           packages = (final: prev:
-            self.packages."${prev.system}" // {
-
+            let unstable = import unstableNixpkgs { inherit (prev) system; };
+            in self.packages."${prev.system}" // {
+              immich-cli = unstable.immich-cli;
             });
           default = packages;
         };

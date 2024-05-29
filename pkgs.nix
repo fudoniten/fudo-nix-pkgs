@@ -1,9 +1,12 @@
-helpers:
+inputs:
 { callPackage, fetchgit, fetchurl, fetchFromGitHub, lispPackages, ... }@pkgs:
 
 let
   localLispPackages = (callPackage ./pkgs/lisp { inherit localLispPackages; })
     // lispPackages;
+  helpers = inputs.helpers;
+  readFile = builtins.readFile;
+
 in rec {
   letsencrypt-ca = callPackage ./pkgs/letsencrypt-ca.nix { };
 
@@ -78,87 +81,83 @@ in rec {
 
   kdcMergePrincipals = helpers.lib.writeRubyApplication {
     name = "kdc-merge-principals";
-    pkgs = prev;
+    inherit pkgs;
     runtimeInputs = [ heimdal ];
     text = readFile ./static/kdc-merge-principals.rb;
   };
 
   generateHostSshKeys = helpers.lib.writeRubyApplication {
     name = "generate-host-ssh-keys";
-    pkgs = prev;
+    inherit pkgs;
     runtimeInputs = [ pkgs.openssh ];
     text = readFile ./static/generate-host-ssh-keys.rb;
   };
 
   initializeKerberosRealm = helpers.lib.writeRubyApplication {
     name = "initialize-kerberos-realm";
-    pkgs = prev;
+    inherit pkgs;
     runtimeInputs = [ heimdal ];
     text = readFile ./static/initialize-kerberos-realm.rb;
   };
 
   instantiateKerberosRealm = helpers.lib.writeRubyApplication {
     name = "instantiate-kerberos-realm";
-    pkgs = prev;
+    inherit pkgs;
     runtimeInputs = [ heimdal ];
     text = readFile ./static/instantiate-kerberos-realm.rb;
   };
 
   addHostToKerberosRealm = helpers.lib.writeRubyApplication {
     name = "add-host-to-kerberos-realm";
-    pkgs = prev;
+    inherit pkgs;
     runtimeInputs = [ heimdal ];
     text = readFile ./static/add-host-to-kerberos-realm.rb;
   };
 
   extractKerberosHostKeytab = helpers.lib.writeRubyApplication {
     name = "extract-kerberos-host-keytab";
-    pkgs = prev;
+    inherit pkgs;
     runtimeInputs = [ heimdal ];
     text = readFile ./static/extract-kerberos-host-keytab.rb;
   };
 
   extractKerberosKeytab = helpers.lib.writeRubyApplication {
     name = "extract-kerberos-keytab";
-    pkgs = prev;
+    inherit pkgs;
     runtimeInputs = [ heimdal ];
     text = readFile ./static/extract-kerberos-keytab.rb;
   };
 
   kdcConvertDatabase = helpers.lib.writeRubyApplication {
     name = "kdc-convert-database";
-    pkgs = prev;
+    inherit pkgs;
     runtimeInputs = [ heimdal ];
     text = readFile ./static/kdc-convert-database.rb;
   };
 
   kdcAddPrincipal = helpers.lib.writeRubyApplication {
     name = "kdc-add-principal";
-    pkgs = prev;
+    inherit pkgs;
     runtimeInputs = [ heimdal ];
     text = readFile ./static/kdc-add-principal.rb;
   };
 
   nsdRotateKeys = helpers.lib.writeRubyApplication {
     name = "nsd-rotate-keys";
-    pkgs = prev;
-    runtimeInputs = with prev; [ ldns.examples ];
+    inherit pkgs;
+    runtimeInputs = with pkgs; [ ldns.examples ];
     libInputs = [ ./static ];
     text = readFile ./static/nsd-rotate-keys.rb;
   };
 
   nsdSignZone = helpers.lib.writeRubyApplication {
     name = "nsd-sign-zone";
-    pkgs = prev;
-    runtimeInputs = with prev; [ ldns.examples ];
+    inherit pkgs;
+    runtimeInputs = with pkgs; [ ldns.examples ];
     libInputs = [ ./static ];
     text = readFile ./static/nsd-sign-zone.rb;
   };
 
-  youtube-dl = unstable.youtube-dl;
-
   google-photo-uploader =
-    google-photo-uploader-flake.packages."${system}".google-photo-uploader;
-
-  immich-cli = unstable.immich-cli;
+    inputs.google-photo-uploader-flake.packages."${pkgs.system}".google-photo-uploader;
 }
