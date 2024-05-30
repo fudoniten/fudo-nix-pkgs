@@ -28,7 +28,7 @@
     {
       overlays = rec {
         packages = (final: prev:
-          let unstable = import unstableNixpkgs { inherit (prev) system; };
+          let unstable = import unstableNixpkgs { system = prev.system; };
           in self.packages."${prev.system}" // {
             immich-cli = unstable.immich-cli;
           });
