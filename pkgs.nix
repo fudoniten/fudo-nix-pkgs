@@ -1,8 +1,8 @@
 inputs:
-{ callPackage, fetchgit, fetchurl, fetchFromGitHub, lispPackages, ... }@pkgs:
+{ callPackage, fetchgit, fetchurl, fetchFromGitHub, lispPackages
+, localLispPackages, ... }@pkgs:
 
 let
-  localLispPackages = (callPackage ./pkgs/lisp.nix { }) // lispPackages;
   helpers = inputs.helpers;
   readFile = builtins.readFile;
 
@@ -56,8 +56,6 @@ in rec {
   hll2380dw-cups = callPackage ./pkgs/hll2380dw-cups.nix { };
 
   hll2380dw-lpr = callPackage ./pkgs/hll2380dw-lp.nix { };
-
-  cl-gemini = callPackage ./pkgs/cl-gemini.nix { inherit localLispPackages; };
 
   lispPackages = localLispPackages;
 
