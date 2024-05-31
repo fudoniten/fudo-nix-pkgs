@@ -28,8 +28,8 @@
     {
       overlays = rec {
         packages = (final: prev:
-          let unstable = import unstableNixpkgs { system = prev.system; };
-          in self.packages."${prev.system}" // {
+          let unstable = import unstableNixpkgs { system = final.system; };
+          in self.packages."${final.system}" // {
             immich-cli = unstable.immich-cli;
           });
         default = packages;
