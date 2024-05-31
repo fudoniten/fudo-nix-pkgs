@@ -27,7 +27,9 @@
 
     {
       overlays = rec {
-        packages = (final: prev: self.packages."${prev.system}");
+        packages = (final: prev:
+          let localLispPackages = lisp-packages.packages."${prev.system}";
+          in prev.callPackage ./pkgs.nix { inherit inputs localLispPackages; });
         default = packages;
       };
 
