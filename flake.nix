@@ -15,7 +15,11 @@
   outputs = { self, nixpkgs, unstableNixpkgs, lisp-packages, helpers, utils, ...
     }@inputs:
     (utils.lib.eachDefaultSystem (system:
-      let pkgs = import nixpkgs { inherit system; };
+      let
+        pkgs = import nixpkgs {
+          inherit system;
+          permittedInsecurePackages = [ "openssl-1.1.1w" ];
+        };
       in { packages = pkgs.callPackage ./pkgs.nix { inherit inputs pkgs; }; }))
 
     //
