@@ -15,17 +15,14 @@
   outputs = { self, nixpkgs, unstableNixpkgs, lisp-packages, helpers, utils, ...
     }@inputs:
     (utils.lib.eachDefaultSystem (system:
-      let
-        pkgs = import nixpkgs { inherit system; };
-        localLispPackages = lisp-packages.packages."${system}";
+      let pkgs = import nixpkgs { inherit system; };
       in { packages = pkgs.callPackage ./pkgs.nix { inherit inputs; }; }))
 
     //
 
     {
       overlays = rec {
-        packages =
-          (final: prev: prev.callPackage ./pkgs.nix { inherit inputs; });
+        packages = (final: prev: self.packages."{prev.system}");
         default = packages;
       };
 
