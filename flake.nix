@@ -15,7 +15,7 @@
   outputs = { self, nixpkgs, unstableNixpkgs, lisp-packages, helpers, utils, ...
     }@inputs:
     (utils.lib.eachDefaultSystem (system:
-      let pkgs = nixpkgs.legacyPackages."${system}";
+      let pkgs = import nixpkgs { inherit system; };
       in { packages = pkgs.callPackage ./pkgs.nix { inherit inputs; }; }))
 
     //

@@ -3,7 +3,7 @@
     "agnostic-lizard": {
       "flake": false,
       "locked": {
-        "narHash": "sha256-ZMFP3Nv/I3di18kCtdLo4KeYUcpCRRgrdJa++0pCU1A=",
+        "narHash": "sha256-aI9BA6har7BMCulpXfzKFzFE7H7viampjBKVNYWeT2g=",
         "type": "file",
         "url": "https://gitlab.common-lisp.net/mraskin/agnostic-lizard.git"
       },
@@ -15,7 +15,7 @@
     "arrows": {
       "flake": false,
       "locked": {
-        "narHash": "sha256-o4OHsw3aMxS2z9NejkpEsjDn3jTxF34HlWH+M2DqmFY=",
+        "narHash": "sha256-DejxYS5BiFxJsQyM/OuZahGp6J3LjUO/kOKWR24sKGw=",
         "type": "file",
         "url": "https://gitlab.com/Harleqin/arrows.git"
       },
@@ -236,11 +236,11 @@
         "nixpkgs": "nixpkgs"
       },
       "locked": {
-        "lastModified": 1716202913,
-        "narHash": "sha256-zjPNXI4DWBOrPsrK8u/XTsm5Q36quONQvz0jhAKHEeg=",
+        "lastModified": 1717050755,
+        "narHash": "sha256-C9IEHABulv2zEDFA+Bf0E1nmfN4y6MIUe5eM2RCrDC0=",
         "owner": "nix-community",
         "repo": "gomod2nix",
-        "rev": "4702caff8e201f4c98fe3583637a930d253447c8",
+        "rev": "31b6d2e40b36456e792cd6cf50d5a8ddd2fa59a1",
         "type": "github"
       },
       "original": {
@@ -277,11 +277,11 @@
         "utils": "utils_3"
       },
       "locked": {
-        "lastModified": 1717011269,
-        "narHash": "sha256-DH8aaRpd62W3AMN8H1wIPCvMBEOeBRdIKC218oqiYZw=",
+        "lastModified": 1717224199,
+        "narHash": "sha256-tyVQNugLO6AQ4lr2Kd7OKsS4LVJ16aj0OIXviznyjYA=",
         "ref": "refs/heads/master",
-        "rev": "ba58530238e0d773f8c891270a2f3fea13f1ccf3",
-        "revCount": 111,
+        "rev": "39d3c4a67e8d7cdb54a1241c885ba066bc372726",
+        "revCount": 112,
         "type": "git",
         "url": "https://fudo.dev/public/nix-helpers.git"
       },
@@ -342,11 +342,11 @@
         "xml-emitter": "xml-emitter"
       },
       "locked": {
-        "lastModified": 1717019577,
-        "narHash": "sha256-lZrWSeEQWSM4yLzA8FS9FQG1Wrxrbh+37DGh2Y1ThHM=",
+        "lastModified": 1717028738,
+        "narHash": "sha256-z+YHugS3ElE64qVT4mINSnkQb1ruWqzkhRAZ5H9qDn8=",
         "ref": "refs/heads/master",
-        "rev": "31ff4f6412728e443765d9dacac91f4ec5467971",
-        "revCount": 5,
+        "rev": "df16233130d779fe165c68f3f78064fe9fdba158",
+        "revCount": 6,
         "type": "git",
         "url": "https://fudo.dev/public/lisp-repository.git"
       },
@@ -433,11 +433,11 @@
     },
     "nixpkgs_2": {
       "locked": {
-        "lastModified": 1716633019,
-        "narHash": "sha256-xim1b5/HZYbWaZKyI7cn9TJCM6ewNVZnesRr00mXeS4=",
+        "lastModified": 1716991068,
+        "narHash": "sha256-Av0UWCCiIGJxsZ6TFc+OiKCJNqwoxMNVYDBChmhjNpo=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "9d29cd266cebf80234c98dd0b87256b6be0af44e",
+        "rev": "25cf937a30bf0801447f6bf544fc7486c6309234",
         "type": "github"
       },
       "original": {
@@ -478,11 +478,11 @@
     },
     "nixpkgs_5": {
       "locked": {
-        "lastModified": 1716633019,
-        "narHash": "sha256-xim1b5/HZYbWaZKyI7cn9TJCM6ewNVZnesRr00mXeS4=",
+        "lastModified": 1716991068,
+        "narHash": "sha256-Av0UWCCiIGJxsZ6TFc+OiKCJNqwoxMNVYDBChmhjNpo=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "9d29cd266cebf80234c98dd0b87256b6be0af44e",
+        "rev": "25cf937a30bf0801447f6bf544fc7486c6309234",
         "type": "github"
       },
       "original": {
@@ -493,11 +493,11 @@
     },
     "nixpkgs_6": {
       "locked": {
-        "lastModified": 1716633019,
-        "narHash": "sha256-xim1b5/HZYbWaZKyI7cn9TJCM6ewNVZnesRr00mXeS4=",
+        "lastModified": 1716991068,
+        "narHash": "sha256-Av0UWCCiIGJxsZ6TFc+OiKCJNqwoxMNVYDBChmhjNpo=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "9d29cd266cebf80234c98dd0b87256b6be0af44e",
+        "rev": "25cf937a30bf0801447f6bf544fc7486c6309234",
         "type": "github"
       },
       "original": {
@@ -688,11 +688,11 @@
     },
     "unstableNixpkgs": {
       "locked": {
-        "lastModified": 1716769173,
-        "narHash": "sha256-7EXDb5WBw+d004Agt+JHC/Oyh/KTUglOaQ4MNjBbo5w=",
+        "lastModified": 1716948383,
+        "narHash": "sha256-SzDKxseEcHR5KzPXLwsemyTR/kaM9whxeiJohbL04rs=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "9ca3f649614213b2aaf5f1e16ec06952fe4c2632",
+        "rev": "ad57eef4ef0659193044870c731987a6df5cf56b",
         "type": "github"
       },
       "original": {
