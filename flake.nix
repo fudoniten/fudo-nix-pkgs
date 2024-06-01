@@ -34,11 +34,10 @@
               letsencrypt-ca papermc-current minecraft-current dovecot
               postgresql_11_gssapi postgresql_12_gssapi postgresql_15_gssapi
               hll2380dw-cups hll2380dw-lpr openttd-data signal-desktop lz4json
-              heimdal kdcMergePrincipals generateHostSshKeys
-              initializeKerberosRealm instantiateKerberosRealm
-              addHostToKerberosRealm extractKerberosHostKeytab
-              extractKerberosKeytab kdcConvertDatabase kdcAddPrincipal
-              nsdRotateKeys nsdSignZone google-photo-uploader;
+              kdcMergePrincipals generateHostSshKeys initializeKerberosRealm
+              instantiateKerberosRealm addHostToKerberosRealm
+              extractKerberosHostKeytab extractKerberosKeytab kdcConvertDatabase
+              kdcAddPrincipal nsdRotateKeys nsdSignZone google-photo-uploader;
           };
       };
 
