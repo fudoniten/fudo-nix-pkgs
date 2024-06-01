@@ -18,21 +18,14 @@
       let
         pkgs = import nixpkgs { inherit system; };
         localLispPackages = lisp-packages.packages."${system}";
-      in {
-        packages =
-          pkgs.callPackage ./pkgs.nix { inherit inputs localLispPackages; };
-      }))
+      in { packages = pkgs.callPackage ./pkgs.nix { inherit inputs; }; }))
 
     //
 
     {
       overlays = rec {
-        packages = (final: prev:
-          let
-            inherit (prev) system;
-            localLispPackages = lisp-packages.packages."${system}";
-            pkgs = import nixpkgs { inherit system; };
-          in pkgs.callPackage ./pkgs.nix { inherit inputs localLispPackages; });
+        packages =
+          (final: prev: prev.callPackage ./pkgs.nix { inherit inputs; });
         default = packages;
       };
 
