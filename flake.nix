@@ -25,7 +25,9 @@
     {
       overlays = rec {
         default = packages;
-        packages = final: prev: { };
+        packages = final: prev:
+          let localPackages = self.packages."${prev.system}";
+          in { dovecot = localPackages.dovecot; };
       };
 
       nixosModules.default = { ... }: {
