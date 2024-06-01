@@ -22,8 +22,8 @@
 
     {
       overlays = rec {
-        packages = (final: prev: self.packages."{prev.system}");
         default = packages;
+        packages = (final: prev: self.packages."${final.system}");
       };
 
       nixosModules.default = { ... }: {
