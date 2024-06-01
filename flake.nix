@@ -29,7 +29,7 @@
       overlays = rec {
         packages = (final: prev:
           let
-            inherit (final) system;
+            inherit (prev) system;
             localLispPackages = lisp-packages.packages."${system}";
             pkgs = import nixpkgs { inherit system; };
           in pkgs.callPackage ./pkgs.nix { inherit inputs localLispPackages; });
