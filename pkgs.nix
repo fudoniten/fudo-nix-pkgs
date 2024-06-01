@@ -76,7 +76,7 @@ in rec {
 
   lz4json = callPackage ./pkgs/lz4json.nix { };
 
-  heimdal = pkgs.heimdal.override { inherit openssl_1_1; };
+  heimdal = pkgs.heimdal.override { openssl = openssl_1_1; };
 
   kdcMergePrincipals = helpers.lib.writeRubyApplication {
     name = "kdc-merge-principals";
