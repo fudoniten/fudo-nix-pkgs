@@ -31,9 +31,8 @@
           let
             inherit (final) system;
             localLispPackages = lisp-packages.packages."${system}";
-          in final.callPackage ./pkgs.nix {
-            inherit inputs localLispPackages;
-          });
+            pkgs = import nixpkgs { inherit system; };
+          in pkgs.callPackage ./pkgs.nix { inherit inputs localLispPackages; });
         default = packages;
       };
 
