@@ -28,8 +28,12 @@
     {
       overlays = rec {
         packages = (final: prev:
-          let localLispPackages = lisp-packages.packages."${prev.system}";
-          in prev.callPackage ./pkgs.nix { inherit inputs localLispPackages; });
+          let
+            inherit (final) system;
+            localLispPackages = lisp-packages.packages."${system}";
+          in final.callPackage ./pkgs.nix {
+            inherit inputs localLispPackages;
+          });
         default = packages;
       };
 
