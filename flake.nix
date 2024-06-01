@@ -16,7 +16,7 @@
     }@inputs:
     (utils.lib.eachDefaultSystem (system:
       let pkgs = import nixpkgs { inherit system; };
-      in { packages = pkgs.callPackage ./pkgs.nix { inherit inputs; }; }))
+      in { packages = pkgs.callPackage ./pkgs.nix { inherit inputs pkgs; }; }))
 
     //
 

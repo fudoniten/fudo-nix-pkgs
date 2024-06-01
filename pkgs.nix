@@ -1,5 +1,5 @@
 { inputs, system, callPackage, fetchgit, fetchurl, fetchFromGitHub, lispPackages
-, ... }@pkgs:
+, pkgs, ... }:
 
 let
   helpers = inputs.helpers;
