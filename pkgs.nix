@@ -57,7 +57,7 @@ in rec {
 
   hll2380dw-lpr = callPackage ./pkgs/hll2380dw-lp.nix { };
 
-  lispPackages = localLispPackages // lispPackages;
+  # lispPackages = localLispPackages // lispPackages;
 
   openttd-data = fetchgit {
     url = "https://fudo.dev/public/openttd-data.git";
