@@ -1,10 +1,10 @@
 { inputs, system, callPackage, fetchgit, fetchurl, fetchFromGitHub, lispPackages
-, ... }@pkgs:
+, trace, ... }@pkgs:
 
 let
   helpers = inputs.helpers;
   readFile = builtins.readFile;
-  localLispPackages = inputs.lisp-packages.packages."${system}";
+  localLispPackages = inputs.lisp-packages.packages."${trace system system}";
 
 in rec {
   letsencrypt-ca = callPackage ./pkgs/letsencrypt-ca.nix { };

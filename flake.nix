@@ -2,10 +2,10 @@
   description = "Fudo packages";
 
   inputs = {
+    nixpkgs.url = "nixpkgs/nixos-23.11";
     google-photo-uploader-flake.url =
       "git+https://fudo.dev/public/google-photo-uploader.git";
     helpers.url = "git+https://fudo.dev/public/nix-helpers.git";
-    nixpkgs.url = "nixpkgs/nixos-23.11";
     unstableNixpkgs.url = "nixpkgs/nixos-unstable";
     utils.url = "github:numtide/flake-utils";
 
@@ -23,7 +23,7 @@
     {
       overlays = rec {
         default = packages;
-        packages = final: prev: self.packages."${prev.pkgs.system}";
+        packages = final: prev: self.packages."${prev.system}";
       };
 
       nixosModules.default = { ... }: {
