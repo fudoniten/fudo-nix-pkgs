@@ -29,7 +29,7 @@ in rec {
 
   heimdal = pkgs.heimdal.overrideAttrs (oldAttrs: {
     src = fetchFromGitHub {
-      user = "heimdal";
+      owner = "heimdal";
       repo = "heimdal";
       rev = "d8c10e68a61f10c8fca62b227a0766d294bda4a0";
       hash = "sha256-2XT7lERewjndv6I6ItH3T62iGMz85rT/YrsAtxXdwMo=";
