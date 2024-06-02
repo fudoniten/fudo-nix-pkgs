@@ -32,7 +32,7 @@
           let localPackages = self.packages."${prev.system}";
           in {
             inherit (localPackages)
-              letsencrypt-ca papermc-current minecraft-current dovecot
+              letsencrypt-ca papermc-current minecraft-current dovecot heimdal
               postgresql_11_gssapi postgresql_12_gssapi postgresql_15_gssapi
               hll2380dw-cups hll2380dw-lpr openttd-data signal-desktop lz4json
               kdcMergePrincipals generateHostSshKeys initializeKerberosRealm
