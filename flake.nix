@@ -19,7 +19,7 @@
         pkgs = import nixpkgs {
           inherit system;
           permittedInsecurePackages = [ "openssl-1.1.1w" ];
-          allowUnfree = true;
+          config.allowUnfree = true;
         };
       in { packages = pkgs.callPackage ./pkgs.nix { inherit inputs pkgs; }; }))
 
