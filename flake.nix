@@ -21,7 +21,14 @@
           permittedInsecurePackages = [ "openssl-1.1.1w" ];
           config.allowUnfree = true;
         };
-      in { packages = pkgs.callPackage ./pkgs.nix { inherit inputs pkgs; }; }))
+        unstable = import unstableNixpkgs {
+          inherit system;
+          config.allowUnfree = true;
+        };
+      in {
+        packages =
+          pkgs.callPackage ./pkgs.nix { inherit inputs pkgs unstable; };
+      }))
 
     //
 
@@ -38,7 +45,8 @@
               kdcMergePrincipals generateHostSshKeys initializeKerberosRealm
               instantiateKerberosRealm addHostToKerberosRealm
               extractKerberosHostKeytab extractKerberosKeytab kdcConvertDatabase
-              kdcAddPrincipal nsdRotateKeys nsdSignZone google-photo-uploader;
+              kdcAddPrincipal nsdRotateKeys nsdSignZone google-photo-uploader
+              immich-cli;
           };
       };
 

@@ -1,5 +1,5 @@
 { inputs, system, callPackage, fetchgit, fetchurl, fetchFromGitHub, lispPackages
-, openssl_1_1, heimdal, pkgs, ... }:
+, openssl_1_1, heimdal, pkgs, unstable, ... }:
 
 let
   helpers = inputs.helpers;
@@ -27,15 +27,7 @@ in rec {
     };
   });
 
-  heimdal = pkgs.heimdal.overrideAttrs (oldAttrs: {
-    src = fetchFromGitHub {
-      owner = "heimdal";
-      repo = "heimdal";
-      rev = "d8c10e68a61f10c8fca62b227a0766d294bda4a0";
-      hash = "sha256-2XT7lERewjndv6I6ItH3T62iGMz85rT/YrsAtxXdwMo=";
-    };
-    patchPhase = null;
-  });
+  heimdal = unstable.heimdal;
 
   dovecot = pkgs.dovecot.overrideAttrs (oldAttrs: {
     configureFlags = oldAttrs.configureFlags ++ [ "--with-solr" ];
@@ -85,8 +77,6 @@ in rec {
   });
 
   lz4json = callPackage ./pkgs/lz4json.nix { };
-
-  # heimdal = pkgs.heimdal.override { openssl = openssl_1_1; };
 
   kdcMergePrincipals = helpers.lib.writeRubyApplication {
     name = "kdc-merge-principals";
@@ -169,4 +159,6 @@ in rec {
 
   google-photo-uploader =
     inputs.google-photo-uploader-flake.packages."${pkgs.system}".google-photo-uploader;
+
+  immich-cli = unstable.immich-cli;
 }
