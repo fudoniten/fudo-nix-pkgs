@@ -3,7 +3,7 @@
     "agnostic-lizard": {
       "flake": false,
       "locked": {
-        "narHash": "sha256-0z7eEybs+fyxDT4GqID9SKQQDCDi66snM3xU+zezS6c=",
+        "narHash": "sha256-1hW7pMGLCdRqUYVkA1q44vTVvuKwjwRXqrMnWS8gv/8=",
         "type": "file",
         "url": "https://gitlab.common-lisp.net/mraskin/agnostic-lizard.git"
       },
@@ -15,7 +15,7 @@
     "arrows": {
       "flake": false,
       "locked": {
-        "narHash": "sha256-HqRsiucCGJZIY4ixYilTP81r0rY3NIBpQsLPfDL/cRo=",
+        "narHash": "sha256-3lS7O/aDwcQQyIS+1Sl5fdFAXd7ELCZ+uOrWfyKN+wA=",
         "type": "file",
         "url": "https://gitlab.com/Harleqin/arrows.git"
       },
