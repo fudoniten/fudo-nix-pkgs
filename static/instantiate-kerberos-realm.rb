@@ -65,6 +65,9 @@ kdc_data = <<~KDCCONF
     allow_weak_crypto = false
     default_etypes = #{options[:etypes].join(' ')}
 
+  [kadmin]
+    default_keys = aes256-cts-hmac-sha1-96:pw-salt
+
   [logging]
     kdc = FILE:#{tmpdir}/kdc.log
     default = FILE:#{tmpdir}/default.log
