@@ -3,13 +3,12 @@
 
   inputs = {
     nixpkgs.url = "nixpkgs/nixos-23.11";
-    google-photo-uploader-flake.url =
-      "git+https://fudo.dev/public/google-photo-uploader.git";
-    helpers.url = "git+https://fudo.dev/public/nix-helpers.git";
+    google-photo-uploader-flake.url = "github:fudoniten/google-photo-uploader";
+    helpers.url = "github:fudoniten/fudo-nix-helpers";
     unstableNixpkgs.url = "nixpkgs/nixos-unstable";
     utils.url = "github:numtide/flake-utils";
 
-    lisp-packages.url = "git+https://fudo.dev/public/lisp-repository.git";
+    lisp-packages.url = "github:fudoniten/fudo-lisp-packages";
   };
 
   outputs = { self, nixpkgs, unstableNixpkgs, lisp-packages, helpers, utils, ...
