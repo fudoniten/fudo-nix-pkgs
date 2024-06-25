@@ -8,7 +8,7 @@
     unstableNixpkgs.url = "nixpkgs/nixos-unstable";
     utils.url = "github:numtide/flake-utils";
 
-    lisp-packages.url = "github:fudoniten/fudo-lisp-packages";
+    lisp-packages.url = "github:fudoniten/nix-lisp-packages";
   };
 
   outputs = { self, nixpkgs, unstableNixpkgs, lisp-packages, helpers, utils, ...
