@@ -2,7 +2,7 @@
   description = "Fudo packages";
 
   inputs = {
-    nixpkgs.url = "nixpkgs/nixos-23.11";
+    nixpkgs.url = "nixpkgs/nixos-24.05";
     google-photo-uploader-flake.url = "github:fudoniten/google-photo-uploader";
     helpers.url = "github:fudoniten/fudo-nix-helpers";
     unstableNixpkgs.url = "nixpkgs/nixos-unstable";
