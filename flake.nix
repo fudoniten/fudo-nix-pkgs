@@ -7,12 +7,9 @@
     helpers.url = "github:fudoniten/fudo-nix-helpers";
     unstableNixpkgs.url = "nixpkgs/nixos-unstable";
     utils.url = "github:numtide/flake-utils";
-
-    lisp-packages.url = "github:fudoniten/nix-lisp-packages";
   };
 
-  outputs = { self, nixpkgs, unstableNixpkgs, lisp-packages, helpers, utils, ...
-    }@inputs:
+  outputs = { self, nixpkgs, unstableNixpkgs, helpers, utils, ... }@inputs:
     (utils.lib.eachDefaultSystem (system:
       let
         pkgs = import nixpkgs {

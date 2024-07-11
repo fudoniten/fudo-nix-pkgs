@@ -1,10 +1,9 @@
-{ inputs, system, callPackage, fetchgit, fetchurl, fetchFromGitHub, lispPackages
-, openssl_1_1, heimdal, pkgs, unstable, ... }:
+{ inputs, system, callPackage, fetchgit, fetchurl, fetchFromGitHub, openssl_1_1
+, heimdal, pkgs, unstable, ... }:
 
 let
   helpers = inputs.helpers;
   readFile = builtins.readFile;
-  # localLispPackages = inputs.lisp-packages.packages."${system}";
 
 in rec {
   letsencrypt-ca = callPackage ./pkgs/letsencrypt-ca.nix { };
@@ -58,8 +57,6 @@ in rec {
   hll2380dw-cups = callPackage ./pkgs/hll2380dw-cups.nix { };
 
   hll2380dw-lpr = callPackage ./pkgs/hll2380dw-lp.nix { };
-
-  # lispPackages = localLispPackages // lispPackages;
 
   openttd-data = fetchgit {
     url = "https://fudo.dev/public/openttd-data.git";
