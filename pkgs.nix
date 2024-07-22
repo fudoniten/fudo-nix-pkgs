@@ -15,7 +15,7 @@ in rec {
     sha256 = "x1wQVRmq4V5XzflF+X1jcQ9cPEwh1sC/9O3WAqutGhI=";
   };
 
-  minecraft-current = minecraft-server_1_20_4;
+  minecraft-current = minecraft-server_1_21;
 
   minecraft-server_1_21 = pkgs.minecraft-server.overrideAttrs (oldAttrs: rec {
     version = "1.21";
