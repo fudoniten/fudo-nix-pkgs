@@ -17,6 +17,15 @@ in rec {
 
   minecraft-current = minecraft-server_1_20_4;
 
+  minecraft-server_1_21 = pkgs.minecraft-server.overrideAttrs (oldAttrs: rec {
+    version = "1.21";
+    src = fetchurl {
+      url =
+        "https://piston-data.mojang.com/v1/objects/450698d1863ab5180c25d7c804ef0fe6369dd1ba/server.jar";
+      sha256 = "0gzmpifl6l1cq11lpjd5gadw50095wgyxlm2gkpzkngrhvd98qy9";
+    };
+  });
+
   minecraft-server_1_20_4 = pkgs.minecraft-server.overrideAttrs (oldAttrs: rec {
     version = "1.20.4";
     src = fetchurl {
