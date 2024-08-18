@@ -2,8 +2,8 @@
 , heimdal, pkgs, unstable, ... }:
 
 let
-  helpers = inputs.helpers;
-  readFile = builtins.readFile;
+  inherit (inputs) helpers;
+  inherit (builtins) readFile;
 
 in rec {
   letsencrypt-ca = callPackage ./pkgs/letsencrypt-ca.nix { };
@@ -35,7 +35,7 @@ in rec {
     };
   });
 
-  heimdal = unstable.heimdal;
+  inherit (unstable) heimdal;
 
   dovecot = pkgs.dovecot.overrideAttrs (oldAttrs: {
     configureFlags = oldAttrs.configureFlags ++ [ "--with-solr" ];
@@ -163,8 +163,8 @@ in rec {
     text = readFile ./static/nsd-sign-zone.rb;
   };
 
-  google-photo-uploader =
-    inputs.google-photo-uploader-flake.packages."${pkgs.system}".google-photo-uploader;
+  inherit (inputs.google-photo-uploader-flake.packages."${pkgs.system}")
+    google-photo-uploader;
 
-  immich-cli = unstable.immich-cli;
+  inherit (unstable) immich-cli immich-go;
 }
