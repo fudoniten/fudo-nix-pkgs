@@ -78,14 +78,15 @@ in rec {
     sha256 = "061k0f0jgm5k81djslb172xk0wkis0m878izgisyj2qgg3wf1awh";
   };
 
-  signal-desktop = pkgs.signal-desktop.overrideAttrs (oldAttrs: rec {
-    version = "7.51.0";
-    src = fetchurl {
-      url =
-        "https://updates.signal.org/desktop/apt/pool/s/signal-desktop/signal-desktop_${version}_amd64.deb";
-      sha256 = "1skwifjyf9s08dafmmqz8rs49ap2jsmfrbf6xzdsa77lzgvrrq4q";
-    };
-  });
+  ## Might be fixed?
+  # signal-desktop = pkgs.signal-desktop.overrideAttrs (oldAttrs: rec {
+  #   version = "7.51.0";
+  #   src = fetchurl {
+  #     url =
+  #       "https://updates.signal.org/desktop/apt/pool/s/signal-desktop/signal-desktop_${version}_amd64.deb";
+  #     sha256 = "1skwifjyf9s08dafmmqz8rs49ap2jsmfrbf6xzdsa77lzgvrrq4q";
+  #   };
+  # });
 
   lz4json = callPackage ./pkgs/lz4json.nix { };
 
