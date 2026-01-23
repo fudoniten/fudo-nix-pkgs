@@ -103,6 +103,12 @@ signing_keys = (valid_zsks.map(&:private_key) + [options[:ksk]]).map { |kf| kf.g
 
 puts "signing #{options[:domain]} zonefile #{zonefile} with keys: #{signing_keys.join(', ')}" if verbose
 
+# Generate a secure NSEC3 salt (16 bytes = 32 hex characters)
+salt = `head -c 16 /dev/urandom | xxd -p -c 16`.strip
+raise 'failed to generate NSEC3 salt' if salt.empty? || salt.length != 32
+
+puts "generated NSEC3 salt: #{salt}" if verbose
+
 exec!(verbose, "signing zonefile #{zonefile} ...",
       [
         'ldns-signzone',
@@ -113,7 +119,7 @@ exec!(verbose, "signing zonefile #{zonefile} ...",
         '-u',
         '-n',
         '-p',
-        '-s $(head -n 1000 /dev/random | sha1sum | cut -b 1-16)',
+        "-s #{salt}",
         zonefile,
         signing_keys.join(' ')
       ].join(' '))
