@@ -9,7 +9,8 @@ require 'nsd_key'
 options = {
   inception: Date::today.strftime('%Y%m%d'),
   expiry: (Date::today + 30).strftime('%Y%m%d'),
-  verbose: false
+  verbose: false,
+  nsec3_algorithm: '1'  # SHA-1 for NSEC3 (widely supported)
 }
 
 # rubocop:disable Metrics/BlockLength
@@ -49,6 +50,11 @@ OptionParser.new do |opts|
   end
 
   opts.on('-v', '--verbose', 'Provide verbose output.') { options[:verbose] = true }
+
+  opts.on('-a', '--nsec3-algorithm=ALGORITHM',
+          'NSEC3 hash algorithm (default: 1 for SHA-1). Use 1 for compatibility.') do |algo|
+    options[:nsec3_algorithm] = algo
+  end
 end.parse!
 # rubocop:enable Metrics/BlockLength
 
@@ -119,6 +125,7 @@ exec!(verbose, "signing zonefile #{zonefile} ...",
         '-u',
         '-n',
         '-p',
+        "-a #{options[:nsec3_algorithm]}",
         "-s #{salt}",
         zonefile,
         signing_keys.join(' ')
