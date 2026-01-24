@@ -2,7 +2,7 @@
   description = "Fudo packages";
 
   inputs = {
-    nixpkgs.url = "nixpkgs/nixos-25.05";
+    nixpkgs.url = "nixpkgs/nixos-25.11";
     google-photo-uploader-flake.url = "github:fudoniten/google-photo-uploader";
     helpers.url = "github:fudoniten/fudo-nix-helpers";
     unstableNixpkgs.url = "nixpkgs/nixos-unstable";
@@ -37,12 +37,12 @@
             inherit (localPackages)
               letsencrypt-ca papermc-current minecraft-current dovecot heimdal
               postgresql_11_gssapi postgresql_12_gssapi postgresql_15_gssapi
-              postgresql_17_gssapi hll2380dw-cups hll2380dw-lpr openttd-data lz4json
-              kdcMergePrincipals generateHostSshKeys initializeKerberosRealm
-              instantiateKerberosRealm addHostToKerberosRealm
-              extractKerberosHostKeytab extractKerberosKeytab kdcConvertDatabase
-              kdcAddPrincipal nsdRotateKeys nsdSignZone google-photo-uploader
-              immich-cli;
+              postgresql_17_gssapi hll2380dw-cups hll2380dw-lpr openttd-data
+              lz4json kdcMergePrincipals generateHostSshKeys
+              initializeKerberosRealm instantiateKerberosRealm
+              addHostToKerberosRealm extractKerberosHostKeytab
+              extractKerberosKeytab kdcConvertDatabase kdcAddPrincipal
+              nsdRotateKeys nsdSignZone google-photo-uploader immich-cli;
           };
       };
 
