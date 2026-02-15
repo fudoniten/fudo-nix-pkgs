@@ -164,7 +164,7 @@ in rec {
   nsdSignZone = helpers.lib.writeRubyApplication {
     name = "nsd-sign-zone";
     inherit pkgs;
-    runtimeInputs = with pkgs; [ ldns.examples ];
+    runtimeInputs = with pkgs; [ ldns.examples coreutils ];
     libInputs = [ ./static ];
     text = readFile ./static/nsd-sign-zone.rb;
   };
