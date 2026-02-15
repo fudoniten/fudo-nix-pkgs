@@ -9,7 +9,8 @@ require 'nsd_key'
 options = {
   inception: Date::today.strftime('%Y%m%d'),
   expiry: (Date::today + 30).strftime('%Y%m%d'),
-  verbose: false
+  verbose: false,
+  nsec3_algorithm: '1'  # SHA-1 for NSEC3 (widely supported)
 }
 
 # rubocop:disable Metrics/BlockLength
@@ -49,6 +50,11 @@ OptionParser.new do |opts|
   end
 
   opts.on('-v', '--verbose', 'Provide verbose output.') { options[:verbose] = true }
+
+  opts.on('-a', '--nsec3-algorithm=ALGORITHM',
+          'NSEC3 hash algorithm (default: 1 for SHA-1). Use 1 for compatibility.') do |algo|
+    options[:nsec3_algorithm] = algo
+  end
 end.parse!
 # rubocop:enable Metrics/BlockLength
 
@@ -103,6 +109,12 @@ signing_keys = (valid_zsks.map(&:private_key) + [options[:ksk]]).map { |kf| kf.g
 
 puts "signing #{options[:domain]} zonefile #{zonefile} with keys: #{signing_keys.join(', ')}" if verbose
 
+# Generate a secure NSEC3 salt (16 bytes = 32 hex characters)
+salt = `head -c 16 /dev/urandom | od -A n -t x1 -v | tr -d ' \n'`.strip
+raise 'failed to generate NSEC3 salt' if salt.empty? || salt.length != 32
+
+puts "generated NSEC3 salt: #{salt}" if verbose
+
 exec!(verbose, "signing zonefile #{zonefile} ...",
       [
         'ldns-signzone',
@@ -113,7 +125,8 @@ exec!(verbose, "signing zonefile #{zonefile} ...",
         '-u',
         '-n',
         '-p',
-        '-s $(head -n 1000 /dev/random | sha1sum | cut -b 1-16)',
+        "-a #{options[:nsec3_algorithm]}",
+        "-s #{salt}",
         zonefile,
         signing_keys.join(' ')
       ].join(' '))

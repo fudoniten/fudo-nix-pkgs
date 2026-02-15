@@ -57,6 +57,11 @@ in rec {
     buildInputs = oldAttrs.buildInputs ++ [ pkgs.krb5 ];
   });
 
+  postgresql_17_gssapi = pkgs.postgresql_17.overrideAttrs (oldAttrs: rec {
+    configureFlags = oldAttrs.configureFlags ++ [ "--with-gssapi" ];
+    buildInputs = oldAttrs.buildInputs ++ [ pkgs.krb5 ];
+  });
+
   opencv-java = pkgs.opencv3.overrideAttrs (oldAttrs: rec {
     pname = "opencv-java";
     nativeBuildInputs = oldAttrs.nativeBuildInputs ++ [ pkgs.jdk11 pkgs.ant ];
@@ -73,14 +78,15 @@ in rec {
     sha256 = "061k0f0jgm5k81djslb172xk0wkis0m878izgisyj2qgg3wf1awh";
   };
 
-  signal-desktop = pkgs.signal-desktop.overrideAttrs (oldAttrs: rec {
-    version = "7.37.0";
-    src = fetchurl {
-      url =
-        "https://updates.signal.org/desktop/apt/pool/s/signal-desktop/signal-desktop_${version}_amd64.deb";
-      sha256 = "0i5vappky0xkk394bchcn8p0xm96fgi09yljnm42nda87i457kaf";
-    };
-  });
+  ## Might be fixed?
+  # signal-desktop = pkgs.signal-desktop.overrideAttrs (oldAttrs: rec {
+  #   version = "7.51.0";
+  #   src = fetchurl {
+  #     url =
+  #       "https://updates.signal.org/desktop/apt/pool/s/signal-desktop/signal-desktop_${version}_amd64.deb";
+  #     sha256 = "1skwifjyf9s08dafmmqz8rs49ap2jsmfrbf6xzdsa77lzgvrrq4q";
+  #   };
+  # });
 
   lz4json = callPackage ./pkgs/lz4json.nix { };
 
@@ -158,7 +164,7 @@ in rec {
   nsdSignZone = helpers.lib.writeRubyApplication {
     name = "nsd-sign-zone";
     inherit pkgs;
-    runtimeInputs = with pkgs; [ ldns.examples ];
+    runtimeInputs = with pkgs; [ ldns.examples coreutils ];
     libInputs = [ ./static ];
     text = readFile ./static/nsd-sign-zone.rb;
   };
