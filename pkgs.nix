@@ -6,8 +6,6 @@ let
   inherit (builtins) readFile;
 
 in rec {
-  letsencrypt-ca = callPackage ./pkgs/letsencrypt-ca.nix { };
-
   papermc-current = papermc-1_20_4;
 
   papermc-1_20_4 = callPackage ./pkgs/papermc-current.nix {
@@ -28,39 +26,11 @@ in rec {
     };
   });
 
-  minecraft-server_1_21 = pkgs.minecraft-server.overrideAttrs (oldAttrs: rec {
-    version = "1.21";
-    src = fetchurl {
-      url =
-        "https://piston-data.mojang.com/v1/objects/450698d1863ab5180c25d7c804ef0fe6369dd1ba/server.jar";
-      sha256 = "0gzmpifl6l1cq11lpjd5gadw50095wgyxlm2gkpzkngrhvd98qy9";
-    };
-  });
-
-  minecraft-server_1_20_4 = pkgs.minecraft-server.overrideAttrs (oldAttrs: rec {
-    version = "1.20.4";
-    src = fetchurl {
-      url =
-        "https://piston-data.mojang.com/v1/objects/8dd1a28015f51b1803213892b50b7b4fc76e594d/server.jar";
-      sha256 = "0qykf9a3nacklqsyb30kg9m79nw462la6rf92gsdssdakprscgy0";
-    };
-  });
-
   inherit (unstable) heimdal;
 
   dovecot = pkgs.dovecot.overrideAttrs (oldAttrs: {
     configureFlags = oldAttrs.configureFlags ++ [ "--with-solr" ];
     buildInputs = oldAttrs.buildInputs ++ [ pkgs.expat ];
-  });
-
-  postgresql_11_gssapi = pkgs.postgresql_11.overrideAttrs (oldAttrs: rec {
-    configureFlags = oldAttrs.configureFlags ++ [ "--with-gssapi" ];
-    buildInputs = oldAttrs.buildInputs ++ [ pkgs.krb5 ];
-  });
-
-  postgresql_12_gssapi = pkgs.postgresql_12.overrideAttrs (oldAttrs: rec {
-    configureFlags = oldAttrs.configureFlags ++ [ "--with-gssapi" ];
-    buildInputs = oldAttrs.buildInputs ++ [ pkgs.krb5 ];
   });
 
   postgresql_15_gssapi = pkgs.postgresql_15.overrideAttrs (oldAttrs: rec {
@@ -73,12 +43,6 @@ in rec {
     buildInputs = oldAttrs.buildInputs ++ [ pkgs.krb5 ];
   });
 
-  opencv-java = pkgs.opencv3.overrideAttrs (oldAttrs: rec {
-    pname = "opencv-java";
-    nativeBuildInputs = oldAttrs.nativeBuildInputs ++ [ pkgs.jdk11 pkgs.ant ];
-    cmakeFlags = oldAttrs.cmakeFlags ++ [ "-DWITH_JAVA=ON" ];
-  });
-
   hll2380dw-cups = callPackage ./pkgs/hll2380dw-cups.nix { };
 
   hll2380dw-lpr = callPackage ./pkgs/hll2380dw-lp.nix { };
@@ -88,16 +52,6 @@ in rec {
     rev = "5b7dd0ca9014e642e1f2d0aa3154b5da869911d3";
     sha256 = "061k0f0jgm5k81djslb172xk0wkis0m878izgisyj2qgg3wf1awh";
   };
-
-  ## Might be fixed?
-  # signal-desktop = pkgs.signal-desktop.overrideAttrs (oldAttrs: rec {
-  #   version = "7.51.0";
-  #   src = fetchurl {
-  #     url =
-  #       "https://updates.signal.org/desktop/apt/pool/s/signal-desktop/signal-desktop_${version}_amd64.deb";
-  #     sha256 = "1skwifjyf9s08dafmmqz8rs49ap2jsmfrbf6xzdsa77lzgvrrq4q";
-  #   };
-  # });
 
   lz4json = callPackage ./pkgs/lz4json.nix { };
 
