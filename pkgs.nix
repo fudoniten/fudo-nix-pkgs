@@ -8,6 +8,11 @@ let
 in rec {
   papermc-current = papermc-1_20_4;
 
+  papermc-26_1_2 = callPackage ./pkgs/papermc-current.nix {
+    version = "26.1.2";
+    sha256 = pkgs.lib.fakeHash;
+  };
+
   papermc-1_20_4 = callPackage ./pkgs/papermc-current.nix {
     version = "1.20.4.329";
     sha256 = "x1wQVRmq4V5XzflF+X1jcQ9cPEwh1sC/9O3WAqutGhI=";
