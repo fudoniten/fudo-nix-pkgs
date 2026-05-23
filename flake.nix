@@ -42,7 +42,8 @@
               initializeKerberosRealm instantiateKerberosRealm
               addHostToKerberosRealm extractKerberosHostKeytab
               extractKerberosKeytab kdcConvertDatabase kdcAddPrincipal
-              nsdRotateKeys nsdSignZone google-photo-uploader immich-cli;
+              nsdRotateKeys nsdSignZone google-photo-uploader immich-cli
+              waylandcraft;
           };
       };
 
