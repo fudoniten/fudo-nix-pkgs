@@ -60,6 +60,8 @@ in rec {
 
   lz4json = callPackage ./pkgs/lz4json.nix { };
 
+  waylandcraft = callPackage ./pkgs/waylandcraft.nix { };
+
   kdcMergePrincipals = helpers.lib.writeRubyApplication {
     name = "kdc-merge-principals";
     inherit pkgs;
