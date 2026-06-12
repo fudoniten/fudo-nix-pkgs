@@ -144,5 +144,7 @@ in rec {
   inherit (inputs.google-photo-uploader-flake.packages."${pkgs.system}")
     google-photo-uploader;
 
+  oh-my-pi = callPackage ./pkgs/oh-my-pi.nix { src = inputs.oh-my-pi; };
+
   inherit (unstable) immich-cli immich-go;
 }
