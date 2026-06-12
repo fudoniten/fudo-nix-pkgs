@@ -1,7 +1,7 @@
 { lib, stdenv, bun, cargo, rustPlatform, pkg-config, openssl, src }:
 
 let
-  version = (lib.importJSON "${src}/package.json").version;
+  version = (lib.importJSON "${src}/packages/coding-agent/package.json").version;
 in stdenv.mkDerivation {
   pname = "oh-my-pi";
   inherit version src;
