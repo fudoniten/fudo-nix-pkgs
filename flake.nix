@@ -7,6 +7,8 @@
     helpers.url = "github:fudoniten/fudo-nix-helpers";
     unstableNixpkgs.url = "nixpkgs/nixos-unstable";
     utils.url = "github:numtide/flake-utils";
+    oh-my-pi.url = "github:can1357/oh-my-pi";
+    oh-my-pi.flake = false;
   };
 
   outputs = { self, nixpkgs, unstableNixpkgs, helpers, utils, ... }@inputs:
@@ -43,7 +45,7 @@
               addHostToKerberosRealm extractKerberosHostKeytab
               extractKerberosKeytab kdcConvertDatabase kdcAddPrincipal
               nsdRotateKeys nsdSignZone google-photo-uploader immich-cli
-              waylandcraft;
+              waylandcraft oh-my-pi;
           };
       };
 
