@@ -1,5 +1,4 @@
-{ inputs, system, callPackage, fetchgit, fetchurl, fetchFromGitHub, openssl_1_1
-, heimdal, pkgs, unstable, ... }:
+{ inputs, callPackage, fetchgit, fetchurl, pkgs, unstable, ... }:
 
 let
   inherit (inputs) helpers;
