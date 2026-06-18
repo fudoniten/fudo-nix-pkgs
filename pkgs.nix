@@ -19,7 +19,9 @@ in rec {
 
   minecraft-current = minecraft-server_26_2;
 
-  minecraft-server_26_2 = pkgs.minecraft-server.overrideAttrs (oldAttrs: {
+  minecraft-server_26_2 = (pkgs.minecraft-server.override {
+    jre_headless = pkgs.jdk25_headless;
+  }).overrideAttrs (oldAttrs: rec {
     version = "26.2";
     src = fetchurl {
       url =
