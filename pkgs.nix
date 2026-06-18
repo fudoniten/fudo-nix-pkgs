@@ -1,5 +1,4 @@
-{ inputs, system, callPackage, fetchgit, fetchurl, fetchFromGitHub, openssl_1_1
-, heimdal, pkgs, unstable, ... }:
+{ inputs, callPackage, fetchgit, fetchurl, pkgs, unstable, ... }:
 
 let
   inherit (inputs) helpers;
@@ -18,16 +17,34 @@ in rec {
     sha256 = "x1wQVRmq4V5XzflF+X1jcQ9cPEwh1sC/9O3WAqutGhI=";
   };
 
-  minecraft-current = minecraft-server_26_1_2;
+  minecraft-current = minecraft-server_26_2;
 
-  minecraft-server_26_1_2 = (pkgs.minecraft-server.override {
+  minecraft-server_26_2 = (pkgs.minecraft-server.override {
     jre_headless = pkgs.jdk25_headless;
   }).overrideAttrs (oldAttrs: rec {
-    version = "26.1.2";
+    version = "26.2";
     src = fetchurl {
       url =
-        "https://piston-data.mojang.com/v1/objects/97ccd4c0ed3f81bbb7bfacddd1090b0c56f9bc51/server.jar";
-      sha256 = "0hnbxnghbbki3vlgwkrxnr06nj92ig6qzbqpzml4gxi8hg1yfiyd";
+        "https://piston-data.mojang.com/v1/objects/823e2250d24b3ddac457a60c92a6a941943fcd6a/server.jar";
+      sha256 = "1i9ynvmh1h46v310jmv08rz0cxrgfb1dqp8f9d5mxplqb2rdzb6d";
+    };
+  });
+
+  minecraft-server_1_21 = pkgs.minecraft-server.overrideAttrs (oldAttrs: {
+    version = "1.21";
+    src = fetchurl {
+      url =
+        "https://piston-data.mojang.com/v1/objects/450698d1863ab5180c25d7c804ef0fe6369dd1ba/server.jar";
+      sha256 = "0gzmpifl6l1cq11lpjd5gadw50095wgyxlm2gkpzkngrhvd98qy9";
+    };
+  });
+
+  minecraft-server_1_20_4 = pkgs.minecraft-server.overrideAttrs (oldAttrs: {
+    version = "1.20.4";
+    src = fetchurl {
+      url =
+        "https://piston-data.mojang.com/v1/objects/8dd1a28015f51b1803213892b50b7b4fc76e594d/server.jar";
+      sha256 = "0qykf9a3nacklqsyb30kg9m79nw462la6rf92gsdssdakprscgy0";
     };
   });
 
@@ -38,14 +55,30 @@ in rec {
     buildInputs = oldAttrs.buildInputs ++ [ pkgs.expat ];
   });
 
-  postgresql_15_gssapi = pkgs.postgresql_15.overrideAttrs (oldAttrs: rec {
+  postgresql_11_gssapi = pkgs.postgresql_11.overrideAttrs (oldAttrs: {
     configureFlags = oldAttrs.configureFlags ++ [ "--with-gssapi" ];
     buildInputs = oldAttrs.buildInputs ++ [ pkgs.krb5 ];
   });
 
-  postgresql_17_gssapi = pkgs.postgresql_17.overrideAttrs (oldAttrs: rec {
+  postgresql_12_gssapi = pkgs.postgresql_12.overrideAttrs (oldAttrs: {
     configureFlags = oldAttrs.configureFlags ++ [ "--with-gssapi" ];
     buildInputs = oldAttrs.buildInputs ++ [ pkgs.krb5 ];
+  });
+
+  postgresql_15_gssapi = pkgs.postgresql_15.overrideAttrs (oldAttrs: {
+    configureFlags = oldAttrs.configureFlags ++ [ "--with-gssapi" ];
+    buildInputs = oldAttrs.buildInputs ++ [ pkgs.krb5 ];
+  });
+
+  postgresql_17_gssapi = pkgs.postgresql_17.overrideAttrs (oldAttrs: {
+    configureFlags = oldAttrs.configureFlags ++ [ "--with-gssapi" ];
+    buildInputs = oldAttrs.buildInputs ++ [ pkgs.krb5 ];
+  });
+
+  opencv-java = pkgs.opencv3.overrideAttrs (oldAttrs: {
+    pname = "opencv-java";
+    nativeBuildInputs = oldAttrs.nativeBuildInputs ++ [ pkgs.jdk11 pkgs.ant ];
+    cmakeFlags = oldAttrs.cmakeFlags ++ [ "-DWITH_JAVA=ON" ];
   });
 
   hll2380dw-cups = callPackage ./pkgs/hll2380dw-cups.nix { };
