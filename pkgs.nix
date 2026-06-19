@@ -19,15 +19,24 @@ in rec {
 
   minecraft-current = minecraft-server_26_2;
 
-  minecraft-server_26_2 = (pkgs.minecraft-server.override {
-    jre_headless = pkgs.jdk25_headless;
-  }).overrideAttrs (oldAttrs: rec {
+  minecraft-server_26_2 = let
+    jre = pkgs.jdk25_headless;
+  in pkgs.minecraft-server.overrideAttrs (oldAttrs: {
     version = "26.2";
     src = fetchurl {
       url =
         "https://piston-data.mojang.com/v1/objects/823e2250d24b3ddac457a60c92a6a941943fcd6a/server.jar";
       sha256 = "1i9ynvmh1h46v310jmv08rz0cxrgfb1dqp8f9d5mxplqb2rdzb6d";
     };
+    nativeBuildInputs = [ pkgs.makeWrapper ];
+    installPhase = ''
+      mkdir -p $out/{bin,lib/minecraft}
+      cp -v $src $out/lib/minecraft/server.jar
+
+      makeWrapper ${jre}/bin/java $out/bin/minecraft-server \
+        --add-flags "nogui" \
+        --add-flags "-jar $out/lib/minecraft/server.jar"
+    '';
   });
 
   minecraft-server_1_21 = pkgs.minecraft-server.overrideAttrs (oldAttrs: {
