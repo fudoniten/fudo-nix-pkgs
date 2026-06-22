@@ -1,5 +1,5 @@
 { lib, rustPlatform, fetchFromGitHub, pkg-config, openssl, webkitgtk_4_1, gtk3
-, libxdo, glib, cairo, pango, gdk-pixbuf, atk, ... }:
+, xdotool, glib, cairo, pango, gdk-pixbuf, atk, ... }:
 
 rustPlatform.buildRustPackage rec {
   pname = "tesla-auth";
@@ -16,7 +16,7 @@ rustPlatform.buildRustPackage rec {
 
   nativeBuildInputs = [ pkg-config ];
 
-  buildInputs = [ openssl webkitgtk_4_1 gtk3 libxdo glib cairo pango gdk-pixbuf atk ];
+  buildInputs = [ openssl webkitgtk_4_1 gtk3 xdotool glib cairo pango gdk-pixbuf atk ];
 
   meta = with lib; {
     description = "Securely generate API tokens for third-party access to your Tesla";
