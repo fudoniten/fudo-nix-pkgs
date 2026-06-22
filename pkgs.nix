@@ -102,6 +102,8 @@ in rec {
 
   lz4json = callPackage ./pkgs/lz4json.nix { };
 
+  tesla-auth = callPackage ./pkgs/tesla-auth.nix { };
+
   waylandcraft = callPackage ./pkgs/waylandcraft.nix { };
 
   kdcMergePrincipals = helpers.lib.writeRubyApplication {
