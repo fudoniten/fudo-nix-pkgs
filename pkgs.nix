@@ -33,8 +33,7 @@ in rec {
       cp -v $src $out/lib/minecraft/server.jar
 
       makeWrapper ${jre}/bin/java $out/bin/minecraft-server \
-        --add-flags "nogui" \
-        --add-flags "-jar $out/lib/minecraft/server.jar"
+        --append-flags "-jar $out/lib/minecraft/server.jar nogui"
     '';
   });
 
