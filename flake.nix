@@ -2,7 +2,7 @@
   description = "Fudo packages";
 
   inputs = {
-    nixpkgs.url = "nixpkgs/nixos-25.11";
+    nixpkgs.url = "nixpkgs/nixos-26.05";
     google-photo-uploader-flake.url = "github:fudoniten/google-photo-uploader";
     helpers.url = "github:fudoniten/fudo-nix-helpers";
     unstableNixpkgs.url = "nixpkgs/nixos-unstable";
@@ -45,7 +45,7 @@
               addHostToKerberosRealm extractKerberosHostKeytab
               extractKerberosKeytab kdcConvertDatabase kdcAddPrincipal
               nsdRotateKeys nsdSignZone google-photo-uploader immich-cli
-              tesla-auth waylandcraft oh-my-pi;
+              tesla-auth waylandcraft mcreator oh-my-pi;
           };
       };
 

@@ -19,8 +19,7 @@ in rec {
 
   minecraft-current = minecraft-server_26_2;
 
-  minecraft-server_26_2 = let
-    jre = pkgs.jdk25_headless;
+  minecraft-server_26_2 = let jre = pkgs.jdk25_headless;
   in pkgs.minecraft-server.overrideAttrs (oldAttrs: {
     version = "26.2";
     src = fetchurl {
@@ -34,8 +33,7 @@ in rec {
       cp -v $src $out/lib/minecraft/server.jar
 
       makeWrapper ${jre}/bin/java $out/bin/minecraft-server \
-        --add-flags "nogui" \
-        --add-flags "-jar $out/lib/minecraft/server.jar"
+        --append-flags "-jar $out/lib/minecraft/server.jar nogui"
     '';
   });
 
@@ -105,6 +103,8 @@ in rec {
   tesla-auth = callPackage ./pkgs/tesla-auth.nix { };
 
   waylandcraft = callPackage ./pkgs/waylandcraft.nix { };
+
+  mcreator = callPackage ./pkgs/mcreator.nix { };
 
   kdcMergePrincipals = helpers.lib.writeRubyApplication {
     name = "kdc-merge-principals";
