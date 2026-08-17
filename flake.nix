@@ -45,7 +45,7 @@
               addHostToKerberosRealm extractKerberosHostKeytab
               extractKerberosKeytab kdcConvertDatabase kdcAddPrincipal
               nsdRotateKeys nsdSignZone google-photo-uploader immich-cli
-              tesla-auth waylandcraft oh-my-pi;
+              tesla-auth waylandcraft mcreator oh-my-pi;
           };
       };
 

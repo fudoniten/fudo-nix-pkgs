@@ -104,6 +104,8 @@ in rec {
 
   waylandcraft = callPackage ./pkgs/waylandcraft.nix { };
 
+  mcreator = callPackage ./pkgs/mcreator.nix { };
+
   kdcMergePrincipals = helpers.lib.writeRubyApplication {
     name = "kdc-merge-principals";
     inherit pkgs;
