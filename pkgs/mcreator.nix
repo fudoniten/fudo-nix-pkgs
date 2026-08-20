@@ -1,7 +1,8 @@
 { lib, stdenv, fetchurl, autoPatchelfHook, copyDesktopItems, makeWrapper
-, makeDesktopItem, alsa-lib, at-spi2-atk, at-spi2-core, atk, cairo, cups, dbus
-, expat, fontconfig, freetype, glib, gtk3, libGL, libdrm, libgbm, libxkbcommon
-, nspr, nss, pango, systemdLibs, wayland, xdg-utils, xorg, zlib }:
+, makeDesktopItem, writeShellScript, alsa-lib, at-spi2-atk, at-spi2-core, atk
+, cairo, coreutils, cups, dbus, expat, fontconfig, freetype, glib, gnugrep, gtk3
+, jdk17, jdk21, libGL, libdrm, libgbm, libxkbcommon, nspr, nss, pango
+, systemdLibs, wayland, xdg-utils, xorg, zlib }:
 
 let
   version = "2026.2.33518";
@@ -56,6 +57,46 @@ let
     libxcb
   ]);
 
+  # Forge and NeoForge ask Gradle for a specific Java toolchain -- 21 for the
+  # current Minecraft generators, 17 for the older ones -- and it is never the
+  # JDK MCreator itself runs on. MCreator launches Gradle with
+  # -Porg.gradle.java.installations.auto-detect=false, so Gradle will not go
+  # looking for one; left alone it downloads a JDK from foojay, which on NixOS
+  # both fails to unpack and would not be runnable if it did. Hand it ours, and
+  # turn the download off so a toolchain we don't ship fails loudly.
+  javaToolchains = [ jdk17 jdk21 ];
+
+  toolchainPaths = lib.concatMapStringsSep "," (jdk: jdk.home) javaToolchains;
+
+  # MCreator strips GRADLE_OPTS, GRADLE_USER_HOME, JAVA_HOME and friends out of
+  # the environment it hands Gradle (net.mcreator.gradle.GradleUtils), so the
+  # only channel left is gradle.properties in its Gradle home. MCreator never
+  # writes that file itself, so seeding it is safe -- but regenerate it every
+  # launch, since the store paths in it go stale on garbage collection, and
+  # back off entirely once it stops looking like ours.
+  seedGradleProperties = writeShellScript "mcreator-seed-gradle-properties" ''
+    export PATH=${lib.makeBinPath [ coreutils gnugrep ]}:"$PATH"
+
+    marker="# Managed by the mcreator Nix package."
+    gradleHome="''${MCREATOR_HOME:-$HOME/.mcreator}/gradle"
+    props="$gradleHome/gradle.properties"
+
+    if [ -e "$props" ] && ! head -n 1 "$props" | grep -qxF "$marker"; then
+      echo "mcreator: $props is not ours, leaving it alone." >&2
+      echo "mcreator: if Gradle cannot find a Java toolchain, add:" >&2
+      echo "mcreator:   org.gradle.java.installations.paths=${toolchainPaths}" >&2
+      exit 0
+    fi
+
+    mkdir -p "$gradleHome"
+    {
+      echo "$marker"
+      echo "# Rewritten on launch. Change the first line to take it over."
+      echo "org.gradle.java.installations.paths=${toolchainPaths}"
+      echo "org.gradle.java.installations.auto-download=false"
+    } > "$props"
+  '';
+
 in stdenv.mkDerivation {
   pname = "mcreator";
   inherit version;
@@ -89,8 +130,9 @@ in stdenv.mkDerivation {
     # directly and ship a real desktop item instead. MCreator takes its
     # installation path from user.dir and resolves lib/ and plugins/ relative
     # to it, so the working directory has to be the install root -- that's
-    # read-only-safe, since user data goes to $MCREATOR_HOME (default $HOME).
+    # read-only-safe: user data goes to $MCREATOR_HOME, default ~/.mcreator.
     makeWrapper $out/share/mcreator/jdk/bin/java $out/bin/mcreator \
+      --run ${seedGradleProperties} \
       --chdir $out/share/mcreator \
       --set CLASSPATH './lib/mcreator.jar:./lib/*' \
       --prefix PATH : ${lib.makeBinPath [ xdg-utils ]} \
@@ -125,10 +167,13 @@ in stdenv.mkDerivation {
       is upstream's prebuilt Linux bundle: the jars plus a bundled JetBrains
       Runtime 25 with JCEF, patched to run outside an FHS tree.
 
-      User data (workspaces, preferences, downloaded Gradle and mod toolchains)
-      lives under $MCREATOR_HOME, which defaults to the user's home directory.
-      Building a mod downloads its toolchain on first use, so the machine needs
-      network access the first time a workspace is opened.
+      User data -- workspaces, preferences, Gradle caches -- lives under
+      $MCREATOR_HOME, which defaults to ~/.mcreator. Gradle's own toolchain
+      auto-provisioning does not work on NixOS, so the JDKs Forge and NeoForge
+      build against come from nixpkgs instead, written into
+      $MCREATOR_HOME/gradle/gradle.properties on launch. Building a mod still
+      fetches Minecraft and mod-loader artifacts on first use, so the machine
+      needs network access the first time a workspace is opened.
     '';
     homepage = "https://mcreator.net/";
     downloadPage = "https://github.com/MCreator/MCreator/releases";
