@@ -1,8 +1,18 @@
 { lib, stdenv, fetchurl, autoPatchelfHook, copyDesktopItems, makeWrapper
-, makeDesktopItem, writeShellScript, alsa-lib, at-spi2-atk, at-spi2-core, atk
-, cairo, coreutils, cups, dbus, expat, fontconfig, freetype, glib, gnugrep, gtk3
-, jdk17, jdk21, libGL, libdrm, libgbm, libxkbcommon, nspr, nss, pango
-, systemdLibs, wayland, xdg-utils, xorg, zlib }:
+, makeDesktopItem, symlinkJoin, writeShellScript, alsa-lib, at-spi2-atk
+, at-spi2-core, atk, cairo, coreutils, cups, dbus, expat, fontconfig, freetype
+, glib, gnugrep, gtk3, jdk17, jdk21, libGL, libdrm, libgbm, libpulseaudio
+, libxkbcommon, nspr, nss, pango, systemdLibs, wayland, xdg-utils, xorg, zlib
+
+# JDKs offered to Gradle as Java toolchains, on top of the JetBrains Runtime 25
+# MCreator bundles. One per Minecraft generation MCreator can target: 17 for
+# Forge 1.20.1, 21 for NeoForge 1.21.1, 25 (the bundled JBR) for the 26.1
+# generators. Add to this list to build for a generator we don't cover.
+, javaToolchains ? [ jdk17 jdk21 ]
+
+# MCreator generator plugins to make available in addition to the ones upstream
+# bundles. See pkgs.nix for the ones we ship by default.
+, extraPlugins ? [ ] }:
 
 let
   version = "2026.2.33518";
@@ -17,7 +27,9 @@ let
   # Everything the bundled JetBrains Runtime and its JCEF (Chromium) build pull
   # in via DT_NEEDED, plus fontconfig and libGL, which the JDK and JOGL only
   # ever dlopen -- autoPatchelf can't see those, hence the LD_LIBRARY_PATH on
-  # the wrapper below.
+  # the wrapper below. libpulseaudio and libXinerama are neither: they are for
+  # the LWJGL natives Minecraft itself unpacks and dlopens when a workspace is
+  # run or debugged from inside MCreator.
   runtimeLibs = [
     alsa-lib
     at-spi2-atk
@@ -34,6 +46,7 @@ let
     libGL
     libdrm
     libgbm
+    libpulseaudio
     libxkbcommon
     nspr
     nss
@@ -50,6 +63,7 @@ let
     libXext
     libXfixes
     libXi
+    libXinerama
     libXrandr
     libXrender
     libXtst
@@ -57,22 +71,38 @@ let
     libxcb
   ]);
 
-  # Forge and NeoForge ask Gradle for a specific Java toolchain -- 21 for the
-  # current Minecraft generators, 17 for the older ones -- and it is never the
-  # JDK MCreator itself runs on. MCreator launches Gradle with
-  # -Porg.gradle.java.installations.auto-detect=false, so Gradle will not go
-  # looking for one; left alone it downloads a JDK from foojay, which on NixOS
-  # both fails to unpack and would not be runnable if it did. Hand it ours, and
-  # turn the download off so a toolchain we don't ship fails loudly.
-  javaToolchains = [ jdk17 jdk21 ];
+  # Every generator asks Gradle for a specific Java toolchain, and it is never
+  # the JDK MCreator itself runs on: NeoForge 1.21.1 wants 21, Forge 1.20.1
+  # wants 17, the 26.1 generators want 25. Gradle's own answer to a toolchain it
+  # can't find is to download one from foojay, which on NixOS neither unpacks
+  # nor runs, so we have to hand it JDKs from nixpkgs instead.
+  #
+  # The obvious channel -- org.gradle.java.installations.paths in the
+  # gradle.properties of MCreator's Gradle home -- does not work, because
+  # net.mcreator.gradle.GradleUtils launches every Gradle invocation with
+  #
+  #   -Porg.gradle.java.installations.auto-detect=false
+  #   -Porg.gradle.java.installations.paths=<MCreator's own java.home>
+  #
+  # and a -P on the command line outranks gradle.properties, so the only
+  # toolchain Gradle ends up seeing is the bundled JBR. installations.fromEnv is
+  # the way in: MCreator never sets it, and it names *environment variables*
+  # holding JDK paths, which survive the environment scrubbing GradleUtils does
+  # (it drops JAVA_HOME, GRADLE_OPTS and friends, but nothing else). So the
+  # toolchains travel as env vars set on the wrapper, and gradle.properties only
+  # has to list their names.
+  toolchainEnv = map (jdk: {
+    name = "MCREATOR_JDK_${lib.versions.major jdk.version}";
+    inherit (jdk) home;
+  }) javaToolchains;
 
-  toolchainPaths = lib.concatMapStringsSep "," (jdk: jdk.home) javaToolchains;
+  toolchainEnvNames = lib.concatMapStringsSep "," (t: t.name) toolchainEnv;
 
-  # MCreator strips GRADLE_OPTS, GRADLE_USER_HOME, JAVA_HOME and friends out of
-  # the environment it hands Gradle (net.mcreator.gradle.GradleUtils), so the
-  # only channel left is gradle.properties in its Gradle home. MCreator never
-  # writes that file itself, so seeding it is safe -- but regenerate it every
-  # launch, since the store paths in it go stale on garbage collection, and
+  toolchainEnvFlags =
+    lib.concatMapStringsSep " " (t: "--set ${t.name} ${t.home}") toolchainEnv;
+
+  # MCreator never writes gradle.properties itself, so seeding it is safe -- but
+  # rewrite it every launch so a change to the toolchain list takes effect, and
   # back off entirely once it stops looking like ours.
   seedGradleProperties = writeShellScript "mcreator-seed-gradle-properties" ''
     export PATH=${lib.makeBinPath [ coreutils gnugrep ]}:"$PATH"
@@ -84,7 +114,7 @@ let
     if [ -e "$props" ] && ! head -n 1 "$props" | grep -qxF "$marker"; then
       echo "mcreator: $props is not ours, leaving it alone." >&2
       echo "mcreator: if Gradle cannot find a Java toolchain, add:" >&2
-      echo "mcreator:   org.gradle.java.installations.paths=${toolchainPaths}" >&2
+      echo "mcreator:   org.gradle.java.installations.fromEnv=${toolchainEnvNames}" >&2
       exit 0
     fi
 
@@ -92,10 +122,21 @@ let
     {
       echo "$marker"
       echo "# Rewritten on launch. Change the first line to take it over."
-      echo "org.gradle.java.installations.paths=${toolchainPaths}"
+      echo "org.gradle.java.installations.fromEnv=${toolchainEnvNames}"
       echo "org.gradle.java.installations.auto-download=false"
     } > "$props"
   '';
+
+  # MCREATOR_PLUGINS_FOLDER is a third plugin directory MCreator reads after
+  # ./plugins and $MCREATOR_HOME/plugins, which is exactly what we want: the
+  # store-provided generators show up as ordinary user plugins, the read-only
+  # bundle stays untouched, and dropping a plugin into $MCREATOR_HOME/plugins by
+  # hand still works. It is not searched recursively, so the zips have to sit
+  # directly in it.
+  pluginsFolder = symlinkJoin {
+    name = "mcreator-plugins";
+    paths = extraPlugins;
+  };
 
 in stdenv.mkDerivation {
   pname = "mcreator";
@@ -135,6 +176,11 @@ in stdenv.mkDerivation {
       --run ${seedGradleProperties} \
       --chdir $out/share/mcreator \
       --set CLASSPATH './lib/mcreator.jar:./lib/*' \
+      ${toolchainEnvFlags} \
+      ${
+        lib.optionalString (extraPlugins != [ ])
+        "--set MCREATOR_PLUGINS_FOLDER ${pluginsFolder}"
+      } \
       --prefix PATH : ${lib.makeBinPath [ xdg-utils ]} \
       --prefix LD_LIBRARY_PATH : ${lib.makeLibraryPath runtimeLibs} \
       --add-flags "--add-opens=java.base/java.lang=ALL-UNNAMED" \
@@ -155,9 +201,11 @@ in stdenv.mkDerivation {
       exec = "mcreator %f";
       icon = "mcreator";
       categories = [ "Development" "IDE" ];
-      keywords = [ "Minecraft" "Mod" "Forge" "NeoForge" ];
+      keywords = [ "Minecraft" "Mod" "Forge" "NeoForge" "Fabric" ];
     })
   ];
+
+  passthru = { inherit extraPlugins javaToolchains; };
 
   meta = {
     description = "Minecraft mod maker, data pack and add-on editor";
@@ -169,11 +217,20 @@ in stdenv.mkDerivation {
 
       User data -- workspaces, preferences, Gradle caches -- lives under
       $MCREATOR_HOME, which defaults to ~/.mcreator. Gradle's own toolchain
-      auto-provisioning does not work on NixOS, so the JDKs Forge and NeoForge
-      build against come from nixpkgs instead, written into
-      $MCREATOR_HOME/gradle/gradle.properties on launch. Building a mod still
-      fetches Minecraft and mod-loader artifacts on first use, so the machine
-      needs network access the first time a workspace is opened.
+      auto-provisioning does not work on NixOS, so the JDKs the generators
+      build against come from nixpkgs instead, passed in as environment
+      variables that $MCREATOR_HOME/gradle/gradle.properties names on launch.
+
+      Upstream bundles NeoForge, data pack, resource pack and Bedrock add-on
+      generators only; Forge and Fabric come from third-party plugins, which
+      this package builds from source and hands to MCreator through
+      MCREATOR_PLUGINS_FOLDER. Further plugins can be dropped into
+      $MCREATOR_HOME/plugins as usual, or added with
+      `mcreator.override { extraPlugins = ...; }`.
+
+      Building a mod still fetches Minecraft and mod-loader artifacts on first
+      use, so the machine needs network access the first time a workspace is
+      opened.
     '';
     homepage = "https://mcreator.net/";
     downloadPage = "https://github.com/MCreator/MCreator/releases";

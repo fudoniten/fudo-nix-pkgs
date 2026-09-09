@@ -104,7 +104,48 @@ in rec {
 
   waylandcraft = callPackage ./pkgs/waylandcraft.nix { };
 
-  mcreator = callPackage ./pkgs/mcreator.nix { };
+  # Upstream MCreator only ships NeoForge generators. Forge and Fabric are
+  # third-party plugins; both are built from source and wired into the mcreator
+  # package below. They are pinned to the MCreator series they were released
+  # for -- bump them together with mcreator, or MCreator will load neither.
+  mcreator-generator-forge-1_20_1 =
+    callPackage ./pkgs/mcreator-generator-plugin.nix {
+      pname = "mcreator-generator-forge-1.20.1";
+      version = "1.7";
+      owner = "Spectrall368";
+      repo = "Generator-Forge-1.20.1";
+      rev = "V1.7";
+      hash = "sha256-QB9LNVcl4JnIYIK59g10vOATWFJKEy8CKpsQAqu6cG8=";
+      mcVersion = "1.20.1";
+      mcreatorVersion = "2026.2";
+      pluginVersion = "1.7";
+      description =
+        "Minecraft Forge 1.20.1 mod, data pack and resource pack generator for MCreator";
+      homepage =
+        "https://mcreator.net/plugin/120166/minecraft-forge-1201-generator";
+    };
+
+  mcreator-generator-fabric-26_1_2 =
+    callPackage ./pkgs/mcreator-generator-plugin.nix {
+      pname = "mcreator-generator-fabric-26.1.2";
+      version = "2026.2-2.8";
+      owner = "Goldorion";
+      repo = "Fabric-Generator-MCreator";
+      rev = "26.1.2-2026.2-2.8";
+      hash = "sha256-5vxaGwACfcGSz4ge8oI82PpGk+4kOTmUiJkh8kKNsc8=";
+      mcVersion = "26.1.2";
+      mcreatorVersion = "2026.2";
+      pluginVersion = "2026.2-2.8";
+      description = "Minecraft Fabric 26.1.2 generator for MCreator";
+      homepage = "https://github.com/Goldorion/Fabric-Generator-MCreator";
+    };
+
+  mcreator = callPackage ./pkgs/mcreator.nix {
+    extraPlugins = [
+      mcreator-generator-forge-1_20_1
+      mcreator-generator-fabric-26_1_2
+    ];
+  };
 
   kdcMergePrincipals = helpers.lib.writeRubyApplication {
     name = "kdc-merge-principals";
