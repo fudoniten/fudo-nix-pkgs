@@ -17,7 +17,25 @@ in rec {
     sha256 = "x1wQVRmq4V5XzflF+X1jcQ9cPEwh1sC/9O3WAqutGhI=";
   };
 
-  minecraft-current = minecraft-server_26_2;
+  minecraft-current = minecraft-server_26_3;
+
+  minecraft-server_26_3 = let jre = pkgs.jdk25_headless;
+  in pkgs.minecraft-server.overrideAttrs (oldAttrs: {
+    version = "26.3";
+    src = fetchurl {
+      url =
+        "https://piston-data.mojang.com/v1/objects/33680f5f2ac32864d6d7cf5e56a705fdb3e05f4c/server.jar";
+      sha256 = "0r5yg6k7bf913bipw9hklgrf4qh1axdiwwaklpxk8dqpg96z2lnh";
+    };
+    nativeBuildInputs = [ pkgs.makeWrapper ];
+    installPhase = ''
+      mkdir -p $out/{bin,lib/minecraft}
+      cp -v $src $out/lib/minecraft/server.jar
+
+      makeWrapper ${jre}/bin/java $out/bin/minecraft-server \
+        --append-flags "-jar $out/lib/minecraft/server.jar nogui"
+    '';
+  });
 
   minecraft-server_26_2 = let jre = pkgs.jdk25_headless;
   in pkgs.minecraft-server.overrideAttrs (oldAttrs: {
