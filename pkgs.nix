@@ -75,11 +75,6 @@ in rec {
 
   inherit (unstable) heimdal;
 
-  dovecot = pkgs.dovecot.overrideAttrs (oldAttrs: {
-    configureFlags = oldAttrs.configureFlags ++ [ "--with-solr" ];
-    buildInputs = oldAttrs.buildInputs ++ [ pkgs.expat ];
-  });
-
   postgresql_11_gssapi = pkgs.postgresql_11.overrideAttrs (oldAttrs: {
     configureFlags = oldAttrs.configureFlags ++ [ "--with-gssapi" ];
     buildInputs = oldAttrs.buildInputs ++ [ pkgs.krb5 ];
